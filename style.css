@@ -371,3 +371,16 @@ body {
         font-size: 11px;
     }
 }
+
+/* --- NEW FOOTER STYLES --- */
+.site-footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+    font-size: 14px;
+    color: #888;
+}
+.site-footer p {
+    margin: 5px 0;
+}
