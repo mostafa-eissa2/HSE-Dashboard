@@ -4,52 +4,52 @@
 // =================================================================
 
 const permits_csv = `
-المشروع,Jan,Feb,Mar,Apr,May,Jun
-التحكم الاقليمي,20,29,14,21,11,0
-الحي الحكومي,1,1,2,0,0,0
-الحي الدبلوماسي,32,29,23,12,17,24
-العلمين,53,62,21,99,101,46
-الفردوس,59,44,11,16,66,6
-الكيان العسكري,47,36,22,27,25,27
-حياة كريمة الفيوم,148,127,116,122,111,113
-حياة كريمة المنيا,111,60,38,68,84,32
-حياة كريمة أرمنت,33,22,10,5,1,0
-حياة كريمة أسنا,19,12,1,0,10,3
-حياة كريمة أسوان,88,54,29,23,33,20
-حياة كريمة صدفا,14,8,5,5,1,6
-حياة كريمة مطوبس,14,11,3,16,10,1
-حياة كريمة منفلوط,23,14,45,9,9,15
-دهشور,57,50,10,76,66,19
-سانت كاترين,61,45,32,35,68,14
-ميناء الدخيلة,87,22,6,7,5,9
-سوهاج,20,26,24,26,29,24
-التوسعات الشرقية,0,0,0,0,0,0
-أبو قير,1,0,0,1,1,1
-العبور,0,0,0,11,14,16
-العاشر من رمضان,0,0,0,0,0,2
+المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul
+التحكم الاقليمي,20,29,14,21,11,0,16
+الحي الحكومي,1,1,2,0,0,0,2
+الحي الدبلوماسي,32,29,23,12,17,24,81
+العلمين,53,62,21,99,101,46,113
+الفردوس,59,44,11,16,66,6,1
+الكيان العسكري,47,36,22,27,25,27,50
+حياة كريمة الفيوم,148,127,116,122,111,113,99
+حياة كريمة المنيا,111,60,38,68,84,32,46
+حياة كريمة أرمنت,33,22,10,5,1,0,0
+حياة كريمة أسنا,19,12,1,0,10,3,6
+حياة كريمة أسوان,88,54,29,23,33,20,30
+حياة كريمة صدفا,14,8,5,5,1,6,1
+حياة كريمة مطوبس,14,11,3,16,10,1,0
+حياة كريمة منفلوط,23,14,45,9,9,15,6
+دهشور,57,50,10,76,66,19,7
+سانت كاترين,61,45,32,35,68,14,20
+ميناء الدخيلة,87,22,6,7,5,9,7
+سوهاج,20,26,24,26,29,24,63
+التوسعات الشرقية,0,0,0,0,0,0,0
+أبو قير,1,0,0,1,1,1,0
+العبور,0,0,0,11,14,16,16
+العاشر من رمضان,0,0,0,0,0,2,9
 `;
 const parties_csv = `
-Column1,Jan,Feb,Mar,Apr,May,Jun
-المقاول,535,402,227,334,388,186
-المخازن,71,54,39,59,69,54
-قسم الجودة,35,22,18,22,30,23
-قسم المساحة,47,24,8,18,23,8
-قسم تنفيذ الكهرباء,196,148,118,146,152,106
-قسم المدني,4,2,2,0,0,1
+Column1,Jan,Feb,Mar,Apr,May,Jun,Jul
+المقاول,535,402,227,334,388,186,321
+المخازن,71,54,39,59,69,54,58
+قسم الجودة,35,22,18,22,30,23,27
+قسم المساحة,47,24,8,18,23,8,36
+قسم تنفيذ الكهرباء,196,148,118,146,152,106,126
+قسم المدني,4,2,2,0,0,1,5
 `;
 const delays_csv = `
-Category,Jan,Feb,Mar,Apr,May,Jun
-Delays,588,431,245,381,443,315
-On Time,300,221,167,198,219,63
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul
+Delays,588,431,245,381,443,315,476
+On Time,300,221,167,198,219,63,97
 `;
 const shifts_csv = `
-Category,Jan,Feb,Mar,Apr,May,Jun
-DAY,862,622,398,549,643,371
-NIGHT,26,30,14,30,19,7
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul
+DAY,862,622,398,549,643,371,557
+NIGHT,26,30,14,30,19,7,16
 `;
 const compliance_csv = `
-Category,Jan,Feb,Mar,Apr,May,Jun
-Compliance,0.34,0.34,0.41,0.34,0.33,0.17
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul
+Compliance,0.34,0.34,0.41,0.34,0.33,0.17,0.17
 `;
 const performance_csv = `
 Month,HSE_Observation
@@ -69,6 +69,7 @@ Mar,64069,52523,0,0,0
 Apr,69775,60529,0,0,4
 May,73455,7126,0,1,1
 Jun,61436,52194,0,0,0
+Jul,68975,61305,0,1,0
 `;
 const training_csv = `
 Month,Emp Manpower,Total Training
@@ -78,6 +79,7 @@ Mar,455,465
 Apr,438,600
 May,424,695
 Jun,427,339
+Jul,407,553
 `;
 const inductions_csv = `
 Month,Total
@@ -87,7 +89,7 @@ Mar,74
 Apr,205
 May,160
 Jun,109
-Jul,80
+Jul,168
 `;
 
 // =================================================================
@@ -136,7 +138,7 @@ const ALL_DATA = {
     manpower: parseByMonth(manpower_csv),
     training: parseByMonth(training_csv),
     inductions: parseByMonth(inductions_csv),
-    
+
 };
 const availableMonths = Object.keys(ALL_DATA.performance);
 
@@ -159,10 +161,16 @@ function updateDashboard(selectedMonth) {
     const totalHoursCard = d3.select("#total-hours-card");
     const kpiGrid = d3.select("#monthly-kpis");
 
+    if (selectedMonth === 'Aug') {
+        
+        kpiGrid.html(`<p class="no-data-msg">Select a month from Jan to Jun to see monthly KPIs.</p>`);
+    } else {
+        displayMonthlyKPIs(selectedMonth);
+    }
+
     if (selectedMonth === 'Jul') {
         totalHoursCard.style("display", "block");
-        kpiGrid.html(`<p class="no-data-msg">Select a month from Jan to Jun to see monthly KPIs.</p>`);
-        animateValue("kpi-total-hours", 3155637);
+        animateValue("kpi-total-hours", 3285917);
     } else {
         totalHoursCard.style("display", "none");
         displayMonthlyKPIs(selectedMonth);
@@ -224,7 +232,7 @@ function displayMonthlyKPIs(month) {
     const manp = ALL_DATA.manpower[month] || {};
     const train = ALL_DATA.training[month] || {};
     const induc = ALL_DATA.inductions[month] || {};
-    
+
 
     const kpis = [
         { label: "Monthly Hours", value: (+manp["Worked Hours Sewedy"] || 0) + (+manp["Worked Hours Sub"] || 0) },
@@ -236,7 +244,7 @@ function displayMonthlyKPIs(month) {
         { label: "Property Damage", value: manp["Property Damage"] },
         { label: "Trainings", value: train["Total Training"] },
         { label: "Inductions", value: (induc.Total || 0) },
-        
+
     ];
 
     kpis.forEach(kpi => {
