@@ -282,14 +282,54 @@ function drawHorizontalBarChart(data) {
     const selector = "#parties-chart-container";
     const container = d3.select(selector).html("");
     if (data.length === 0) { drawNoData(selector); return; }
-    const margin = { top: 20, right: 40, bottom: 40, left: 120 }, width = container.node().getBoundingClientRect().width - margin.left - margin.right, height = 300 - margin.top - margin.bottom;
-    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-    const y = d3.scaleBand().range([0, height]).domain(data.map(d => d.group)).padding(0.2);
-    const x = d3.scaleLinear().domain([0, d3.max(data, d => d.value) || 10]).range([0, width]);
+
+    const margin = { top: 20, right: 40, bottom: 40, left: 120 },
+        width = container.node().getBoundingClientRect().width - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
+
+    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+        .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const y = d3.scaleBand()
+        .range([0, height])
+        .domain(data.map(d => d.group))
+        .padding(0.2);
+
+    // --- THIS IS THE FIRST CHANGE: We extend the axis slightly to make room for the label ---
+    const x = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.value) * 1.1 || 10]) // Multiplied max value by 1.1
+        .range([0, width]);
+
     svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
     svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
-    svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("y", d => y(d.group)).attr("height", y.bandwidth()).attr("x", 0).attr("width", d => x(d.value));
-    svg.selectAll(".bar-label").data(data).enter().append("text").attr("class", "bar-label").attr("y", d => y(d.group) + y.bandwidth() / 2).attr("dy", "0.35em").attr("x", d => x(d.value) + 5).text(d => d.value).style("fill", "var(--dark-text)").attr("text-anchor", "start").style("opacity", d => d.value > 0 ? 1 : 0);
+
+    // Draw bars
+    svg.selectAll(".bar").data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("y", d => y(d.group))
+        .attr("height", y.bandwidth())
+        .attr("x", 0)
+        .attr("width", 0) // Start animation from 0
+        .transition()
+        .duration(750)
+        .attr("width", d => x(d.value));
+
+    // --- THIS IS THE SECOND CHANGE: The label is now always outside the bar ---
+    svg.selectAll(".bar-label").data(data)
+        .enter().append("text")
+        .attr("class", "bar-label")
+        .attr("y", d => y(d.group) + y.bandwidth() / 2)
+        .attr("dy", "0.35em")
+        .attr("x", d => x(d.value) + 15) // Position 5px AFTER the bar end
+        .attr("text-anchor", "start") // Anchor text to the start
+        .style("fill", "var(--dark-text)") // Always use dark text color
+        .style("opacity", 0) // Start invisible for animation
+        .transition()
+        .duration(750)
+        .delay(200)
+        .style("opacity", d => d.value > 0 ? 1 : 0) // Fade in
+        .text(d => d.value);
 }
 
 // ---------------- CHART 3: Delays Analysis ----------------
