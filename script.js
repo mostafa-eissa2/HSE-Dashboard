@@ -5,7 +5,7 @@
 
 const permits_csv = `
 المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul
-التحكم الاقليمي,20,29,14,21,11,0,16
+التحكم الاقليمي,20,29,14,21,11,0,18
 الحي الحكومي,1,1,2,0,0,0,2
 الحي الدبلوماسي,32,29,23,12,17,24,81
 العلمين,53,62,21,99,101,46,113
@@ -30,7 +30,7 @@ const permits_csv = `
 `;
 const parties_csv = `
 Column1,Jan,Feb,Mar,Apr,May,Jun,Jul
-المقاول,535,402,227,334,388,186,321
+المقاول,535,402,227,334,388,186,323
 المخازن,71,54,39,59,69,54,58
 قسم الجودة,35,22,18,22,30,23,27
 قسم المساحة,47,24,8,18,23,8,36
@@ -40,12 +40,12 @@ Column1,Jan,Feb,Mar,Apr,May,Jun,Jul
 const delays_csv = `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul
 Delays,588,431,245,381,443,315,476
-On Time,300,221,167,198,219,63,97
+On Time,300,221,167,198,219,63,99
 `;
 const shifts_csv = `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul
 DAY,862,622,398,549,643,371,557
-NIGHT,26,30,14,30,19,7,16
+NIGHT,26,30,14,30,19,7,18
 `;
 const compliance_csv = `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul
