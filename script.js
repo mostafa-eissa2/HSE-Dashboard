@@ -91,10 +91,8 @@ May,160
 Jun,109
 Jul,168
 `;
-
 // =================================================================
 // SECTION 2: CONFIGURATION AND DATA PARSING
-// هذا الجزء يقوم بتحويل البيانات الخام أعلاه إلى صيغة قابلة للاستخدام
 // =================================================================
 
 const monthMapping = { "Jan": "January", "Feb": "February", "Mar": "March", "Apr": "April", "May": "May", "Jun": "June", "Jul": "July" };
@@ -138,13 +136,11 @@ const ALL_DATA = {
     manpower: parseByMonth(manpower_csv),
     training: parseByMonth(training_csv),
     inductions: parseByMonth(inductions_csv),
-
 };
 const availableMonths = Object.keys(ALL_DATA.performance);
 
 // =================================================================
 // SECTION 3: MAIN APPLICATION LOGIC
-// هذا هو المحرك الرئيسي للوحة البيانات
 // =================================================================
 
 function setupDashboard() {
@@ -154,6 +150,7 @@ function setupDashboard() {
     dropdown.property("value", defaultMonth);
     updateDashboard(defaultMonth);
     dropdown.on("change", (event) => updateDashboard(event.target.value));
+    setupModal();
 }
 
 function updateDashboard(selectedMonth) {
@@ -184,21 +181,18 @@ function updateDashboard(selectedMonth) {
     const complianceValue = ALL_DATA.compliance[selectedMonth]?.[0]?.value || 0;
 
     // --- Call Chart Drawing Functions ---
-    drawPermitsChart(permits);
-    drawHorizontalBarChart(parties);
-    drawExplodedPieChart(delays);
-    drawInteractivePieChart(shifts);
+    drawPermitsChart(permits, "Permits per Project");
+    drawHorizontalBarChart(parties, "Permits by Requesting Party");
+    drawExplodedPieChart(delays, "Delays Analysis");
+    drawInteractivePieChart(shifts, "Shifts Analysis");
 
     // --- Handle Conditional Charts ---
     const observationsCard = d3.select("#observations-card");
     const cumulativeCard = d3.select("#cumulative-card");
-    if (selectedMonth === 'Jan') {
+    if (selectedMonth === 'Jan' || !availableMonths.includes(selectedMonth)) {
         observationsCard.style("display", "none");
-
     } else {
         observationsCard.style("display", "block");
-
-
         const monthIndex = availableMonths.indexOf(selectedMonth);
         const cumulativeObsData = Object.values(ALL_DATA.performance).slice(0, monthIndex + 1);
         drawObservationsTrendChart(cumulativeObsData);
@@ -213,8 +207,10 @@ function updateDashboard(selectedMonth) {
 }
 
 // =================================================================
-// SECTION 4: KPI DISPLAY FUNCTIONS
+// SECTION 4: KPI & MODAL & CHART FUNCTIONS
 // =================================================================
+
+const drawNoData = (selector) => d3.select(selector).html(`<p class="no-data-msg">No data for this selection.</p>`);
 
 function animateValue(id, endValue) {
     const element = d3.select(`#${id}`);
@@ -233,7 +229,6 @@ function displayMonthlyKPIs(month) {
     const train = ALL_DATA.training[month] || {};
     const induc = ALL_DATA.inductions[month] || {};
 
-
     const kpis = [
         { label: "Monthly Hours", value: (+manp["Worked Hours Sewedy"] || 0) + (+manp["Worked Hours Sub"] || 0) },
         { label: "Employees", value: train["Emp Manpower"] },
@@ -244,7 +239,6 @@ function displayMonthlyKPIs(month) {
         { label: "Property Damage", value: manp["Property Damage"] },
         { label: "Trainings", value: train["Total Training"] },
         { label: "Inductions", value: (induc.Total || 0) },
-
     ];
 
     kpis.forEach(kpi => {
@@ -255,18 +249,42 @@ function displayMonthlyKPIs(month) {
     });
 }
 
-// =================================================================
-// SECTION 5: CHART DRAWING FUNCTIONS
-// كل دالة من هنا مسؤولة عن رسم مخطط واحد
-// =================================================================
+function showModal(title, data) {
+    d3.select("#modal-title").text(title);
+    createTable("#modal-table-container", data);
+    d3.select("#modal-overlay").classed("visible", true);
+}
 
-const drawNoData = (selector) => d3.select(selector).html(`<p class="no-data-msg">No data for this selection.</p>`);
+function hideModal() {
+    d3.select("#modal-overlay").classed("visible", false);
+}
 
-// ---------------- CHART 1: Permits per Project ----------------
-function drawPermitsChart(data) {
+function createTable(selector, dataArray) {
+    const container = d3.select(selector).html("");
+    if (!dataArray || dataArray.length === 0) { return; }
+    const table = container.append("table").attr("class", "data-table");
+    const thead = table.append("thead");
+    const tbody = table.append("tbody");
+    const headers = Object.keys(dataArray[0]);
+    thead.append("tr").selectAll("th").data(headers).join("th").text(d => d);
+    const rows = tbody.selectAll("tr").data(dataArray).join("tr");
+    rows.selectAll("td").data(d => headers.map(header => d[header])).join("td").text(d => d);
+}
+
+function setupModal() {
+    d3.select(".close-button").on("click", hideModal);
+    d3.select("#modal-overlay").on("click", function(event) {
+        if (event.target === this) {
+            hideModal();
+        }
+    });
+}
+
+function drawPermitsChart(data, title) {
     const selector = "#permits-chart-container";
     const container = d3.select(selector).html("");
     if (data.length === 0) { drawNoData(selector); return; }
+    container.on("click", () => showModal(title, data));
     const margin = { top: 30, right: 20, bottom: 80, left: 50 }, width = container.node().getBoundingClientRect().width - margin.left - margin.right, height = 300 - margin.top - margin.bottom;
     const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
     const x = d3.scaleBand().range([0, width]).domain(data.map(d => d.group)).padding(0.2);
@@ -277,66 +295,26 @@ function drawPermitsChart(data) {
     svg.selectAll(".bar-label").data(data).enter().append("text").attr("class", "bar-label").attr("x", d => x(d.group) + x.bandwidth() / 2).attr("y", d => y(d.value) - 5).text(d => d.value).style("opacity", d => d.value > 0 ? 1 : 0);
 }
 
-// ---------------- CHART 2: Permits by Requesting Party ----------------
-function drawHorizontalBarChart(data) {
+function drawHorizontalBarChart(data, title) {
     const selector = "#parties-chart-container";
     const container = d3.select(selector).html("");
     if (data.length === 0) { drawNoData(selector); return; }
-
-    const margin = { top: 20, right: 40, bottom: 40, left: 120 },
-        width = container.node().getBoundingClientRect().width - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
-
-    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-        .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const y = d3.scaleBand()
-        .range([0, height])
-        .domain(data.map(d => d.group))
-        .padding(0.2);
-
-    // --- THIS IS THE FIRST CHANGE: We extend the axis slightly to make room for the label ---
-    const x = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.value) * 1.1 || 10]) // Multiplied max value by 1.1
-        .range([0, width]);
-
+    container.on("click", () => showModal(title, data));
+    const margin = { top: 20, right: 40, bottom: 40, left: 120 }, width = container.node().getBoundingClientRect().width - margin.left - margin.right, height = 300 - margin.top - margin.bottom;
+    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const y = d3.scaleBand().range([0, height]).domain(data.map(d => d.group)).padding(0.2);
+    const x = d3.scaleLinear().domain([0, d3.max(data, d => d.value) * 1.1 || 10]).range([0, width]);
     svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
     svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
-
-    // Draw bars
-    svg.selectAll(".bar").data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("y", d => y(d.group))
-        .attr("height", y.bandwidth())
-        .attr("x", 0)
-        .attr("width", 0) // Start animation from 0
-        .transition()
-        .duration(750)
-        .attr("width", d => x(d.value));
-
-    // --- THIS IS THE SECOND CHANGE: The label is now always outside the bar ---
-    svg.selectAll(".bar-label").data(data)
-        .enter().append("text")
-        .attr("class", "bar-label")
-        .attr("y", d => y(d.group) + y.bandwidth() / 2)
-        .attr("dy", "0.35em")
-        .attr("x", d => x(d.value) + 15) // Position 5px AFTER the bar end
-        .attr("text-anchor", "start") // Anchor text to the start
-        .style("fill", "var(--dark-text)") // Always use dark text color
-        .style("opacity", 0) // Start invisible for animation
-        .transition()
-        .duration(750)
-        .delay(200)
-        .style("opacity", d => d.value > 0 ? 1 : 0) // Fade in
-        .text(d => d.value);
+    svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("y", d => y(d.group)).attr("height", y.bandwidth()).attr("x", 0).attr("width", d => x(d.value));
+    svg.selectAll(".bar-label").data(data).enter().append("text").attr("class", "bar-label").attr("y", d => y(d.group) + y.bandwidth() / 2).attr("dy", "0.35em").attr("x", d => x(d.value) + 15).text(d => d.value).style("fill", "var(--dark-text)").attr("text-anchor", "start").style("opacity", d => d.value > 0 ? 1 : 0);
 }
 
-// ---------------- CHART 3: Delays Analysis ----------------
-function drawExplodedPieChart(data) {
+function drawExplodedPieChart(data, title) {
     const selector = "#delays-chart-container";
     const container = d3.select(selector).html("");
     if (data.length === 0) { drawNoData(selector); return; }
+    container.on("click", () => showModal(title, data));
     const width = container.node().getBoundingClientRect().width, height = 300, radius = Math.min(width, height) / 2 * 0.7;
     const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`).append("g").attr("transform", `translate(${width / 2},${height / 2})`);
     const color = d3.scaleOrdinal(["#C8102E", "#2C2A29"]);
@@ -346,11 +324,11 @@ function drawExplodedPieChart(data) {
     drawPieLegend("#delays-legend-container", data, color);
 }
 
-// ---------------- CHART 4: Shifts Analysis ----------------
-function drawInteractivePieChart(data) {
+function drawInteractivePieChart(data, title) {
     const selector = "#shifts-chart-container";
     const container = d3.select(selector).html("");
     if (data.length === 0) { drawNoData(selector); return; }
+    container.on("click", () => showModal(title, data));
     const width = container.node().getBoundingClientRect().width, height = 300, radius = Math.min(width, height) / 2 * 0.7;
     const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`).append("g").attr("transform", `translate(${width / 2},${height / 2})`);
     const color = d3.scaleOrdinal(["#C8102E", "#2C2A29"]);
@@ -372,12 +350,12 @@ function drawPieLegend(selector, data, color) {
     });
 }
 
-// ---------------- CHART 5: Cumulative Permits ----------------
 function drawCumulativeRadialChart(value, total) {
     const selector = "#cumulative-permits-chart-container";
     const container = d3.select(selector).html("");
     const percentage = total > 0 ? value / total : 0;
     if (value === null || typeof value === 'undefined') { drawNoData(selector); return; }
+    container.on("click", () => showModal("Cumulative Permits Data", [{ "Cumulative Value": value, "Year Total": total }]));
     const width = container.node().getBoundingClientRect().width, height = 300, radius = Math.min(width, height) / 2 * 0.7, thickness = 22;
     const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`).append("g").attr("transform", `translate(${width / 2},${height / 2})`);
     const arc = d3.arc().innerRadius(radius - thickness).outerRadius(radius).startAngle(0).cornerRadius(10);
@@ -395,42 +373,28 @@ function drawCumulativeRadialChart(value, total) {
     svg.append("text").attr("text-anchor", "middle").attr("dy", "2.2em").style("font-size", "14px").style("fill", "#666").text("Permits YTD");
 }
 
-// =================================================================
-// ===== THIS IS THE CORRECTED FUNCTION FOR THE OBSERVATIONS CHART =====
-// =================================================================
 function drawObservationsTrendChart(data) {
     const selector = "#observations-chart-container";
     const container = d3.select(selector).html("");
     const kpiKey = "HSE_Observation";
     const fullPerformanceData = Object.values(ALL_DATA.performance);
     if (data.length === 0) { drawNoData(selector); return; }
-
-    const margin = { top: 20, right: 30, bottom: 40, left: 50 },
-        width = container.node().getBoundingClientRect().width - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
-
-    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-        .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
+    container.on("click", () => showModal("Trend of Safety Observations", data.map(d => ({ Month: monthMapping[d.Month], Observations: d[kpiKey] }))));
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 }, width = container.node().getBoundingClientRect().width - margin.left - margin.right, height = 300 - margin.top - margin.bottom;
+    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
     const gradient = svg.append("defs").append("linearGradient").attr("id", "area-gradient").attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%");
     gradient.append("stop").attr("offset", "0%").attr("stop-color", "#C8102E").attr("stop-opacity", 0.4);
     gradient.append("stop").attr("offset", "100%").attr("stop-color", "#C8102E").attr("stop-opacity", 0);
-
     const x = d3.scalePoint().range([0, width]).domain(data.map(d => d.Month)).padding(0.5);
     const y = d3.scaleLinear().domain([0, 110]).range([height, 0]);
-
-    // --- THIS IS THE MODIFIED LINE ---
-    // We removed .tickFormat(d => monthMapping[d]) to use the short names like "Jan", "Feb"
     svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
-
     svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
-
     const area = d3.area().x(d => x(d.Month)).y0(height).y1(d => y(d[kpiKey])).curve(d3.curveCatmullRom.alpha(0.5));
     svg.append("path").datum(data).attr("class", "area").attr("d", area);
-
     const line = d3.line().x(d => x(d.Month)).y(d => y(d[kpiKey])).curve(d3.curveCatmullRom.alpha(0.5));
     svg.append("path").datum(data).attr("class", "line").attr("d", line);
 }
+
 function setupSidebarToggle() {
     const toggleButton = document.querySelector('.sidebar-toggle');
     const sidebar = document.querySelector('.sidebar');
@@ -440,6 +404,4 @@ function setupSidebarToggle() {
         });
     }
 }
-// Immediately call the main setup function to run the application
 setupDashboard();
-
