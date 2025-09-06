@@ -39,9 +39,9 @@ Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug
 قسم المدني,4,2,2,0,0,1,5,5
 `;
 const delays_csv = `
-Category,Jan,Feb,Mar,Apr,May,Jun,Jul
-Delays,588,431,245,381,443,315,476
-On Time,300,221,167,198,219,63,99
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug
+Delays,588,431,245,381,443,315,476,466
+On Time,300,221,167,198,219,63,99,107
 `;
 const shifts_csv = `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug
