@@ -155,7 +155,7 @@ const availableMonths = Object.keys(ALL_DATA.performance);
 function setupDashboard() {
     const dropdown = d3.select("#month-filter");
     dropdown.selectAll("option").data(ALL_MONTHS).enter().append("option").attr("value", d => d).text(d => monthMapping[d]);
-    const defaultMonth = "Aug";
+    const defaultMonth = "Sep";
     dropdown.property("value", defaultMonth);
     updateDashboard(defaultMonth);
     dropdown.on("change", (event) => updateDashboard(event.target.value));
