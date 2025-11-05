@@ -121,7 +121,9 @@ body {
     font-size: 14px;
     background-color: var(--white);
 }
-
+#log2 {
+    display: none;
+}
 .card {
     background-color: var(--white);
     padding: 25px;
