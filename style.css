@@ -328,6 +328,10 @@ body {
         order: 2;
     }
 
+    #log2 {
+    display: block;
+}
+
     .controls-container {
         order: 3;
         justify-content: center;
