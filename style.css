@@ -329,7 +329,12 @@ body {
     }
 
     #log2 {
-    display: block;
+        display: block;
+        background-color: #C8102E;
+        padding: 5px 30px;
+        color: white;
+        text-decoration: unset;
+        border-radius: 6px;
 }
 
     .controls-container {
