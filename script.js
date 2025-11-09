@@ -4,53 +4,53 @@
 // =================================================================
 
 const permits_csv = `
-المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep
-التحكم الاقليمي,20,29,14,21,11,0,18,10,8
-الحي الحكومي,1,1,2,0,0,0,2,0,0
-الحي الدبلوماسي,32,29,23,12,17,24,81,105,63
-العلمين,53,62,21,99,101,46,113,119,77
-الفردوس,59,44,11,16,66,6,1,2,0
-الكيان العسكري,47,36,22,27,25,27,50,46,48
-حياة كريمة الفيوم,148,127,116,122,111,113,99,79,59
-حياة كريمة المنيا,111,60,38,68,84,32,46,39,47
-حياة كريمة أرمنت,33,22,10,5,1,0,0,4,0
-حياة كريمة أسنا,19,12,1,0,10,3,6,0,2
-حياة كريمة أسوان,88,54,29,23,33,20,30,9,11
-حياة كريمة صدفا,14,8,5,5,1,6,1,2,0
-حياة كريمة مطوبس,14,11,3,16,10,1,0,8,2
-حياة كريمة منفلوط,23,14,45,9,9,15,6,4,3
-دهشور,57,50,10,76,66,19,7,30,39
-سانت كاترين,61,45,32,35,68,14,20,23,17
-ميناء الدخيلة,87,22,6,7,5,9,7,0,1
-سوهاج,20,26,24,26,29,24,63,52,60
-التوسعات الشرقية,0,0,0,0,0,0,0,0,0
-أبو قير,1,0,0,1,1,1,0,0,0
-العبور,0,0,0,11,14,16,16,32,83
-العاشر من رمضان,0,0,0,0,0,2,9,8,0
-حياة كريمة زفتى,0,0,0,0,0,0,0,1,0
+المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct
+التحكم الاقليمي,20,29,14,21,11,0,18,10,8,18
+الحي الحكومي,1,1,2,0,0,0,2,0,0,0
+الحي الدبلوماسي,32,29,23,12,17,24,81,105,63,23
+العلمين,53,62,21,99,101,46,113,119,77,29
+الفردوس,59,44,11,16,66,6,1,2,0,0
+الكيان العسكري,47,36,22,27,25,27,50,46,48,34
+حياة كريمة الفيوم,148,127,116,122,111,113,99,79,59,33
+حياة كريمة المنيا,111,60,38,68,84,32,46,39,47,59
+حياة كريمة أرمنت,33,22,10,5,1,0,0,4,0,0
+حياة كريمة أسنا,19,12,1,0,10,3,6,0,2,0
+حياة كريمة أسوان,88,54,29,23,33,20,30,9,11,10
+حياة كريمة صدفا,14,8,5,5,1,6,1,2,0,0
+حياة كريمة مطوبس,14,11,3,16,10,1,0,8,2,14
+حياة كريمة منفلوط,23,14,45,9,9,15,6,4,3,0
+دهشور,57,50,10,76,66,19,7,30,39,40
+سانت كاترين,61,45,32,35,68,14,20,23,17,23
+ميناء الدخيلة,87,22,6,7,5,9,7,0,1,0
+سوهاج,20,26,24,26,29,24,63,52,60,41
+التوسعات الشرقية,0,0,0,0,0,0,0,0,0,0
+أبو قير,1,0,0,1,1,1,0,0,0,0
+العبور,0,0,0,11,14,16,16,32,83,66
+العاشر من رمضان,0,0,0,0,0,2,9,8,0,0
+حياة كريمة زفتى,0,0,0,0,0,0,0,1,0,0
 `;
 const parties_csv = `
 Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep
-المقاول,535,402,227,334,388,186,323,339,301
-المخازن,71,54,39,59,69,54,58,58,45
-قسم الجودة,35,22,18,22,30,23,27,16,30
-قسم المساحة,47,24,8,18,23,8,36,32,44
-قسم تنفيذ الكهرباء,196,148,118,146,152,106,126,123,98
-قسم المدني,4,2,2,0,0,1,5,5,2
+المقاول,535,402,227,334,388,186,323,339,301,166
+المخازن,71,54,39,59,69,54,58,58,45,41
+قسم الجودة,35,22,18,22,30,23,27,16,30,25
+قسم المساحة,47,24,8,18,23,8,36,32,44,21
+قسم تنفيذ الكهرباء,196,148,118,146,152,106,126,123,98,138
+قسم المدني,4,2,2,0,0,1,5,5,2,0
 `;
 const delays_csv = `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep
-Delays,588,431,245,381,443,315,476,466,348
-On Time,300,221,167,198,219,63,99,107,172
+Delays,588,431,245,381,443,315,476,466,348,282
+On Time,300,221,167,198,219,63,99,107,172,109
 `;
 const shifts_csv = `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep
-DAY,862,622,398,549,643,371,557,560,513
-NIGHT,26,30,14,30,19,7,18,13,7
+DAY,862,622,398,549,643,371,557,560,513,387
+NIGHT,26,30,14,30,19,7,18,13,7,4
 `;
 const compliance_csv = `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep
-Compliance,0.34,0.34,0.41,0.34,0.33,0.17,0.17,0.19,0.33
+Compliance,0.34,0.34,0.41,0.34,0.33,0.17,0.17,0.19,0.33,0.28
 `;
 const performance_csv = `
 Month,HSE_Observation
@@ -63,6 +63,7 @@ Jun,47
 Jul,80
 Aug,82
 Sep,67
+Oct,67
 `;
 const manpower_csv = `
 Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage
@@ -75,6 +76,7 @@ Jun,61436,52194,0,0,0
 Jul,68975,61305,0,1,0
 Aug,69089,60615,0,0,2
 Sep,71945,67666,0,0,0
+Oct,65510,51302,0,0,1
 `;
 const training_csv = `
 Month,Emp Manpower,Total Training
@@ -87,6 +89,7 @@ Jun,427,339
 Jul,407,553
 Aug,406,616
 Sep,406,534
+Oct,388,576
 `;
 const inductions_csv = `
 Month,Total
@@ -99,12 +102,13 @@ Jun,109
 Jul,168
 Aug,207
 Sep,132
+Oct,125
 `;
 // =================================================================
 // SECTION 2: CONFIGURATION AND DATA PARSING
 // =================================================================
 
-const monthMapping = { "Jan": "January", "Feb": "February", "Mar": "March", "Apr": "April", "May": "May", "Jun": "June", "Jul": "July", "Aug": "August" ,"Sep" : "September"};
+const monthMapping = { "Jan": "January", "Feb": "February", "Mar": "March", "Apr": "April", "May": "May", "Jun": "June", "Jul": "July", "Aug": "August" ,"Sep" : "September","Oct" : "October"};
 const ALL_MONTHS = Object.keys(monthMapping);
 
 function parseGeneric(csvText) {
@@ -155,7 +159,7 @@ const availableMonths = Object.keys(ALL_DATA.performance);
 function setupDashboard() {
     const dropdown = d3.select("#month-filter");
     dropdown.selectAll("option").data(ALL_MONTHS).enter().append("option").attr("value", d => d).text(d => monthMapping[d]);
-    const defaultMonth = "Sep";
+    const defaultMonth = "Oct";
     dropdown.property("value", defaultMonth);
     updateDashboard(defaultMonth);
     dropdown.on("change", (event) => updateDashboard(event.target.value));
@@ -167,16 +171,16 @@ function updateDashboard(selectedMonth) {
     const totalHoursCard = d3.select("#total-hours-card");
     const kpiGrid = d3.select("#monthly-kpis");
 
-    if (selectedMonth === 'Oct') {
+    if (selectedMonth === 'Nov') {
 
         kpiGrid.html(`<p class="no-data-msg">Select a month from Jan to Jun to see monthly KPIs.</p>`);
     } else {
         displayMonthlyKPIs(selectedMonth);
     }
 
-    if (selectedMonth === 'Sep') {
+    if (selectedMonth === 'Oct') {
         totalHoursCard.style("display", "block");
-        animateValue("kpi-total-hours", 3555232);
+        animateValue("kpi-total-hours", 3672044);
     } else {
         totalHoursCard.style("display", "none");
         displayMonthlyKPIs(selectedMonth);
