@@ -53,12 +53,11 @@ body {
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  padding: 20px 10px;
+  padding: 20px 0px;
 }
 
 .nav-item {
   padding: 12px 20px;
-  border-radius: 8px;
   text-decoration: none;
   color: #555;
   font-weight: 500;
@@ -66,14 +65,15 @@ body {
 }
 
 .nav-item.active {
-  background-color: #fce8eb;
-  color: var(--brand-red);
+  background-color: var(--brand-red);
+  color: white;
+
 }
 
 .nav-item:hover {
   background-color: #f1f1f1;
+  color: var(--brand-red);
 }
-
 .main-content {
   flex-grow: 1;
   margin-left: 240px;
