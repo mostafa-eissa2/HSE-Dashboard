@@ -500,15 +500,19 @@ function setupModal() {
 function drawPermitsChart(data, title) {
     const selector = "#permits-chart-container";
     const container = d3.select(selector).html("");
-    if (data.length === 0) { drawNoData(selector); return; }
-    container.on("click", () => showModal(title, data));
+
+    // فلترة الأصفار
+    const filteredData = data.filter(d => d.value > 0);
+
+    if (filteredData.length === 0) { drawNoData(selector); return; }
+    container.on("click", () => showModal(title, filteredData));
 
     const isMobile = window.innerWidth < 768;
 
     const margin = {
-        top: 30,
+        top: 40,
         right: 20,
-        bottom: isMobile ? 140 : 100,
+        bottom: isMobile ? 160 : 100,
         left: 50
     };
 
@@ -522,11 +526,11 @@ function drawPermitsChart(data, title) {
 
     const x = d3.scaleBand()
         .range([0, width])
-        .domain(data.map(d => d.group))
+        .domain(filteredData.map(d => d.group))
         .padding(0.3);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.value) * 1.2 || 10])
+        .domain([0, d3.max(filteredData, d => d.value) * 1.3 || 10])
         .range([height, 0]);
 
     const xAxis = svg.append("g")
@@ -543,7 +547,7 @@ function drawPermitsChart(data, title) {
     svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
 
     svg.selectAll(".bar")
-        .data(data)
+        .data(filteredData)
         .enter().append("rect")
         .attr("class", "bar")
         .attr("x", d => x(d.group))
@@ -551,24 +555,31 @@ function drawPermitsChart(data, title) {
         .attr("y", d => y(d.value))
         .attr("height", d => height - y(d.value));
 
-    // === (تعديل شرط ظهور الأرقام) ===
-    // الشرط الجديد: الأرقام تظهر دائماً على الكمبيوتر (!isMobile)
-    // أما على الموبايل، فتظهر فقط إذا كان عرض العمود أكبر من 12 بكسل (لتجنب التداخل)
-    const showLabels = !isMobile || x.bandwidth() > 12;
+    // === رسم الأرقام (مع ضبط السنتر بدقة) ===
+    svg.selectAll(".bar-label")
+        .data(filteredData)
+        .enter().append("text")
+        .attr("class", "bar-label")
+        .text(d => d.value)
+        .attr("transform", function(d) {
+            const xPos = x(d.group) + x.bandwidth() / 2;
+            const yPos = y(d.value) - 5;
 
-    if (showLabels) {
-        svg.selectAll(".bar-label")
-            .data(data)
-            .enter().append("text")
-            .attr("class", "bar-label")
-            .attr("x", d => x(d.group) + x.bandwidth() / 2)
-            .attr("y", d => y(d.value) - 5)
-            .text(d => d.value)
-            .style("fill", "#333")
-            .style("font-size", isMobile ? "9px" : "11px")
-            .style("font-weight", "600")
-            .style("opacity", d => d.value > 0 ? 1 : 0);
-    }
+            if (isMobile) {
+                return `translate(${xPos}, ${yPos}) rotate(-90)`;
+            } else {
+                return `translate(${xPos}, ${yPos})`;
+            }
+        })
+        // 👇👇👇 هنا التعديل السحري للسنتر 👇👇👇
+        .attr("dy", isMobile ? "0.35em" : "0")
+        // 0.35em بتجبر النص يجي في نص السطر بتاعه بالظبط لما يلف
+
+        .style("text-anchor", isMobile ? "start" : "middle")
+        .style("fill", "#333")
+        .style("font-weight", "600")
+        .style("font-size", isMobile ? "10px" : "11px")
+        .style("opacity", 1);
 }
 
 function drawHorizontalBarChart(data, title) {
