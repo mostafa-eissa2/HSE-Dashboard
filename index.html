@@ -161,35 +161,42 @@
 </html>
 <script src="script2.js"></script>
 <script>
-    // كود لإجبار التحديث التلقائي عند وجود نسخة جديدة
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js').then(reg => {
+        // لاحظ: أضفنا ?v=5 هنا لنخدع المتصفح ويعتبره ملفاً جديداً
+        navigator.serviceWorker.register('service-worker.js?v=5').then(reg => {
             
-            // لو فيه تحديث وجاهز، نفرض التحديث
+            // إجبار المتصفح على البحث عن تحديث فوراً
+            reg.update();
+
+            // لو وجد نسخة جديدة تنتظر التفعيل
             if (reg.waiting) {
-                reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                postMessageToWorker(reg.waiting);
             }
 
+            // مراقبة أي تحديث جديد
             reg.onupdatefound = () => {
                 const installingWorker = reg.installing;
                 installingWorker.onstatechange = () => {
                     if (installingWorker.state === 'installed') {
                         if (navigator.serviceWorker.controller) {
-                            // تحديث جديد متاح!
-                            console.log('New content is available; please refresh.');
-                            // (اختياري) ممكن تظهر رسالة للمستخدم هنا أو تعمل ريلود علطول
+                            // تحديث جديد تم تحميله، اطلب من المستخدم التحديث
+                            if (confirm("يوجد تحديث جديد للتطبيق. هل تريد التحديث الآن؟")) {
+                                postMessageToWorker(installingWorker);
+                            }
                         }
                     }
                 };
             };
         });
 
-        // بمجرد ما الـ Service Worker الجديد يمسك، نعمل ريلود للصفحة
-        let refreshing;
+        // وظيفة لإرسال أمر التخطى
+        function postMessageToWorker(worker) {
+            worker.postMessage({ type: 'SKIP_WAITING' });
+        }
+
+        // بمجرد تفعيل الجديد، اعمل ريلود
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (refreshing) return;
             window.location.reload();
-            refreshing = true;
         });
     }
 </script>
