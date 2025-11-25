@@ -576,7 +576,291 @@ function setupSidebarToggle() {
         });
     }
 }
+// ==========================================
+// PWA INSTALL LOGIC (UPDATED)
+// ==========================================
+let deferredPrompt;
+const pwaPopup = document.getElementById('pwa-install-popup');
+const installBtn = document.getElementById('pwa-install-btn');
+const closeBtn = document.getElementById('pwa-close-btn');
 
-setupDashboard();
-setupSidebarDropdowns();
-setupSidebarToggle();
+const iosPopup = document.getElementById('ios-install-popup');
+const iosCloseBtn = document.getElementById('ios-close-btn');
+
+// دالة للتحقق هل التطبيق مثبت ويعمل حالياً أم لا
+const isAppInstalled = () => {
+    // 1. التحقق من وضع الـ Standalone (لأغلب المتصفحات والآيفون)
+    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+        return true;
+    }
+    // 2. التحقق الإضافي (لبعض أجهزة سامسونج وأندرويد القديمة)
+    if (document.referrer.includes('android-app://')) {
+        return true;
+    }
+    return false;
+};
+
+// === 1. للأندرويد والكمبيوتر (Chrome/Edge) ===
+window.addEventListener('beforeinstallprompt', (e) => {
+    // منع المتصفح من إظهار الشريط الافتراضي فوراً
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // شرط هام: لا تظهر البوب أب إذا كان التطبيق مثبتاً بالفعل
+    if (!isAppInstalled()) {
+        // التحقق مما إذا كان المستخدم قد أغلق النافذة سابقاً (اختياري لتحسين التجربة)
+        const isClosedBefore = localStorage.getItem('pwa_popup_closed');
+        if (!isClosedBefore) {
+            if (pwaPopup) pwaPopup.classList.add('show');
+        }
+    }
+});
+
+if (installBtn) {
+    installBtn.addEventListener('click', () => {
+        if (pwaPopup) pwaPopup.classList.remove('show');
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
+                deferredPrompt = null;
+            });
+        }
+    });
+}
+
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        if (pwaPopup) pwaPopup.classList.remove('show');
+        // حفظ أن المستخدم أغلق النافذة لكي لا تظهر له كل مرة (تظل مخفية لمدة من الزمن أو حتى يمسح الكاش)
+        localStorage.setItem('pwa_popup_closed', 'true');
+    });
+}
+
+// === 2. للآيفون (iOS Detection) ===
+const isIos = () => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    return /iphone|ipad|ipod/.test(userAgent);
+};
+
+// إظهار رسالة الآيفون فقط إذا كان جهاز آيفون + ليس مثبتاً
+if (isIos() && !isAppInstalled()) {
+    // التحقق من التخزين المحلي أيضاً للآيفون
+    const isIosClosedBefore = localStorage.getItem('ios_popup_closed');
+
+    if (!isIosClosedBefore) {
+        setTimeout(() => {
+            if (iosPopup) iosPopup.classList.add('show');
+        }, 4000); // الانتظار 4 ثواني
+    }
+}
+
+if (iosCloseBtn) {
+    iosCloseBtn.addEventListener('click', () => {
+        if (iosPopup) iosPopup.classList.remove('show');
+        localStorage.setItem('ios_popup_closed', 'true');
+    });
+}
+
+// تسجيل Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+    });
+}
+// ==========================================
+
+
+// =================================================================
+// SECTION 1: RAW DATA SECTIONS (باقي الكود كما هو)
+// =================================================================
+
+const permits_csv = `
+المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+التحكم الاقليمي,20,29,14,21,11,0,18,10,8,19,0,0
+الحي الحكومي,1,1,2,0,0,0,2,0,0,0,0,0
+الحي الدبلوماسي,32,29,23,12,17,24,81,105,63,23,0,0
+العلمين,53,62,21,99,101,46,113,119,77,29,0,0
+الفردوس,59,44,11,16,66,6,1,2,0,0,0,0
+الكيان العسكري,47,36,22,27,25,27,50,46,48,34,0,0
+حياة كريمة الفيوم,148,127,116,122,111,113,99,79,59,33,0,0
+حياة كريمة المنيا,111,60,38,68,84,32,46,39,47,59,0,0
+حياة كريمة أرمنت,33,22,10,5,1,0,0,4,0,0,0,0
+حياة كريمة أسنا,19,12,1,0,10,3,6,0,2,0,0,0
+حياة كريمة أسوان,88,54,29,23,33,20,30,9,11,10,0,0
+حياة كريمة صدفا,14,8,5,5,1,6,1,2,0,0,0,0
+حياة كريمة مطوبس,14,11,3,16,10,1,0,8,2,14,0,0
+حياة كريمة منفلوط,23,14,45,9,9,15,6,4,3,0,0,0
+دهشور,57,50,10,76,66,19,7,30,39,40,0,0
+سانت كاترين,61,45,32,35,68,14,20,23,17,23,0,0
+ميناء الدخيلة,87,22,6,7,5,9,7,0,1,0,0,0
+سوهاج,20,26,24,26,29,24,63,52,60,41,0,0
+التوسعات الشرقية,0,0,0,0,0,0,0,0,0,0,0,0
+أبو قير,1,0,0,1,1,1,0,0,0,0,0,0
+العبور,0,0,0,11,14,16,16,32,83,66,0,0
+العاشر من رمضان,0,0,0,0,0,2,9,8,0,0,0,0
+حياة كريمة زفتى,0,0,0,0,0,0,0,1,0,0,0
+`;
+
+const parties_csv = `
+Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+المقاول,535,402,227,334,388,186,323,339,301,166,0,0
+المخازن,71,54,39,59,69,54,58,58,45,41,0,0
+قسم الجودة,35,22,18,22,30,23,27,16,30,25,0,0
+قسم المساحة,47,24,8,18,23,8,36,32,44,21,0,0
+قسم تنفيذ الكهرباء,196,148,118,146,152,106,126,123,98,138,0,0
+قسم المدني,4,2,2,0,0,1,5,5,2,0,0,0
+`;
+
+const delays_csv = `
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+Delays,588,431,245,381,443,315,476,466,348,282,0,0
+On Time,300,221,167,198,219,63,99,107,172,109,0,0
+`;
+
+const shifts_csv = `
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+DAY,862,622,398,549,643,371,557,560,513,387,0,0
+NIGHT,26,30,14,30,19,7,18,13,7,4,0,0
+`;
+
+const compliance_csv = `
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+Compliance,0.34,0.34,0.41,0.34,0.33,0.17,0.17,0.19,0.33,0.28,0,0
+`;
+
+const performance_csv = `
+Month,HSE_Observation
+Jan,107
+Feb,58
+Mar,82
+Apr,85
+May,84
+Jun,47
+Jul,80
+Aug,82
+Sep,67
+Oct,67
+Nov,0
+Dec,0
+`;
+
+const manpower_csv = `
+Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage
+Jan,51331,80716,0,0,0
+Feb,75596,62600,0,0,1
+Mar,64069,52523,0,0,0
+Apr,69775,60529,0,0,4
+May,73455,7126,0,1,1
+Jun,61436,52194,0,0,0
+Jul,68975,61305,0,1,0
+Aug,69089,60615,0,0,2
+Sep,71945,67666,0,0,0
+Oct,65510,51302,0,0,1
+Nov,0,0,0,0,0
+Dec,0,0,0,0,0
+`;
+
+const training_csv = `
+Month,Emp Manpower,Total Training
+Jan,467,716
+Feb,467,471
+Mar,455,465
+Apr,438,600
+May,424,695
+Jun,427,339
+Jul,407,553
+Aug,406,616
+Sep,406,534
+Oct,388,576
+Nov,0,0
+Dec,0,0
+`;
+
+const inductions_csv = `
+Month,Total
+Jan,192
+Feb,110
+Mar,74
+Apr,205
+May,160
+Jun,109
+Jul,168
+Aug,207
+Sep,132
+Oct,125
+Nov,0
+Dec,0
+`;
+
+// =================================================================
+// SECTION 2: CONFIGURATION AND DATA PARSING
+// =================================================================
+
+// إضافة Nov و Dec للمابينج
+const monthMapping = {
+    "Jan": "January", "Feb": "February", "Mar": "March", "Apr": "April", "May": "May", "Jun": "June",
+    "Jul": "July", "Aug": "August", "Sep": "September", "Oct": "October", "Nov": "November", "Dec": "December"
+};
+const ALL_MONTHS = Object.keys(monthMapping);
+
+function parseGeneric(csvText) {
+    const dataByMonth = {};
+    if (!csvText) return dataByMonth;
+    const parsed = d3.csvParse(csvText.trim());
+    parsed.forEach(row => {
+        const group = row[Object.keys(row)[0]];
+        for (const month in row) {
+            if (ALL_MONTHS.includes(month)) {
+                if (!dataByMonth[month]) dataByMonth[month] = [];
+                dataByMonth[month].push({ group, value: +row[month] || 0 });
+            }
+        }
+    });
+    return dataByMonth;
+}
+function parseByMonth(csvText) {
+    const dataByMonth = {};
+    if (!csvText) return dataByMonth;
+    const parsed = d3.csvParse(csvText.trim());
+    parsed.forEach(row => {
+        const month = row.Month;
+        if (ALL_MONTHS.includes(month)) {
+            dataByMonth[month] = row;
+        }
+    });
+    return dataByMonth;
+}
+
+const ALL_DATA = {
+    permits: parseGeneric(permits_csv),
+    parties: parseGeneric(parties_csv),
+    shifts: parseGeneric(shifts_csv),
+    delays: parseGeneric(delays_csv),
+    compliance: parseGeneric(compliance_csv),
+    performance: parseByMonth(performance_csv),
+    manpower: parseByMonth(manpower_csv),
+    training: parseByMonth(training_csv),
+    inductions: parseByMonth(inductions_csv),
+};
+const availableMonths = Object.keys(ALL_DATA.performance);
+
+// =================================================================
+// SECTION 3: MAIN APPLICATION LOGIC
+// =================================================================
+
+function setupDashboard() {
+    const dropdown = d3.select("#month-filter");
+
+    // 1. إضافة خيار Cumulative في البداية
+    dropdown.append("option").attr("value", "Cumulative").text("Cumulative (YTD)");
+
+    // 2. إضافة باقي الشهور
+    dropdown.selectAll("option.month-opt")
+        .data(ALL_MONTHS).enter().append("option")
+        .
+        setupDashboard();
+    setupSidebarDropdowns();
+    setupSidebarToggle();
