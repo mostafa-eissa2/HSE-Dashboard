@@ -1,50 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HSE System Login</title>
     <style>
-        /* جعل الصفحة تأخذ كامل الشاشة بدون هوامش */
-        body,
-        html {
+        body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
-            background-color: #f4f6f9;
+            background-color: #f4f6f9; /* اللون الرمادي الفاتح */
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        /* زر للرجوع للوحة الرئيسية (اختياري لكن مفيد) */
+        /* زر العودة */
         .back-btn {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 15px;
+            left: 15px;
             z-index: 1000;
             background: #C8102E;
             color: white;
             text-decoration: none;
             padding: 8px 15px;
-            border-radius: 5px;
-            font-family: sans-serif;
+            border-radius: 8px;
+            font-weight: 600;
             font-size: 14px;
-            opacity: 0.8;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: opacity 0.3s;
         }
 
-        /* الإطار الذي سيعرض الموقع الخارجي */
+        /* الإطار */
         iframe {
             width: 100%;
             height: 100%;
             border: none;
+            opacity: 0; /* مخفي في البداية */
+            transition: opacity 0.5s ease;
         }
+
+        /* شاشة التحميل */
+        .loader-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            background-color: #f4f6f9;
+        }
+
+        .spinner {
+            border: 5px solid #ddd;
+            border-top: 5px solid #C8102E;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        .loading-text {
+            color: #555;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* زر إعادة المحاولة (يظهر لو النت معلق) */
+        .retry-btn {
+            display: none; /* مخفي افتراضياً */
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-
 <body>
-    <a href="index.html" class="back-btn">← Back to Dashboard</a>
 
-    <iframe src="https://hse-system-fawn.vercel.app/" title="HSE System"></iframe>
+    <a href="index.html" class="back-btn">← Back Home</a>
+
+    <div class="loader-container" id="loader">
+        <div class="spinner"></div>
+        <div class="loading-text">Connecting to HSE System...</div>
+        
+        <button class="retry-btn" id="retryBtn" onclick="reloadSystem()">
+            Reload System ⟳
+        </button>
+    </div>
+
+    <iframe 
+        id="systemFrame"
+        src="https://hse-system-fawn.vercel.app/" 
+        title="HSE System"
+        allow="fullscreen">
+    </iframe>
+
+    <script>
+        const iframe = document.getElementById('systemFrame');
+        const loader = document.getElementById('loader');
+        const retryBtn = document.getElementById('retryBtn');
+        const loadingText = document.querySelector('.loading-text');
+
+        // 1. دالة تعمل لما الموقع يفتح بنجاح
+        iframe.onload = function() {
+            // نخفي اللودر
+            loader.style.display = 'none';
+            // نظهر الموقع
+            iframe.style.opacity = '1';
+        };
+
+        // 2. مؤقت: لو الموقع مفتحش خلال 7 ثواني، نطلع زرار التحديث
+        setTimeout(() => {
+            // لو لسه اللودر ظاهر
+            if (loader.style.display !== 'none') {
+                loadingText.textContent = "Connection is slow...";
+                retryBtn.style.display = 'block';
+            }
+        }, 7000); // 7 ثواني
+
+        // 3. دالة زرار إعادة المحاولة
+        function reloadSystem() {
+            // نرجع الكلام لوضعه الأصلي
+            loadingText.textContent = "Reconnecting...";
+            retryBtn.style.display = 'none';
+            // نعمل ريلود للإطار فقط
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
-
 </html>
