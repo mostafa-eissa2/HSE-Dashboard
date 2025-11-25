@@ -1,6 +1,4 @@
 // ==========================================
-// PWA INSTALL LOGIC (UPDATED)
-// ==========================================
 let deferredPrompt;
 const pwaPopup = document.getElementById('pwa-install-popup');
 const installBtn = document.getElementById('pwa-install-btn');
@@ -298,7 +296,6 @@ function updateDashboard(selectedMonth) {
     const totalHoursCard = d3.select("#total-hours-card");
     const kpiGrid = d3.select("#monthly-kpis");
 
-    // Logic for calculating data based on selection
     let permitsData = [], partiesData = [], shiftsData = [], delaysData = [];
     let kpiValues = {
         hours: 0, employees: 0, ptw: 0, observations: 0,
@@ -307,7 +304,6 @@ function updateDashboard(selectedMonth) {
 
     if (selectedMonth === 'Cumulative') {
         // --- CUMULATIVE LOGIC ---
-
         permitsData = aggregateGenericData(ALL_DATA.permits);
         partiesData = aggregateGenericData(ALL_DATA.parties);
         shiftsData = aggregateGenericData(ALL_DATA.shifts);
@@ -367,6 +363,12 @@ function updateDashboard(selectedMonth) {
         }
     }
 
+    // === (تعديل هام) فلترة القيم الصفرية ===
+    // هذا السطر سيمسح أي مشروع أو قسم قيمته صفر من الرسم البياني
+    permitsData = permitsData.filter(d => d.value > 0);
+    partiesData = partiesData.filter(d => d.value > 0);
+    // =====================================
+
     // --- Render KPIs ---
     renderKPIGrid(kpiValues);
 
@@ -376,13 +378,11 @@ function updateDashboard(selectedMonth) {
     drawExplodedPieChart(delaysData, "Delays Analysis");
     drawInteractivePieChart(shiftsData, "Shifts Analysis");
 
-    // --- Render Conditional Charts (Trend & Radial) ---
+    // --- Render Conditional Charts ---
     const observationsCard = d3.select("#observations-card");
-    const cumulativeCard = d3.select("#cumulative-card");
 
     let trendData = [];
     let radialValue = 0;
-
     const totalYearPermits = ALL_MONTHS.reduce((sum, m) => sum + d3.sum(ALL_DATA.permits[m] || [], d => d.value), 0);
 
     if (selectedMonth === 'Cumulative') {
@@ -502,14 +502,76 @@ function drawPermitsChart(data, title) {
     const container = d3.select(selector).html("");
     if (data.length === 0) { drawNoData(selector); return; }
     container.on("click", () => showModal(title, data));
-    const margin = { top: 30, right: 20, bottom: 80, left: 50 }, width = container.node().getBoundingClientRect().width - margin.left - margin.right, height = 300 - margin.top - margin.bottom;
-    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-    const x = d3.scaleBand().range([0, width]).domain(data.map(d => d.group)).padding(0.2);
-    const y = d3.scaleLinear().domain([0, d3.max(data, d => d.value) * 1.15 || 10]).range([height, 0]);
-    svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x)).selectAll("text").attr("transform", "translate(-10,0)rotate(-45)").style("text-anchor", "end");
+
+    const isMobile = window.innerWidth < 768;
+
+    // زيادة الهامش السفلي في الموبايل
+    const margin = {
+        top: 30,
+        right: 20,
+        bottom: isMobile ? 140 : 100,
+        left: 50
+    };
+
+    const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+    const height = 300 - margin.top - margin.bottom;
+
+    const svg = container.append("svg")
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand()
+        .range([0, width])
+        .domain(data.map(d => d.group))
+        .padding(0.3);
+
+    // زيادة الحد الأقصى للرسم بنسبة 20% لترك مساحة للأرقام فوق العمود
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.value) * 1.2 || 10])
+        .range([height, 0]);
+
+    const xAxis = svg.append("g")
+        .attr("class", "axis-x")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x));
+
+    // تدوير الكلام 90 درجة في الموبايل
+    xAxis.selectAll("text")
+        .attr("transform", isMobile ? "translate(-8, 10)rotate(-90)" : "translate(-10,5)rotate(-45)")
+        .style("text-anchor", "end")
+        .style("font-size", isMobile ? "10px" : "11px")
+        .style("font-weight", "500");
+
     svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
-    svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("x", d => x(d.group)).attr("width", x.bandwidth()).attr("y", d => y(d.value)).attr("height", d => height - y(d.value));
-    svg.selectAll(".bar-label").data(data).enter().append("text").attr("class", "bar-label").attr("x", d => x(d.group) + x.bandwidth() / 2).attr("y", d => y(d.value) - 5).text(d => d.value).style("opacity", d => d.value > 0 ? 1 : 0);
+
+    svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", d => x(d.group))
+        .attr("width", x.bandwidth())
+        .attr("y", d => y(d.value))
+        .attr("height", d => height - y(d.value));
+
+    // === (التعديل الهام) ===
+    // إخفاء الأرقام في الموبايل إذا كانت الأعمدة كثيرة جداً (أكثر من 10 أعمدة) لمنع التداخل
+    // أو إذا كان عرض العمود صغيراً جداً
+    const showLabels = !isMobile || (data.length < 10 && x.bandwidth() > 20);
+
+    if (showLabels) {
+        svg.selectAll(".bar-label")
+            .data(data)
+            .enter().append("text")
+            .attr("class", "bar-label")
+            .attr("x", d => x(d.group) + x.bandwidth() / 2)
+            .attr("y", d => y(d.value) - 5)
+            .text(d => d.value)
+            .style("fill", "#333") // لون غامق للأرقام
+            .style("font-size", isMobile ? "9px" : "11px") // خط صغير في الموبايل
+            .style("font-weight", "600")
+            .style("opacity", d => d.value > 0 ? 1 : 0);
+    }
 }
 
 function drawHorizontalBarChart(data, title) {
@@ -517,14 +579,86 @@ function drawHorizontalBarChart(data, title) {
     const container = d3.select(selector).html("");
     if (data.length === 0) { drawNoData(selector); return; }
     container.on("click", () => showModal(title, data));
-    const margin = { top: 20, right: 40, bottom: 40, left: 120 }, width = container.node().getBoundingClientRect().width - margin.left - margin.right, height = 300 - margin.top - margin.bottom;
-    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-    const y = d3.scaleBand().range([0, height]).domain(data.map(d => d.group)).padding(0.2);
-    const x = d3.scaleLinear().domain([0, d3.max(data, d => d.value) * 1.1 || 10]).range([0, width]);
-    svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
-    svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
-    svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("y", d => y(d.group)).attr("height", y.bandwidth()).attr("x", 0).attr("width", d => x(d.value));
-    svg.selectAll(".bar-label").data(data).enter().append("text").attr("class", "bar-label").attr("y", d => y(d.group) + y.bandwidth() / 2).attr("dy", "0.35em").attr("x", d => x(d.value) + 15).text(d => d.value).style("fill", "var(--dark-text)").attr("text-anchor", "start").style("opacity", d => d.value > 0 ? 1 : 0);
+
+    const isMobile = window.innerWidth < 768;
+
+    const margin = {
+        top: 20,
+        right: isMobile ? 40 : 50,
+        bottom: 40,
+        left: isMobile ? 110 : 120
+    };
+
+    const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+    const height = 300 - margin.top - margin.bottom;
+
+    const svg = container.append("svg")
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const y = d3.scaleBand()
+        .range([0, height])
+        .domain(data.map(d => d.group))
+        .padding(0.4);
+
+    // تقصير العمود بنسبة 40% لترك مساحة للرقم
+    const x = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.value) * 1.4 || 10])
+        .range([0, width]);
+
+    const yAxis = svg.append("g")
+        .attr("class", "axis-y")
+        .call(d3.axisLeft(y));
+
+    if (isMobile) {
+        yAxis.selectAll("text")
+            .style("font-size", "10px")
+            .style("font-weight", "500");
+    }
+
+    // تقليل عدد الأرقام في المحور السفلي في الموبايل
+    const xAxisCall = d3.axisBottom(x);
+    if (isMobile) {
+        xAxisCall.ticks(4);
+    }
+
+    const xAxis = svg.append("g")
+        .attr("class", "axis-x")
+        .attr("transform", `translate(0,${height})`)
+        .call(xAxisCall);
+
+    if (isMobile) {
+        xAxis.selectAll("text").style("font-size", "10px");
+    }
+
+    svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("y", d => y(d.group))
+        .attr("height", y.bandwidth())
+        .attr("x", 0)
+        .attr("width", d => x(d.value));
+
+    // رسم الأرقام
+    svg.selectAll(".bar-label")
+        .data(data)
+        .enter().append("text")
+        .attr("class", "bar-label")
+        .attr("y", d => y(d.group) + y.bandwidth() / 2)
+        .attr("dy", "0.35em")
+
+        // 👇 هذا هو السطر المسؤول عن المسافة 👇
+        .attr("x", d => x(d.value) + 10)
+        // 👆 جعلتها 10 بكسل لتكون المسافة واضحة
+
+        .text(d => d.value)
+        .style("fill", "var(--dark-text)")
+        .attr("text-anchor", "start")
+        .style("font-weight", "600")
+        .style("opacity", d => d.value > 0 ? 1 : 0)
+        .style("font-size", isMobile ? "10px" : "11px");
 }
 
 function drawExplodedPieChart(data, title) {
@@ -656,3 +790,4 @@ function setupSidebarToggle() {
 setupDashboard();
 setupSidebarDropdowns();
 setupSidebarToggle();
+
