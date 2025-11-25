@@ -48,11 +48,25 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 4. Fetch (كما هو)
+// استبدل جزء الـ fetch القديم بهذا الكود:
+
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
+  const requestUrl = new URL(event.request.url);
+
+  // 1. لو الملف هو الصفحة الرئيسية (index.html) أو ملف version
+  // هاته من النت دائماً الأول، ولو النت فاصل هات القديم
+  if (requestUrl.pathname === '/' || requestUrl.pathname === '/index.html') {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => caches.match(event.request))
+    );
+  } 
+  // 2. باقي الملفات (CSS, JS, Images) هاتها من الكاش للسرعة
+  else {
+    event.respondWith(
+      caches.match(event.request).then((response) => {
+        return response || fetch(event.request);
+      })
+    );
+  }
 });
