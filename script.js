@@ -505,7 +505,6 @@ function drawPermitsChart(data, title) {
 
     const isMobile = window.innerWidth < 768;
 
-    // زيادة الهامش السفلي في الموبايل
     const margin = {
         top: 30,
         right: 20,
@@ -526,7 +525,6 @@ function drawPermitsChart(data, title) {
         .domain(data.map(d => d.group))
         .padding(0.3);
 
-    // زيادة الحد الأقصى للرسم بنسبة 20% لترك مساحة للأرقام فوق العمود
     const y = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.value) * 1.2 || 10])
         .range([height, 0]);
@@ -536,7 +534,6 @@ function drawPermitsChart(data, title) {
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x));
 
-    // تدوير الكلام 90 درجة في الموبايل
     xAxis.selectAll("text")
         .attr("transform", isMobile ? "translate(-8, 10)rotate(-90)" : "translate(-10,5)rotate(-45)")
         .style("text-anchor", "end")
@@ -554,10 +551,10 @@ function drawPermitsChart(data, title) {
         .attr("y", d => y(d.value))
         .attr("height", d => height - y(d.value));
 
-    // === (التعديل الهام) ===
-    // إخفاء الأرقام في الموبايل إذا كانت الأعمدة كثيرة جداً (أكثر من 10 أعمدة) لمنع التداخل
-    // أو إذا كان عرض العمود صغيراً جداً
-    const showLabels = !isMobile || (data.length < 10 && x.bandwidth() > 20);
+    // === (تعديل شرط ظهور الأرقام) ===
+    // الشرط الجديد: الأرقام تظهر دائماً على الكمبيوتر (!isMobile)
+    // أما على الموبايل، فتظهر فقط إذا كان عرض العمود أكبر من 12 بكسل (لتجنب التداخل)
+    const showLabels = !isMobile || x.bandwidth() > 12;
 
     if (showLabels) {
         svg.selectAll(".bar-label")
@@ -567,8 +564,8 @@ function drawPermitsChart(data, title) {
             .attr("x", d => x(d.group) + x.bandwidth() / 2)
             .attr("y", d => y(d.value) - 5)
             .text(d => d.value)
-            .style("fill", "#333") // لون غامق للأرقام
-            .style("font-size", isMobile ? "9px" : "11px") // خط صغير في الموبايل
+            .style("fill", "#333")
+            .style("font-size", isMobile ? "9px" : "11px")
             .style("font-weight", "600")
             .style("opacity", d => d.value > 0 ? 1 : 0);
     }
@@ -650,7 +647,7 @@ function drawHorizontalBarChart(data, title) {
         .attr("dy", "0.35em")
 
         // 👇 هذا هو السطر المسؤول عن المسافة 👇
-        .attr("x", d => x(d.value) + 10)
+        .attr("x", d => x(d.value) + 15)
         // 👆 جعلتها 10 بكسل لتكون المسافة واضحة
 
         .text(d => d.value)
