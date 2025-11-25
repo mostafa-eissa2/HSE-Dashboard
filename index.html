@@ -160,6 +160,15 @@
 
 </html>
 <script src="script.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.update(); // يجبره يبحث عن تحديث
+      }
+    });
+  }
+</script>
 </body>
 
 </html>
