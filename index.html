@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TURNKEY - HSE Dashboard</title>
+    <title>TURNKEY - HSE System</title>
     <link rel="icon" type="image/png" href="TURNKEY3.png">
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#C8102E" />
@@ -61,7 +61,7 @@
                     <button class="sidebar-toggle" aria-label="Toggle sidebar">&#9776;</button>
                 </div>
 
-                <h1>HSE Analytics Dashboard</h1>
+                <h1>HSE SYSTEM</h1>
 
                 <div class="controls-container">
                     <div class="filter-container">
@@ -132,8 +132,34 @@
             </div>
         </div>
     </div>
+    <div id="pwa-install-popup" class="pwa-popup">
+        <div class="pwa-content">
+            <img src="TURNKEY3.png" alt="App Icon" class="pwa-icon">
+            <div class="pwa-text">
+                <h3>تثبيت التطبيق</h3>
+                <p>ثبت تطبيق HSE System لتجربة أسرع وبدون إنترنت.</p>
+            </div>
+        </div>
+        <div class="pwa-actions">
+            <button id="pwa-install-btn" class="pwa-btn install">تثبيت</button>
+            <button id="pwa-close-btn" class="pwa-btn close">لاحقاً</button>
+        </div>
+    </div>
+
+    <div id="ios-install-popup" class="pwa-popup ios-style">
+        <div class="pwa-content">
+            <p>لتثبيت التطبيق على الآيفون:<br>
+                1. اضغط على زر المشاركة <span style="font-size:20px">⎋</span><br>
+                2. اختر <strong>"Add to Home Screen"</strong></p>
+        </div>
+        <button id="ios-close-btn" class="pwa-btn close-ios">تم</button>
+    </div>
 
     <script src="script.js"></script>
+</body>
+
+</html>
+<script src="script.js"></script>
 </body>
 
 </html>
