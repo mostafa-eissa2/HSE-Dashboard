@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hse-dashboard-v6'; // غير الرقم لـ v6 عشان نضمن
+const CACHE_NAME = 'hse-dashboard-v7'; // غير الرقم لـ v6 عشان نضمن
 
 const ASSETS_TO_CACHE = [
   '/',
