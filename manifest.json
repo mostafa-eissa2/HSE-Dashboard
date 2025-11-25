@@ -1,6 +1,6 @@
 {
   "name": "HSE System",
-  "short_name": "HSE System",
+  "short_name": "HSE",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#f4f6f9",
