@@ -1,0 +1,21 @@
+{
+  "name": "HSE System",
+  "short_name": "HSE System",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f4f6f9",
+  "theme_color": "#C8102E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "TURNKEY3.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "TURNKEY3.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
