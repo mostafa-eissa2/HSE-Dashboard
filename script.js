@@ -1,81 +1,5 @@
-// ==========================================
-// 1. PWA INSTALL LOGIC (كود التثبيت)
-// ==========================================
-let deferredPrompt;
-const installBtn = document.getElementById('sidebar-install-btn');
-
-// دالة للتحقق هل التطبيق مثبت أم لا
-const isAppInstalled = () => {
-    // للآيفون والأندرويد الحديث
-    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-        return true;
-    }
-    // لبعض أجهزة الأندرويد
-    if (document.referrer.includes('android-app://')) {
-        return true;
-    }
-    return false;
-};
-
-// التحقق من الآيفون
-const isIos = () => {
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    return /iphone|ipad|ipod/.test(userAgent);
-};
-
-// أ) للأندرويد والكمبيوتر (Chrome/Edge)
-// هذا الحدث ينطلق تلقائياً إذا كان التطبيق "قابل للتثبيت" وغير مثبت
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); // منع الشريط الافتراضي
-    deferredPrompt = e; // حفظ الحدث
-    
-    // إظهار الزر في السايد بار
-    if (installBtn) {
-        installBtn.style.display = 'flex';
-    }
-});
-
-// ب) للآيفون (Safari)
-// الآيفون لا يرسل حدث beforeinstallprompt، لذا نفحص يدوياً
-if (isIos() && !isAppInstalled() && installBtn) {
-    installBtn.style.display = 'flex';
-}
-
-// ج) عند الضغط على زر التثبيت
-if (installBtn) {
-    installBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-
-        if (deferredPrompt) {
-            // للأندرويد/الكمبيوتر: أظهر نافذة التثبيت الأصلية
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                installBtn.style.display = 'none';
-            }
-            deferredPrompt = null;
-        } else if (isIos()) {
-            // للآيفون: أظهر تعليمات
-            alert("لتثبيت التطبيق على الآيفون:\n1. اضغط على زر المشاركة (Share) أسفل الشاشة.\n2. اختر 'Add to Home Screen'.");
-        }
-    });
-}
-
-// د) تسجيل السيرفس وركر (النسخة البسيطة للأونلاين)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js')
-            .then(reg => console.log('SW Registered'))
-            .catch(err => console.log('SW Error:', err));
-    });
-}
 // =================================================================
-// SECTION 1: RAW DATA SECTIONS (باقي الكود كما هو بدون تغيير)
-// =================================================================
-// ... (باقي الكود كما هو) ...
-
-// =================================================================
-// SECTION 1: RAW DATA SECTIONS (باقي الكود كما هو)
+// SECTION 1: RAW DATA SECTIONS
 // =================================================================
 
 const permits_csv = `
@@ -148,20 +72,21 @@ Nov,0
 Dec,0
 `;
 
+// === (تعديل 1: إضافة عمودي Campaigns و Drills) ===
 const manpower_csv = `
-Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage
-Jan,51331,80716,0,0,0
-Feb,75596,62600,0,0,1
-Mar,64069,52523,0,0,0
-Apr,69775,60529,0,0,4
-May,73455,7126,0,1,1
-Jun,61436,52194,0,0,0
-Jul,68975,61305,0,1,0
-Aug,69089,60615,0,0,2
-Sep,71945,67666,0,0,0
-Oct,65510,51302,0,0,1
-Nov,0,0,0,0,0
-Dec,0,0,0,0,0
+Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage,Campaigns,Drills
+Jan,51331,80716,0,0,0,0,0
+Feb,75596,62600,0,0,1,0,0
+Mar,64069,52523,0,0,0,0,0
+Apr,69775,60529,0,0,4,0,0
+May,73455,71296,0,1,1,1,0
+Jun,61436,52194,0,0,0,0,0
+Jul,68975,61305,0,1,0,0,0
+Aug,69089,60615,0,0,2,1,1
+Sep,71945,67666,0,0,0,1,1
+Oct,65510,51302,0,0,1,0,1
+Nov,0,0,0,0,0,0,0
+Dec,0,0,0,0,0,0,0
 `;
 
 const training_csv = `
@@ -200,7 +125,6 @@ Dec,0
 // SECTION 2: CONFIGURATION AND DATA PARSING
 // =================================================================
 
-// إضافة Nov و Dec للمابينج
 const monthMapping = {
     "Jan": "January", "Feb": "February", "Mar": "March", "Apr": "April", "May": "May", "Jun": "June",
     "Jul": "July", "Aug": "August", "Sep": "September", "Oct": "October", "Nov": "November", "Dec": "December"
@@ -255,15 +179,12 @@ const availableMonths = Object.keys(ALL_DATA.performance);
 function setupDashboard() {
     const dropdown = d3.select("#month-filter");
 
-    // 1. إضافة خيار Cumulative في البداية
     dropdown.append("option").attr("value", "Cumulative").text("Cumulative (YTD)");
 
-    // 2. إضافة باقي الشهور
     dropdown.selectAll("option.month-opt")
         .data(ALL_MONTHS).enter().append("option")
         .attr("value", d => d).text(d => monthMapping[d]);
 
-    // تعيين القيمة الافتراضية
     const defaultMonth = "Oct";
     dropdown.property("value", defaultMonth);
     updateDashboard(defaultMonth);
@@ -273,18 +194,19 @@ function setupDashboard() {
 }
 
 function updateDashboard(selectedMonth) {
-    // --- Update KPI Section ---
     const totalHoursCard = d3.select("#total-hours-card");
     const kpiGrid = d3.select("#monthly-kpis");
 
     let permitsData = [], partiesData = [], shiftsData = [], delaysData = [];
+
+    // === (تعديل 2: إضافة المتغيرات الجديدة) ===
     let kpiValues = {
         hours: 0, employees: 0, ptw: 0, observations: 0,
-        lti: 0, mtc: 0, propDamage: 0, trainings: 0, inductions: 0
+        lti: 0, mtc: 0, propDamage: 0, trainings: 0, inductions: 0,
+        campaigns: 0, drills: 0 // << تم الإضافة
     };
 
     if (selectedMonth === 'Cumulative') {
-        // --- CUMULATIVE LOGIC ---
         permitsData = aggregateGenericData(ALL_DATA.permits);
         partiesData = aggregateGenericData(ALL_DATA.parties);
         shiftsData = aggregateGenericData(ALL_DATA.shifts);
@@ -306,6 +228,10 @@ function updateDashboard(selectedMonth) {
             kpiValues.trainings += (+train["Total Training"] || 0);
             kpiValues.inductions += (+induc.Total || 0);
 
+            // === (تعديل 3: جمع القيم التراكمية) ===
+            kpiValues.campaigns += (+manp.Campaigns || 0);
+            kpiValues.drills += (+manp.Drills || 0);
+
             if (+train["Emp Manpower"] > 0) kpiValues.employees = +train["Emp Manpower"];
         });
 
@@ -314,7 +240,6 @@ function updateDashboard(selectedMonth) {
         animateValue("kpi-total-hours", kpiValues.hours);
 
     } else {
-        // --- SINGLE MONTH LOGIC ---
         permitsData = ALL_DATA.permits[selectedMonth] || [];
         partiesData = ALL_DATA.parties[selectedMonth] || [];
         shiftsData = ALL_DATA.shifts[selectedMonth] || [];
@@ -335,6 +260,10 @@ function updateDashboard(selectedMonth) {
         kpiValues.trainings = train["Total Training"];
         kpiValues.inductions = (induc.Total || 0);
 
+        // === (تعديل 4: قراءة القيمة الشهرية) ===
+        kpiValues.campaigns = manp.Campaigns;
+        kpiValues.drills = manp.Drills;
+
         if (selectedMonth === 'Oct') {
             totalHoursCard.style("display", "block");
             animateValue("kpi-total-hours", 3672044);
@@ -344,22 +273,17 @@ function updateDashboard(selectedMonth) {
         }
     }
 
-    // === (تعديل هام) فلترة القيم الصفرية ===
-    // هذا السطر سيمسح أي مشروع أو قسم قيمته صفر من الرسم البياني
+    // === Filter Zeros ===
     permitsData = permitsData.filter(d => d.value > 0);
     partiesData = partiesData.filter(d => d.value > 0);
-    // =====================================
 
-    // --- Render KPIs ---
     renderKPIGrid(kpiValues);
 
-    // --- Render Charts ---
     drawPermitsChart(permitsData, selectedMonth === 'Cumulative' ? "Cumulative Permits per Project" : "Permits per Project");
     drawHorizontalBarChart(partiesData, selectedMonth === 'Cumulative' ? "Cumulative Permits by Party" : "Permits by Requesting Party");
     drawExplodedPieChart(delaysData, "Delays Analysis");
     drawInteractivePieChart(shiftsData, "Shifts Analysis");
 
-    // --- Render Conditional Charts ---
     const observationsCard = d3.select("#observations-card");
 
     let trendData = [];
@@ -418,6 +342,10 @@ function renderKPIGrid(values) {
         { label: "LTI", value: values.lti },
         { label: "MTC", value: values.mtc },
         { label: "Property Damage", value: values.propDamage },
+        // === (تعديل 5: إضافة الكروت الجديدة للقائمة) ===
+        { label: "Campaigns", value: values.campaigns },
+        { label: "Drills", value: values.drills },
+        // ===========================================
         { label: "Trainings", value: values.trainings },
         { label: "Inductions", value: values.inductions },
     ];
@@ -536,7 +464,7 @@ function drawPermitsChart(data, title) {
         .attr("y", d => y(d.value))
         .attr("height", d => height - y(d.value));
 
-    // === رسم الأرقام (مع ضبط السنتر بدقة) ===
+    // رسم الأرقام (مع ضبط السنتر بدقة)
     svg.selectAll(".bar-label")
         .data(filteredData)
         .enter().append("text")
@@ -552,10 +480,7 @@ function drawPermitsChart(data, title) {
                 return `translate(${xPos}, ${yPos})`;
             }
         })
-        // 👇👇👇 هنا التعديل السحري للسنتر 👇👇👇
         .attr("dy", isMobile ? "0.35em" : "0")
-        // 0.35em بتجبر النص يجي في نص السطر بتاعه بالظبط لما يلف
-
         .style("text-anchor", isMobile ? "start" : "middle")
         .style("fill", "#333")
         .style("font-weight", "600")
@@ -591,7 +516,6 @@ function drawHorizontalBarChart(data, title) {
         .domain(data.map(d => d.group))
         .padding(0.4);
 
-    // تقصير العمود بنسبة 40% لترك مساحة للرقم
     const x = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.value) * 1.4 || 10])
         .range([0, width]);
@@ -606,7 +530,6 @@ function drawHorizontalBarChart(data, title) {
             .style("font-weight", "500");
     }
 
-    // تقليل عدد الأرقام في المحور السفلي في الموبايل
     const xAxisCall = d3.axisBottom(x);
     if (isMobile) {
         xAxisCall.ticks(4);
@@ -630,18 +553,13 @@ function drawHorizontalBarChart(data, title) {
         .attr("x", 0)
         .attr("width", d => x(d.value));
 
-    // رسم الأرقام
     svg.selectAll(".bar-label")
         .data(data)
         .enter().append("text")
         .attr("class", "bar-label")
         .attr("y", d => y(d.group) + y.bandwidth() / 2)
         .attr("dy", "0.35em")
-
-        // 👇 هذا هو السطر المسؤول عن المسافة 👇
-        .attr("x", d => x(d.value) + 15)
-        // 👆 جعلتها 10 بكسل لتكون المسافة واضحة
-
+        .attr("x", d => x(d.value) + 10)
         .text(d => d.value)
         .style("fill", "var(--dark-text)")
         .attr("text-anchor", "start")
@@ -776,7 +694,78 @@ function setupSidebarToggle() {
     }
 }
 
+// ==========================================
+// 1. PWA INSTALL LOGIC (كود التثبيت)
+// ==========================================
+let deferredPrompt;
+const installBtn = document.getElementById('sidebar-install-btn');
+
+// دالة للتحقق هل التطبيق مثبت أم لا
+const isAppInstalled = () => {
+    // للآيفون والأندرويد الحديث
+    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+        return true;
+    }
+    // لبعض أجهزة الأندرويد
+    if (document.referrer.includes('android-app://')) {
+        return true;
+    }
+    return false;
+};
+
+// التحقق من الآيفون
+const isIos = () => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    return /iphone|ipad|ipod/.test(userAgent);
+};
+
+// أ) للأندرويد والكمبيوتر (Chrome/Edge)
+// هذا الحدث ينطلق تلقائياً إذا كان التطبيق "قابل للتثبيت" وغير مثبت
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // منع الشريط الافتراضي
+    deferredPrompt = e; // حفظ الحدث
+
+    // إظهار الزر في السايد بار
+    if (installBtn) {
+        installBtn.style.display = 'flex';
+    }
+});
+
+// ب) للآيفون (Safari)
+// الآيفون لا يرسل حدث beforeinstallprompt، لذا نفحص يدوياً
+if (isIos() && !isAppInstalled() && installBtn) {
+    installBtn.style.display = 'flex';
+}
+
+// ج) عند الضغط على زر التثبيت
+if (installBtn) {
+    installBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        if (deferredPrompt) {
+            // للأندرويد/الكمبيوتر: أظهر نافذة التثبيت الأصلية
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installBtn.style.display = 'none';
+            }
+            deferredPrompt = null;
+        } else if (isIos()) {
+            // للآيفون: أظهر تعليمات
+            alert("لتثبيت التطبيق على الآيفون:\n1. اضغط على زر المشاركة (Share) أسفل الشاشة.\n2. اختر 'Add to Home Screen'.");
+        }
+    });
+}
+
+// د) تسجيل السيرفس وركر (النسخة البسيطة للأونلاين)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(reg => console.log('SW Registered'))
+            .catch(err => console.log('SW Error:', err));
+    });
+}
+
 setupDashboard();
 setupSidebarDropdowns();
 setupSidebarToggle();
-
