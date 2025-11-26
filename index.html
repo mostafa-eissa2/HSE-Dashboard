@@ -6,50 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TURNKEY - HSE System</title>
     <link rel="icon" type="image/png" href="TURNKEY3.png">
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#C8102E" />
-    <link rel="apple-touch-icon" href="TURNKEY3.png">
-      <script>
-        // 🔴 هام جداً: كلما عملت تحديث جديد، غيّر هذا الرقم (مثلاً: 1.1 -> 1.2)
-        const currentVersion = '1.1'; 
+    <link rel="stylesheet" href="style.css" />
 
+    <script>
+        const currentVersion = '1.2'; // غيّر الرقم ده مع كل تحديث
         function checkForUpdate() {
             const storedVersion = localStorage.getItem('app_version');
-
-            // إذا كان هذا أول دخول، أو إذا تغير رقم الإصدار
             if (storedVersion !== currentVersion) {
-                console.log('New version detected! Clearing cache...');
-                
-                // 1. مسح الكاش (Service Worker Cache)
                 if ('caches' in window) {
                     caches.keys().then((names) => {
-                        names.forEach((name) => {
-                            caches.delete(name);
-                        });
+                        names.forEach((name) => caches.delete(name));
                     });
                 }
-
-                // 2. إلغاء تسجيل السيرفس وركر القديم
                 if ('serviceWorker' in navigator) {
                     navigator.serviceWorker.getRegistrations().then((registrations) => {
-                        for (let registration of registrations) {
-                            registration.unregister();
-                        }
+                        for (let registration of registrations) registration.unregister();
                     });
                 }
-
-                // 3. حفظ الإصدار الجديد
                 localStorage.setItem('app_version', currentVersion);
-
-                // 4. إعادة تحميل الصفحة إجبارياً من السيرفر (Hard Reload)
                 window.location.reload(true);
             }
         }
-        
-        // تشغيل الفحص فوراً
         checkForUpdate();
     </script>
-    <link rel="stylesheet" href="style.css" />
+
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
@@ -66,17 +46,11 @@
                     <a href="#" class="nav-item dropdown-toggle">Events</a>
                     <div class="dropdown-content">
                         <a href="https://world-clean-air-day.vercel.app/" target="_blank" rel="noopener noreferrer"
-                            class="dropdown-link">
-                            World Day for Clean Air 2025
-                        </a>
+                            class="dropdown-link">World Day for Clean Air 2025</a>
                         <a href="https://world-safety-day.vercel.app/" target="_blank" rel="noopener noreferrer"
-                            class="dropdown-link">
-                            World Safety Day 2025
-                        </a>
+                            class="dropdown-link">World Safety Day 2025</a>
                         <a href="https://heat-stress-campaign.vercel.app//" target="_blank" rel="noopener noreferrer"
-                            class="dropdown-link">
-                            Heat stress campaign 2025
-                        </a>
+                            class="dropdown-link">Heat stress campaign 2025</a>
                     </div>
                 </div>
 
@@ -84,13 +58,15 @@
                     <a href="#" class="nav-item dropdown-toggle">Management commitments</a>
                     <div class="dropdown-content">
                         <a href="https://elsewedyelectric-my.sharepoint.com/:f:/g/personal/mostafa_khaled_elsewedy_com1/EiNb8--H2YBPvdjNEtmgsmYBgC1Du2afsJsBGDMXqhtEhw?e=eHvEGT"
-                            target="_blank" rel="noopener noreferrer" class="dropdown-link">
-                            2025
-                        </a>
+                            target="_blank" rel="noopener noreferrer" class="dropdown-link">2025</a>
                     </div>
                 </div>
 
                 <a href="system.html" class="nav-item">Login</a>
+
+                <a href="#" id="sidebar-install-btn" class="nav-item install-item" style="display: none;">
+                    📲 Install App
+                </a>
             </nav>
         </aside>
 
@@ -100,12 +76,10 @@
                     <img src="TURNKEY.png" alt="TURNKEY Logo" class="logo-mobile">
                     <button class="sidebar-toggle" aria-label="Toggle sidebar">&#9776;</button>
                 </div>
-
                 <h1>HSE SYSTEM</h1>
-
                 <div class="controls-container">
                     <div class="filter-container">
-                        <label for="month-filter">Select Month:</label>
+                        <label for="month-filter">Select Period:</label>
                         <select id="month-filter"></select>
                     </div>
                 </div>
@@ -113,14 +87,13 @@
 
             <section class="card" id="total-hours-card" style="display: none;">
                 <div class="total-kpi">
-                    <div class="kpi-label">SAFE WORK-HOURS WITHOUT LTI</div>
+                    <div class="kpi-label">TOTAL SAFE WORK-HOURS (YTD)</div>
                     <div class="kpi-value" id="kpi-total-hours">0</div>
                 </div>
             </section>
 
             <section class="card kpi-section">
-                <div id="monthly-kpis" class="kpi-grid">
-                </div>
+                <div id="monthly-kpis" class="kpi-grid"></div>
             </section>
 
             <section class="card">
@@ -168,80 +141,11 @@
                 <h3 id="modal-title">Chart Data</h3>
                 <button class="close-button" aria-label="Close modal">&times;</button>
             </div>
-            <div id="modal-table-container">
-            </div>
+            <div id="modal-table-container"></div>
         </div>
-    </div>
-    <div id="pwa-install-popup" class="pwa-popup">
-        <div class="pwa-content">
-            <img src="TURNKEY3.png" alt="App Icon" class="pwa-icon">
-            <div class="pwa-text">
-                <h3>تثبيت التطبيق</h3>
-                <p>ثبت تطبيق HSE System لتجربة أسرع وبدون إنترنت.</p>
-            </div>
-        </div>
-        <div class="pwa-actions">
-            <button id="pwa-install-btn" class="pwa-btn install">تثبيت</button>
-            <button id="pwa-close-btn" class="pwa-btn close">لاحقاً</button>
-        </div>
-    </div>
-
-    <div id="ios-install-popup" class="pwa-popup ios-style">
-        <div class="pwa-content">
-            <p>لتثبيت التطبيق على الآيفون:<br>
-                1. اضغط على زر المشاركة <span style="font-size:20px">⎋</span><br>
-                2. اختر <strong>"Add to Home Screen"</strong></p>
-        </div>
-        <button id="ios-close-btn" class="pwa-btn close-ios">تم</button>
     </div>
 
     <script src="script.js"></script>
-</body>
-
-</html>
-<script src="script2.js"></script>
-<script>
-    if ('serviceWorker' in navigator) {
-        // لاحظ: أضفنا ?v=5 هنا لنخدع المتصفح ويعتبره ملفاً جديداً
-        navigator.serviceWorker.register('service-worker.js?v=6').then(reg => {
-            
-            // إجبار المتصفح على البحث عن تحديث فوراً
-            reg.update();
-
-            // لو وجد نسخة جديدة تنتظر التفعيل
-            if (reg.waiting) {
-                postMessageToWorker(reg.waiting);
-            }
-
-            // مراقبة أي تحديث جديد
-            reg.onupdatefound = () => {
-                const installingWorker = reg.installing;
-                installingWorker.onstatechange = () => {
-                    if (installingWorker.state === 'installed') {
-                        if (navigator.serviceWorker.controller) {
-                            // تحديث جديد تم تحميله، اطلب من المستخدم التحديث
-                            if (confirm("يوجد تحديث جديد للتطبيق. هل تريد التحديث الآن؟")) {
-                                postMessageToWorker(installingWorker);
-                            }
-                        }
-                    }
-                };
-            };
-        });
-
-        // وظيفة لإرسال أمر التخطى
-        function postMessageToWorker(worker) {
-            worker.postMessage({ type: 'SKIP_WAITING' });
-        }
-
-        // بمجرد تفعيل الجديد، اعمل ريلود
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            window.location.reload();
-        });
-    }
-</script>
-
-<script src="script.js"></script>
 </body>
 
 </html>
