@@ -1,9 +1,8 @@
-// 🔴 غير الرقم ده ضروري (مثلاً v8)
+// 🔴 غير الرقم لـ v9 (رقم جديد تماماً)
 const CACHE_NAME = 'hse-dashboard-v9';
 
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
+  // لاحظ: شيلنا index.html من هنا عشان نتحكم فيه يدوياً تحت
   '/login.html',
   '/system.html',
   '/style.css',
@@ -14,15 +13,9 @@ const ASSETS_TO_CACHE = [
   'https://d3js.org/d3.v7.min.js'
 ];
 
-// استقبال أمر التحديث الفوري
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-
+// 1. التثبيت (Install)
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // تفعيل فوري
+  self.skipWaiting(); // تفعيل فوري بدون انتظار
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
@@ -30,31 +23,41 @@ self.addEventListener('install', (event) => {
   );
 });
 
+// 2. التفعيل (Activate) - مسح القديم
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim()); // السيطرة على الصفحة
-  // مسح الكاش القديم
+  event.waitUntil(self.clients.claim()); // السيطرة الفورية على الصفحات المفتوحة
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(
-      keys.map((key) => {
-        if (![CACHE_NAME].includes(key)) {
-          return caches.delete(key);
-        }
-      })
-    ))
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
 });
 
-// استراتيجية الشبكة أولاً (Network First) لملف HTML
-// هذا يضمن أن المستخدم يرى أحدث نسخة دائماً إذا كان متصلاً بالنت
+// 3. جلب الملفات (Fetch) - استراتيجية الشبكة أولاً لصفحة البداية
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
+  const url = new URL(event.request.url);
+
+  // لو الملف هو الصفحة الرئيسية HTML
+  if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('.html')) {
     event.respondWith(
       fetch(event.request)
+        .then((response) => {
+          return response; // رجع النسخة الجديدة من النت علطول
+        })
         .catch(() => {
+          // لو مفيش نت، دور في الكاش
           return caches.match(event.request);
         })
     );
   } else {
+    // باقي الملفات (صور، سكريبتات) من الكاش للسرعة
     event.respondWith(
       caches.match(event.request).then((response) => {
         return response || fetch(event.request);
