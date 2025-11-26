@@ -15,34 +15,13 @@
     <link rel="stylesheet" href="style.css?v=9" />
 
     <script>
-        // كود الطوارئ لمسح كل شيء
-        window.addEventListener('load', async () => {
-
-            // 1. إيقاف وحذف أي Service Worker مسجل
-            if ('serviceWorker' in navigator) {
-                const registrations = await navigator.serviceWorker.getRegistrations();
-                for (let registration of registrations) {
-                    await registration.unregister();
-                    console.log('Service Worker Unregistered');
-                }
-            }
-
-            // 2. مسح ذاكرة الكاش (Cache Storage) بالكامل
-            if ('caches' in window) {
-                const keys = await caches.keys();
-                for (const key of keys) {
-                    await caches.delete(key);
-                    console.log('Cache Deleted:', key);
-                }
-            }
-
-            // 3. فحص هل تم التنظيف؟ لو لسه في كاش قديم، نعمل ريلود إجباري
-            if (!localStorage.getItem('cache_cleared_v10')) {
-                localStorage.setItem('cache_cleared_v10', 'true');
-                // ريلود من السيرفر مباشرة
-                window.location.reload(true);
-            }
-        });
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('Online-Only PWA Registered'))
+                    .catch(err => console.log('SW Error:', err));
+            });
+        }
     </script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
