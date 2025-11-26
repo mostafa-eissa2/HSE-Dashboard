@@ -642,105 +642,16 @@ body {
     animation: floatUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes floatUp {
-    from {
-        bottom: -150px;
-        opacity: 0;
-    }
-
-    to {
-        bottom: 30px;
-        opacity: 1;
-    }
-}
-
-.pwa-popup.show {
-    display: block;
-}
-
-.pwa-content {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.pwa-icon {
-    width: 55px;
-    height: 55px;
-    border-radius: 12px;
-    box-shadow: var(--shadow-sm);
-}
-
-.pwa-text h3 {
-    margin: 0 0 5px 0;
-    font-size: 16px;
+.nav-item.install-item {
+    color: var(--brand-red);
     font-weight: 700;
-    color: var(--dark-text);
+    border: 1px solid var(--border-color);
+    margin-top: 20px;
+    /* مسافة لفصله عن باقي القائمة */
+    justify-content: center;
 }
 
-.pwa-text p {
-    margin: 0;
-    font-size: 13px;
-    color: var(--light-text);
-    line-height: 1.4;
-}
-
-.pwa-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.pwa-btn {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 14px;
-    transition: var(--transition);
-}
-
-/* زر التثبيت */
-.pwa-btn.install {
+.nav-item.install-item:hover {
     background-color: var(--brand-red);
     color: white;
-    box-shadow: 0 4px 10px rgba(200, 16, 46, 0.3);
-}
-
-.pwa-btn.install:hover {
-    background-color: #b00c24;
-}
-
-/* زر الإغلاق */
-.pwa-btn.close {
-    background-color: #f1f1f1;
-    color: #555;
-}
-
-.pwa-btn.close:hover {
-    background-color: #e5e5e5;
-}
-
-/* === IOS SPECIFIC STYLES (كان ناقص الجزء ده) === */
-.ios-style {
-    text-align: center;
-    border-top: 4px solid var(--brand-red);
-    /* خط أحمر من فوق */
-    padding-top: 25px;
-}
-
-.close-ios {
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--light-text);
-    width: 100%;
-    margin-top: 10px;
-}
-
-.close-ios:hover {
-    background-color: #f9f9f9;
-    color: var(--brand-red);
-    border-color: var(--brand-red);
 }
