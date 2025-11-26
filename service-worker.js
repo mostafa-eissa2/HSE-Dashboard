@@ -1,12 +1,12 @@
-// غير الرقم هنا أيضاً
-const CACHE_NAME = 'hse-dashboard-v-nuclear-4.0';
+// 🔴 غير الرقم ده ضروري (مثلاً v8)
+const CACHE_NAME = 'hse-dashboard-v9';
 
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/login.html',
   '/system.html',
-  '/style.css?v=9', // شيلنا ?v=... من هنا عشان ميحصلش لخبطة، المتصفح هيجيب الجديد كده كده
+  '/style.css',
   '/script.js',
   '/TURNKEY.png',
   '/TURNKEY3.png',
@@ -14,10 +14,15 @@ const ASSETS_TO_CACHE = [
   'https://d3js.org/d3.v7.min.js'
 ];
 
-// ... (باقي الكود كما هو: install, activate, fetch) ...
-// تأكد إن self.skipWaiting() موجودة في الـ install
+// استقبال أمر التحديث الفوري
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // مهم جداً
+  self.skipWaiting(); // تفعيل فوري
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
@@ -26,8 +31,8 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim()); // السيطرة الفورية
-  // كود مسح الكاش القديم...
+  event.waitUntil(self.clients.claim()); // السيطرة على الصفحة
+  // مسح الكاش القديم
   event.waitUntil(
     caches.keys().then((keys) => Promise.all(
       keys.map((key) => {
@@ -39,15 +44,21 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// استراتيجية Network First لملف HTML (ضروري جداً)
+// استراتيجية الشبكة أولاً (Network First) لملف HTML
+// هذا يضمن أن المستخدم يرى أحدث نسخة دائماً إذا كان متصلاً بالنت
 self.addEventListener('fetch', (event) => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request))
+      fetch(event.request)
+        .catch(() => {
+          return caches.match(event.request);
+        })
     );
   } else {
     event.respondWith(
-      caches.match(event.request).then((response) => response || fetch(event.request))
+      caches.match(event.request).then((response) => {
+        return response || fetch(event.request);
+      })
     );
   }
 });
