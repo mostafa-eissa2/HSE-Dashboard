@@ -1,70 +1,74 @@
 // ==========================================
-// PWA INSTALL LOGIC (Desktop & Mobile)
+// 1. PWA INSTALL LOGIC (كود التثبيت)
 // ==========================================
 let deferredPrompt;
 const installBtn = document.getElementById('sidebar-install-btn');
 
-// 1. هذا الحدث ينطلق تلقائياً (على الكمبيوتر والموبايل) إذا كان التطبيق غير مثبت
-window.addEventListener('beforeinstallprompt', (e) => {
-    // منع المتصفح من إظهار الشريط الافتراضي القديم
-    e.preventDefault();
-    // حفظ الحدث لاستخدامه عند الضغط على الزر
-    deferredPrompt = e;
-
-    // إظهار الزر في السايد بار (لأن الحدث انطلق، إذن هو غير مثبت)
-    if (installBtn) {
-        installBtn.style.display = 'flex';
+// دالة للتحقق هل التطبيق مثبت أم لا
+const isAppInstalled = () => {
+    // للآيفون والأندرويد الحديث
+    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+        return true;
     }
-});
+    // لبعض أجهزة الأندرويد
+    if (document.referrer.includes('android-app://')) {
+        return true;
+    }
+    return false;
+};
 
-// 2. عند الضغط على زر التثبيت
-if (installBtn) {
-    installBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-
-        // حالة الأندرويد والكمبيوتر (Chrome/Edge)
-        if (deferredPrompt) {
-            deferredPrompt.prompt(); // إظهار نافذة التثبيت الرسمية
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                console.log('User accepted the install prompt');
-                installBtn.style.display = 'none'; // إخفاء الزر فوراً
-            }
-            deferredPrompt = null;
-        }
-        // حالة الآيفون (لأنه لا يدعم التثبيت التلقائي)
-        else if (isIos()) {
-            alert("على الآيفون:\n1. اضغط زر المشاركة (Share) بالأسفل.\n2. اختر 'Add to Home Screen'.");
-        }
-    });
-}
-
-// 3. التحقق من التثبيت الناجح لإخفاء الزر (لو المستخدم ثبته ورجع)
-window.addEventListener('appinstalled', () => {
-    if (installBtn) installBtn.style.display = 'none';
-    deferredPrompt = null;
-});
-
-// دوال مساعدة
+// التحقق من الآيفون
 const isIos = () => {
     const userAgent = window.navigator.userAgent.toLowerCase();
     return /iphone|ipad|ipod/.test(userAgent);
 };
 
-// إظهار الزر للآيفون يدوياً (لأنه لا يطلق حدث beforeinstallprompt)
-// بشرط ألا يكون في وضع ملء الشاشة (Standalone)
-const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
-if (isIos() && !isInStandaloneMode() && installBtn) {
+// أ) للأندرويد والكمبيوتر (Chrome/Edge)
+// هذا الحدث ينطلق تلقائياً إذا كان التطبيق "قابل للتثبيت" وغير مثبت
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // منع الشريط الافتراضي
+    deferredPrompt = e; // حفظ الحدث
+    
+    // إظهار الزر في السايد بار
+    if (installBtn) {
+        installBtn.style.display = 'flex';
+    }
+});
+
+// ب) للآيفون (Safari)
+// الآيفون لا يرسل حدث beforeinstallprompt، لذا نفحص يدوياً
+if (isIos() && !isAppInstalled() && installBtn) {
     installBtn.style.display = 'flex';
 }
 
-// تسجيل Service Worker
-//if ('serviceWorker' in navigator) {
-//  window.addEventListener('load', () => {
-//     navigator.serviceWorker.register('service-worker.js');
-//  });
-//}
+// ج) عند الضغط على زر التثبيت
+if (installBtn) {
+    installBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
 
+        if (deferredPrompt) {
+            // للأندرويد/الكمبيوتر: أظهر نافذة التثبيت الأصلية
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installBtn.style.display = 'none';
+            }
+            deferredPrompt = null;
+        } else if (isIos()) {
+            // للآيفون: أظهر تعليمات
+            alert("لتثبيت التطبيق على الآيفون:\n1. اضغط على زر المشاركة (Share) أسفل الشاشة.\n2. اختر 'Add to Home Screen'.");
+        }
+    });
+}
+
+// د) تسجيل السيرفس وركر (النسخة البسيطة للأونلاين)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(reg => console.log('SW Registered'))
+            .catch(err => console.log('SW Error:', err));
+    });
+}
 // =================================================================
 // SECTION 1: RAW DATA SECTIONS (باقي الكود كما هو بدون تغيير)
 // =================================================================
