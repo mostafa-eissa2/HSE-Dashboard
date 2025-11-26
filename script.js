@@ -1,72 +1,69 @@
 // ==========================================
-// ==========================================
-// PWA INSTALL LOGIC (SIDEBAR BUTTON VERSION)
+// PWA INSTALL LOGIC (Desktop & Mobile)
 // ==========================================
 let deferredPrompt;
 const installBtn = document.getElementById('sidebar-install-btn');
 
-// دالة للتحقق هل التطبيق مثبت
-const isAppInstalled = () => {
-    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-        return true;
-    }
-    if (document.referrer.includes('android-app://')) {
-        return true;
-    }
-    return false;
-};
-
-// 1. للأندرويد والكمبيوتر (Chrome/Edge)
+// 1. هذا الحدث ينطلق تلقائياً (على الكمبيوتر والموبايل) إذا كان التطبيق غير مثبت
 window.addEventListener('beforeinstallprompt', (e) => {
+    // منع المتصفح من إظهار الشريط الافتراضي القديم
     e.preventDefault();
+    // حفظ الحدث لاستخدامه عند الضغط على الزر
     deferredPrompt = e;
 
-    // لو التطبيق مش متثبت، أظهر الزرار في السايد بار
-    if (!isAppInstalled() && installBtn) {
+    // إظهار الزر في السايد بار (لأن الحدث انطلق، إذن هو غير مثبت)
+    if (installBtn) {
         installBtn.style.display = 'flex';
     }
 });
 
-// عند الضغط على الزر
+// 2. عند الضغط على زر التثبيت
 if (installBtn) {
-    installBtn.addEventListener('click', (e) => {
-        e.preventDefault(); // منع الانتقال لرابط
+    installBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
 
-        // لو أندرويد/كروم
+        // حالة الأندرويد والكمبيوتر (Chrome/Edge)
         if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                    installBtn.style.display = 'none'; // إخفاء الزر بعد التثبيت
-                }
-                deferredPrompt = null;
-            });
+            deferredPrompt.prompt(); // إظهار نافذة التثبيت الرسمية
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+                installBtn.style.display = 'none'; // إخفاء الزر فوراً
+            }
+            deferredPrompt = null;
         }
-        // لو آيفون (نظهر رسالة بسيطة)
+        // حالة الآيفون (لأنه لا يدعم التثبيت التلقائي)
         else if (isIos()) {
-            alert("لتثبيت التطبيق على الآيفون:\n1. اضغط على زر المشاركة (Share) أسفل المتصفح.\n2. اختر 'Add to Home Screen'.");
+            alert("على الآيفون:\n1. اضغط زر المشاركة (Share) بالأسفل.\n2. اختر 'Add to Home Screen'.");
         }
     });
 }
 
-// التحقق من الآيفون
+// 3. التحقق من التثبيت الناجح لإخفاء الزر (لو المستخدم ثبته ورجع)
+window.addEventListener('appinstalled', () => {
+    if (installBtn) installBtn.style.display = 'none';
+    deferredPrompt = null;
+});
+
+// دوال مساعدة
 const isIos = () => {
     const userAgent = window.navigator.userAgent.toLowerCase();
     return /iphone|ipad|ipod/.test(userAgent);
 };
 
-// حالة خاصة للآيفون: الزر يظهر دائماً لو مش مثبت (لأن beforeinstallprompt لا يعمل في سفاري)
-if (isIos() && !isAppInstalled() && installBtn) {
+// إظهار الزر للآيفون يدوياً (لأنه لا يطلق حدث beforeinstallprompt)
+// بشرط ألا يكون في وضع ملء الشاشة (Standalone)
+const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+if (isIos() && !isInStandaloneMode() && installBtn) {
     installBtn.style.display = 'flex';
 }
 
 // تسجيل Service Worker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js');
-    });
-}
+//if ('serviceWorker' in navigator) {
+//  window.addEventListener('load', () => {
+//     navigator.serviceWorker.register('service-worker.js');
+//  });
+//}
 
 // =================================================================
 // SECTION 1: RAW DATA SECTIONS (باقي الكود كما هو بدون تغيير)
