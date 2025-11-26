@@ -1,87 +1,64 @@
 // ==========================================
+// ==========================================
+// PWA INSTALL LOGIC (SIDEBAR BUTTON VERSION)
+// ==========================================
 let deferredPrompt;
-const pwaPopup = document.getElementById('pwa-install-popup');
-const installBtn = document.getElementById('pwa-install-btn');
-const closeBtn = document.getElementById('pwa-close-btn');
+const installBtn = document.getElementById('sidebar-install-btn');
 
-const iosPopup = document.getElementById('ios-install-popup');
-const iosCloseBtn = document.getElementById('ios-close-btn');
-
-// دالة للتحقق هل التطبيق مثبت ويعمل حالياً أم لا
+// دالة للتحقق هل التطبيق مثبت
 const isAppInstalled = () => {
-    // 1. التحقق من وضع الـ Standalone (لأغلب المتصفحات والآيفون)
     if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
         return true;
     }
-    // 2. التحقق الإضافي (لبعض أجهزة سامسونج وأندرويد القديمة)
     if (document.referrer.includes('android-app://')) {
         return true;
     }
     return false;
 };
 
-// === 1. للأندرويد والكمبيوتر (Chrome/Edge) ===
+// 1. للأندرويد والكمبيوتر (Chrome/Edge)
 window.addEventListener('beforeinstallprompt', (e) => {
-    // منع المتصفح من إظهار الشريط الافتراضي فوراً
     e.preventDefault();
     deferredPrompt = e;
 
-    // شرط هام: لا تظهر البوب أب إذا كان التطبيق مثبتاً بالفعل
-    if (!isAppInstalled()) {
-        // التحقق مما إذا كان المستخدم قد أغلق النافذة سابقاً (اختياري لتحسين التجربة)
-        const isClosedBefore = localStorage.getItem('pwa_popup_closed');
-        if (!isClosedBefore) {
-            if (pwaPopup) pwaPopup.classList.add('show');
-        }
+    // لو التطبيق مش متثبت، أظهر الزرار في السايد بار
+    if (!isAppInstalled() && installBtn) {
+        installBtn.style.display = 'flex';
     }
 });
 
+// عند الضغط على الزر
 if (installBtn) {
-    installBtn.addEventListener('click', () => {
-        if (pwaPopup) pwaPopup.classList.remove('show');
+    installBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // منع الانتقال لرابط
+
+        // لو أندرويد/كروم
         if (deferredPrompt) {
             deferredPrompt.prompt();
             deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
                     console.log('User accepted the install prompt');
+                    installBtn.style.display = 'none'; // إخفاء الزر بعد التثبيت
                 }
                 deferredPrompt = null;
             });
         }
+        // لو آيفون (نظهر رسالة بسيطة)
+        else if (isIos()) {
+            alert("لتثبيت التطبيق على الآيفون:\n1. اضغط على زر المشاركة (Share) أسفل المتصفح.\n2. اختر 'Add to Home Screen'.");
+        }
     });
 }
 
-if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-        if (pwaPopup) pwaPopup.classList.remove('show');
-        // حفظ أن المستخدم أغلق النافذة لكي لا تظهر له كل مرة (تظل مخفية لمدة من الزمن أو حتى يمسح الكاش)
-        localStorage.setItem('pwa_popup_closed', 'true');
-    });
-}
-
-// === 2. للآيفون (iOS Detection) ===
+// التحقق من الآيفون
 const isIos = () => {
     const userAgent = window.navigator.userAgent.toLowerCase();
     return /iphone|ipad|ipod/.test(userAgent);
 };
 
-// إظهار رسالة الآيفون فقط إذا كان جهاز آيفون + ليس مثبتاً
-if (isIos() && !isAppInstalled()) {
-    // التحقق من التخزين المحلي أيضاً للآيفون
-    const isIosClosedBefore = localStorage.getItem('ios_popup_closed');
-
-    if (!isIosClosedBefore) {
-        setTimeout(() => {
-            if (iosPopup) iosPopup.classList.add('show');
-        }, 4000); // الانتظار 4 ثواني
-    }
-}
-
-if (iosCloseBtn) {
-    iosCloseBtn.addEventListener('click', () => {
-        if (iosPopup) iosPopup.classList.remove('show');
-        localStorage.setItem('ios_popup_closed', 'true');
-    });
+// حالة خاصة للآيفون: الزر يظهر دائماً لو مش مثبت (لأن beforeinstallprompt لا يعمل في سفاري)
+if (isIos() && !isAppInstalled() && installBtn) {
+    installBtn.style.display = 'flex';
 }
 
 // تسجيل Service Worker
@@ -90,8 +67,11 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js');
     });
 }
-// ==========================================
 
+// =================================================================
+// SECTION 1: RAW DATA SECTIONS (باقي الكود كما هو بدون تغيير)
+// =================================================================
+// ... (باقي الكود كما هو) ...
 
 // =================================================================
 // SECTION 1: RAW DATA SECTIONS (باقي الكود كما هو)
