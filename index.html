@@ -4,32 +4,59 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TURNKEY - HSE System</title>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <title>TURNKEY - HSE SYSTEM</title>
     <link rel="icon" type="image/png" href="TURNKEY3.png">
-    <link rel="stylesheet" href="style.css" />
+
+    <link rel="stylesheet" href="style.css?v=9" />
 
     <script>
-        const currentVersion = '1.2'; // غيّر الرقم ده مع كل تحديث
-        function checkForUpdate() {
-            const storedVersion = localStorage.getItem('app_version');
-            if (storedVersion !== currentVersion) {
-                if ('caches' in window) {
-                    caches.keys().then((names) => {
-                        names.forEach((name) => caches.delete(name));
-                    });
-                }
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.getRegistrations().then((registrations) => {
-                        for (let registration of registrations) registration.unregister();
-                    });
-                }
-                localStorage.setItem('app_version', currentVersion);
-                window.location.reload(true);
-            }
-        }
-        checkForUpdate();
-    </script>
+        // 🔴🔴 غيّر الرقم ده مع كل تحديث ترفعه 🔴🔴
+        const NEW_VERSION = '4.0';
 
+        (function () {
+            const currentVersion = localStorage.getItem('app_version');
+
+            if (currentVersion !== NEW_VERSION) {
+                console.log(`Update detected: ${currentVersion} -> ${NEW_VERSION}. NUKING CACHE...`);
+
+                // 1. إيقاف وحذف السيرفس وركر الحالي فوراً
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                        for (let registration of registrations) {
+                            registration.unregister();
+                            console.log('Service Worker Unregistered');
+                        }
+                    });
+                }
+
+                // 2. مسح كل ملفات الكاش المخزنة
+                if ('caches' in window) {
+                    caches.keys().then(function (names) {
+                        for (let name of names) {
+                            caches.delete(name);
+                            console.log('Cache Deleted:', name);
+                        }
+                    });
+                }
+
+                // 3. حفظ الرقم الجديد
+                localStorage.setItem('app_version', NEW_VERSION);
+
+                // 4. ريلود إجباري من السيرفر وليس من الكاش
+                // (setTimeout بسيط لضمان إن عملية المسح تمت)
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 500);
+
+                return; // وقف تحميل باقي الصفحة لحد ما يعمل ريلود
+            }
+        })();
+    </script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
@@ -145,7 +172,10 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=4.0"></script>
+</body>
+
+</html>
 </body>
 
 </html>
