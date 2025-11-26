@@ -1,26 +1,19 @@
-/* 1. استيراد الخط الحديث (Poppins) */
+/* 1. استيراد الخطوط */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* 2. المتغيرات (تجمع بين الحديث والرسمي) */
+/* 2. المتغيرات */
 :root {
     --brand-red: #C8102E;
-    /* أحمر تيرنكي */
     --brand-red-light: #fdf0f2;
-    /* خلفية الهوفر الرسمية */
     --dark-text: #2d3436;
     --light-text: #636e72;
     --white: #FFFFFF;
     --bg-color: #f0f2f5;
-    /* خلفية الموقع المودرن */
     --border-color: #dee2e6;
-    /* حدود السايد بار */
     --sidebar-width: 250px;
-
-    /* الظلال للكروت المودرن */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-
     --transition: all 0.3s ease;
 }
 
@@ -38,13 +31,12 @@ body {
 }
 
 /* ============================================================ */
-/* === PART 1: SIDEBAR (تصميم تيرنكي الرسمي - Turnkey Style) === */
+/* === SIDEBAR === */
 /* ============================================================ */
 .sidebar {
     width: var(--sidebar-width);
     background-color: var(--white);
     border-right: 1px solid var(--border-color);
-    /* حد أيمن بدل الظل */
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -53,7 +45,6 @@ body {
     left: 0;
     z-index: 1000;
     transition: margin-left 0.3s ease;
-    /* حذفنا الظلال والزوايا الدائرية ليكون رسمي */
 }
 
 .sidebar-header {
@@ -75,7 +66,6 @@ body {
     overflow-y: auto;
 }
 
-/* تصميم الروابط الرسمي */
 .nav-item {
     display: flex;
     align-items: center;
@@ -86,20 +76,14 @@ body {
     text-decoration: none;
     transition: all 0.2s ease-in-out;
     border-left: 4px solid transparent;
-    /* الشريط الجانبي المميز لتيرنكي */
     border-radius: 0;
-    /* زوايا حادة */
     margin-bottom: 0;
 }
 
 .nav-item:hover {
     background-color: var(--brand-red-light);
-    /* خلفية حمراء فاتحة */
     color: var(--brand-red);
     border-left-color: var(--brand-red);
-    /* ظهور الخط الأحمر */
-    transform: none;
-    /* إلغاء حركة المودرن */
 }
 
 .nav-item.active {
@@ -109,7 +93,23 @@ body {
     font-weight: 600;
 }
 
-/* Dropdown (Turnkey Style) */
+/* زر التثبيت */
+.nav-item.install-item {
+    margin-top: 20px;
+    background-color: #fff5f6;
+    color: var(--brand-red);
+    border: 1px dashed var(--brand-red);
+    justify-content: center;
+    font-weight: 700;
+}
+
+.nav-item.install-item:hover {
+    background-color: var(--brand-red);
+    color: white;
+    border-style: solid;
+}
+
+/* Dropdown */
 .nav-dropdown {
     position: relative;
 }
@@ -164,7 +164,7 @@ body {
 }
 
 /* ============================================================ */
-/* === PART 2: MAIN CONTENT (التصميم المودرن - Modern Style) === */
+/* === MAIN CONTENT === */
 /* ============================================================ */
 .main-content {
     flex-grow: 1;
@@ -177,7 +177,6 @@ body {
     width: calc(100% - var(--sidebar-width));
 }
 
-/* Modern Floating Header */
 .main-header {
     display: flex;
     justify-content: space-between;
@@ -185,12 +184,9 @@ body {
     background: var(--white);
     padding: 15px 25px;
     border-radius: 16px;
-    /* زوايا دائرية */
     box-shadow: var(--shadow-sm);
-    /* ظل ناعم */
     flex-wrap: wrap;
     gap: 15px;
-    border: none;
 }
 
 .main-header h1 {
@@ -224,16 +220,13 @@ body {
     box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
 }
 
-/* === Modern Cards === */
+/* Cards */
 .card {
     background-color: var(--white);
     padding: 25px;
     border-radius: 20px;
-    /* زوايا دائرية كبيرة */
     border: none;
-    /* بدون حدود */
     box-shadow: var(--shadow-sm);
-    /* ظل ناعم */
     transition: var(--transition);
     position: relative;
     overflow: hidden;
@@ -242,7 +235,6 @@ body {
 .card:hover {
     box-shadow: var(--shadow-md);
     transform: translateY(-3px);
-    /* حركة طفيفة */
 }
 
 .card h2 {
@@ -252,11 +244,10 @@ body {
     font-weight: 600;
     color: var(--dark-text);
     border-left: 4px solid var(--brand-red);
-    /* لمسة جمالية */
     padding-left: 10px;
 }
 
-/* KPI Styling */
+/* KPI */
 .total-kpi {
     text-align: center;
     padding: 10px;
@@ -323,7 +314,7 @@ body {
     gap: 25px;
 }
 
-/* === Charts (Corrected Colors) === */
+/* Charts */
 .bar {
     fill: var(--brand-red);
     rx: 4;
@@ -378,7 +369,6 @@ body {
     pointer-events: none;
 }
 
-/* Legend */
 .legend-container {
     display: flex;
     justify-content: center;
@@ -404,7 +394,35 @@ body {
     margin-right: 8px;
 }
 
-/* Footer */
+.install-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.main-install-btn {
+    background-color: var(--brand-red);
+    color: var(--white);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(200, 16, 46, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.main-install-btn:hover {
+    background-color: #a00d25;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(200, 16, 46, 0.4);
+}
+
 .site-footer {
     text-align: center;
     padding: 30px;
@@ -415,23 +433,8 @@ body {
 }
 
 /* === RESPONSIVE === */
-.logo-mobile {
-    display: none;
-}
-
-.sidebar-toggle {
-    display: none;
-    background-color: var(--white);
-    color: var(--dark-text);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 22px;
-    cursor: pointer;
-    width: 45px;
-    height: 45px;
-    box-shadow: var(--shadow-sm);
-}
-
+.logo-mobile,
+.sidebar-toggle,
 .mobile-header-top {
     display: none;
 }
@@ -446,7 +449,6 @@ body {
     .sidebar {
         transform: translateX(-100%);
         box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
-        /* Add shadow only on mobile when open */
         border-right: none;
     }
 
@@ -482,6 +484,15 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
+        background-color: var(--white);
+        color: var(--dark-text);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 22px;
+        cursor: pointer;
+        width: 45px;
+        height: 45px;
+        box-shadow: var(--shadow-sm);
     }
 
     .controls-container,
@@ -513,7 +524,9 @@ body {
     }
 }
 
-/* === MODAL === */
+/* ============================================================ */
+/* === MODAL & TABLE (FIXED SCROLL & STYLE) === */
+/* ============================================================ */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -538,12 +551,13 @@ body {
 
 .modal-content {
     background: var(--white);
-    padding: 30px;
-    border-radius: 20px;
+    padding: 25px;
+    border-radius: 15px;
     box-shadow: var(--shadow-lg);
-    width: 90%;
-    max-width: 700px;
+    width: 95%;
+    max-width: 800px;
     max-height: 85vh;
+    /* أقصى ارتفاع للنافذة */
     display: flex;
     flex-direction: column;
     animation: slideUp 0.3s ease-out;
@@ -565,9 +579,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    border-bottom: 2px solid var(--brand-red);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+    /* الهيدر ثابت لا ينكمش */
 }
 
 .modal-header h3 {
@@ -597,61 +613,48 @@ body {
     color: white;
 }
 
+/* 👇👇👇 الحاوية المسؤولة عن السكرول 👇👇👇 */
+#modal-table-container {
+    overflow-y: auto;
+    /* سكرول رأسي */
+    overflow-x: auto;
+    /* سكرول أفقي (للجدول العريض) */
+    width: 100%;
+    border: 1px solid var(--border-color);
+    /* إطار خفيف */
+}
+
+/* 👇👇👇 تصميم الجدول الكلاسيكي الواضح 👇👇👇 */
 .data-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+    border-collapse: collapse;
     font-size: 14px;
+    white-space: nowrap;
+    /* يمنع النص من الانثناء، مما يجبر السكرول عند الحاجة */
 }
 
 .data-table th {
-    background-color: #f8f9fa;
-    color: var(--dark-text);
+    background-color: var(--brand-red);
+    color: var(--white);
     padding: 12px 15px;
     text-align: left;
     font-weight: 600;
-    border-bottom: 2px solid var(--border-color);
+    border: 1px solid #b00c24;
+    position: sticky;
+    /* تثبيت الرأس عند السكرول */
+    top: 0;
 }
 
 .data-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--light-text);
-}
-
-/* =================================== */
-/* PWA POPUP STYLES (Fixed) */
-/* =================================== */
-.pwa-popup {
-    display: none;
-    /* مخفي افتراضياً */
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 380px;
-    background: var(--white);
-    border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    /* ظل قوي ليظهر فوق المحتوى */
-    padding: 20px;
-    z-index: 9999;
-    /* رقم عالي جداً ليظهر فوق كل شيء */
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    animation: floatUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.nav-item.install-item {
-    color: var(--brand-red);
-    font-weight: 700;
+    padding: 10px 15px;
     border: 1px solid var(--border-color);
-    margin-top: 20px;
-    /* مسافة لفصله عن باقي القائمة */
-    justify-content: center;
+    color: var(--dark-text);
 }
 
-.nav-item.install-item:hover {
-    background-color: var(--brand-red);
-    color: white;
+.data-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.data-table tr:hover {
+    background-color: #fff5f6;
 }
