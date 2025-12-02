@@ -185,7 +185,7 @@ function setupDashboard() {
         .data(ALL_MONTHS).enter().append("option")
         .attr("value", d => d).text(d => monthMapping[d]);
 
-    const defaultMonth = "Oct";
+    const defaultMonth = "Nov";
     dropdown.property("value", defaultMonth);
     updateDashboard(defaultMonth);
 
