@@ -1,43 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HSE System Login</title>
     <link rel="icon" type="image/png" href="TURNKEY3.png">
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
-            background-color: #f4f6f9; /* اللون الرمادي الفاتح */
+            background-color: #f4f6f9;
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* زر العودة */
-        .back-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            z-index: 1000;
-            background: #C8102E;
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: opacity 0.3s;
-        }
+        /* تم حذف تنسيقات زر العودة من هنا */
 
         /* الإطار */
         iframe {
             width: 100%;
             height: 100%;
             border: none;
-            opacity: 0; /* مخفي في البداية */
+            opacity: 0;
+            /* مخفي في البداية */
             transition: opacity 0.5s ease;
         }
 
@@ -74,7 +62,7 @@
 
         /* زر إعادة المحاولة (يظهر لو النت معلق) */
         .retry-btn {
-            display: none; /* مخفي افتراضياً */
+            display: none;
             margin-top: 20px;
             padding: 10px 20px;
             background: #333;
@@ -85,27 +73,30 @@
             font-size: 14px;
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
-<body>
 
-    <a href="index.html" class="back-btn">← Back Home</a>
+<body>
 
     <div class="loader-container" id="loader">
         <div class="spinner"></div>
         <div class="loading-text">Connecting to HSE System...</div>
-        
+
         <button class="retry-btn" id="retryBtn" onclick="reloadSystem()">
             Reload System ⟳
         </button>
     </div>
 
-    <iframe 
-        id="systemFrame"
-        src="https://hse-system-fawn.vercel.app/" 
-        title="HSE System"
-        allow="fullscreen">
+    <iframe id="systemFrame" src="https://hse-system-fawn.vercel.app/" title="HSE System" allow="fullscreen">
     </iframe>
 
     <script>
@@ -115,7 +106,7 @@
         const loadingText = document.querySelector('.loading-text');
 
         // 1. دالة تعمل لما الموقع يفتح بنجاح
-        iframe.onload = function() {
+        iframe.onload = function () {
             // نخفي اللودر
             loader.style.display = 'none';
             // نظهر الموقع
@@ -141,4 +132,5 @@
         }
     </script>
 </body>
+
 </html>
