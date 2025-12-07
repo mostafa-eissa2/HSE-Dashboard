@@ -675,3 +675,98 @@ body {
 .data-table tr:hover {
     background-color: #fff5f6;
 }
+
+/* === تنسيق السنوات داخل القائمة === */
+
+/* 1. شكل عنوان السنة (2025) */
+.year-header {
+    padding: 8px 20px 8px 30px;
+    /* مسافة مريحة */
+    font-size: 13px;
+    font-weight: 700;
+    /* خط عريض */
+    color: var(--brand-red);
+    /* لون أحمر لتمييز السنة */
+    background-color: #f1f1f1;
+    /* خلفية رمادية خفيفة جداً */
+    cursor: default;
+    /* الماوس ميتغيرش لأنه مش رابط */
+    border-bottom: 1px solid #e0e0e0;
+    margin-top: 5px;
+}
+
+/* 2. الروابط المتفرعة (تحت السنة) */
+.dropdown-link.nested-link {
+    padding-left: 45px !important;
+    /* إزاحة للداخل أكثر من الطبيعي */
+    font-size: 12.5px;
+    border-left: 4px solid transparent;
+}
+
+/* 3. تأثير عند الوقوف على الرابط المتفرع */
+.dropdown-link.nested-link:hover {
+    padding-left: 50px !important;
+    /* حركة بسيطة */
+    background-color: #fff0f2;
+    border-left-color: var(--brand-red);
+}
+
+/* === تنسيق القوائم الفرعية (Nested Dropdowns) === */
+
+/* زر السنة (2025) */
+.sub-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: var(--dark-text) !important;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+/* السهم الصغير جنب السنة */
+.sub-toggle .arrow {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+    margin-right: 5px;
+}
+
+/* دوران السهم عند الفتح */
+.sub-toggle.active .arrow {
+    transform: rotate(90deg);
+    color: var(--brand-red);
+}
+
+.sub-toggle.active {
+    color: var(--brand-red) !important;
+    background-color: #fff5f6;
+}
+
+/* حاوية الروابط (مخفية افتراضياً) */
+.sub-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #ffffff;
+    border-left: 2px solid var(--brand-red-light);
+    /* خط جمالي */
+}
+
+.sub-content.open {
+    max-height: 300px;
+    /* ارتفاع كافي للمحتوى */
+    transition: max-height 0.3s ease-in;
+}
+
+/* الروابط الداخلية */
+.nested-link {
+    padding-left: 40px !important;
+    /* إزاحة للداخل */
+    font-size: 12.5px;
+    color: #666;
+}
+
+.nested-link:hover {
+    background-color: var(--brand-red-light);
+    color: var(--brand-red);
+}
