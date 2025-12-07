@@ -264,9 +264,9 @@ function updateDashboard(selectedMonth) {
         kpiValues.campaigns = manp.Campaigns;
         kpiValues.drills = manp.Drills;
 
-        if (selectedMonth === 'Oct') {
+        if (selectedMonth === 'Nov') {
             totalHoursCard.style("display", "block");
-            animateValue("kpi-total-hours", 3672044);
+            animateValue("kpi-total-hours", 3787638);
             d3.select(".total-kpi .kpi-label").text("SAFE WORK-HOURS WITHOUT LTI");
         } else {
             totalHoursCard.style("display", "none");
