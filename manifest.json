@@ -8,12 +8,12 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "TURNKEY3.png",
+      "src": "TURNKEY4.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "TURNKEY3.png",
+      "src": "TURNKEY4.png",
       "sizes": "512x512",
       "type": "image/png"
     }
