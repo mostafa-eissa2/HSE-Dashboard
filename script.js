@@ -265,7 +265,7 @@ function updateDashboard(selectedMonth) {
 
         if (selectedMonth === 'Dec') {
             totalHoursCard.style("display", "block");
-            animateValue("kpi-total-hours", 3933762);
+            animateValue("kpi-total-hours", 4001762);
             d3.select(".total-kpi .kpi-label").text("SAFE WORK-HOURS WITHOUT LTI");
         } else {
             totalHoursCard.style("display", "none");
