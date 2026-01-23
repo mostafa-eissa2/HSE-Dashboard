@@ -78,6 +78,7 @@ body {
     border-left: 4px solid transparent;
     border-radius: 0;
     margin-bottom: 0;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .nav-item:hover {
@@ -213,16 +214,44 @@ body {
     gap: 15px;
 }
 
-#month-filter {
+/* تنسيق موحد لفلاتر السنة والشهر */
+#month-filter,
+#year-filter {
     border: 1px solid var(--border-color);
     border-radius: 8px;
+    /* حواف دائرية ناعمة */
     padding: 10px 15px;
+    /* مساحة داخلية مريحة */
     font-size: 14px;
+    font-weight: 600;
+    /* خط سميك قليلاً للوضوح */
     background-color: #fafafa;
+    /* خلفية فاتحة جداً */
     color: var(--dark-text);
     outline: none;
     cursor: pointer;
     transition: var(--transition);
+    min-width: 100px;
+    /* عرض أدنى لضمان عدم انكماش السنة */
+    appearance: none;
+    /* إخفاء السهم الافتراضي القديم (اختياري) */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23C8102E%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px top 50%;
+    background-size: 10px auto;
+    padding-right: 30px;
+    /* مساحة للسهم المخصص */
+}
+
+/* تأثير عند الضغط أو الوقوف عليه */
+#month-filter:focus,
+#year-filter:focus,
+#month-filter:hover,
+#year-filter:hover {
+    border-color: var(--brand-red);
+    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
+    /* توهج أحمر خفيف */
+    background-color: white;
 }
 
 #month-filter:focus {
@@ -769,4 +798,176 @@ body {
 .nested-link:hover {
     background-color: var(--brand-red-light);
     color: var(--brand-red);
+}
+
+/* ============================================================ */
+/* === MONTHLY REPORT STYLES === */
+/* ============================================================ */
+
+/* إخفاء/إظهار */
+.hidden {
+    display: none;
+}
+
+/* تنسيق عام لسكاشن التقرير */
+.report-header {
+    font-size: 1.2rem;
+    color: var(--brand-red);
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.sub-header {
+    font-size: 1rem;
+    color: var(--dark-text);
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* شبكة الإحصائيات العلوية */
+.report-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.stat-box.highlight {
+    background: var(--brand-red);
+    color: white;
+}
+
+.stat-box.highlight .stat-label {
+    color: #f0f0f0;
+}
+
+.stat-box.highlight .stat-value {
+    color: white;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dark-text);
+}
+
+/* جداول التقرير */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.report-table th,
+.report-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.report-table th {
+    background-color: var(--brand-red-light);
+    color: var(--brand-red);
+    font-weight: 600;
+}
+
+.report-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.report-table tr:hover {
+    background-color: #fff5f6;
+}
+
+/* للتنسيق المتجاوب في الجداول الكبيرة */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* تنسيق قسم التدريب */
+.row-2-container {
+    display: block; /* إلغاء الـ Grid */
+    width: 100%;
+}
+
+.extra-stats {
+    display: none;
+}
+
+.stat-box.small {
+    padding: 10px;
+}
+
+/* قائمة الأهداف المفقودة */
+.missed-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.missed-list li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    color: #555;
+    position: relative;
+    padding-left: 20px;
+}
+
+.missed-list li::before {
+    content: '⚠️';
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .row-2-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================ */
+/* === تباعد أقسام التقرير (Spacing Fix) === */
+/* ============================================================ */
+
+/* إضافة مسافة أسفل كل قسم في التقرير */
+.report-section {
+    margin-bottom: 30px; /* مسافة واضحة (يمكنك زيادتها لـ 40px لو تحب) */
+}
+
+/* إزالة المسافة من آخر قسم عشان الشكل يبقى مضبوط مع الفوتر */
+.report-section:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================================ */
+/* === إصلاح مسافات الداشبورد (Dashboard Spacing Fix) === */
+/* ============================================================ */
+
+/* إضافة مسافة أسفل كل كارت أو حاوية داخل الداشبورد */
+#dashboard-view > .card, 
+#dashboard-view > .row-3-container {
+    margin-bottom: 30px; /* نفس المسافة المستخدمة في التقرير */
+}
+
+/* إزالة المسافة من آخر عنصر للحفاظ على شكل الفوتر */
+#dashboard-view > :last-child {
+    margin-bottom: 0;
 }
