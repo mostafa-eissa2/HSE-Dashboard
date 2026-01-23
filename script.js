@@ -1,8 +1,10 @@
 // =================================================================
-// SECTION 1: RAW DATA SECTIONS
+// SECTION 1: RAW DATASETS (DASHBOARD)
 // =================================================================
 
-const permits_csv = `
+// --- بيانات 2025 (الأرشيف) ---
+const DATA_2025 = {
+    permits: `
 المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
 التحكم الاقليمي,20,29,14,21,11,0,18,10,8,19,8,27
 الحي الحكومي,1,1,2,0,0,0,2,0,0,0,2,0
@@ -27,9 +29,8 @@ const permits_csv = `
 العبور,0,0,0,11,14,16,16,32,83,66,66,97
 العاشر من رمضان,0,0,0,0,0,2,9,8,0,0,3,21
 حياة كريمة زفتى,0,0,0,0,0,0,0,1,0,0,0
-`;
-
-const parties_csv = `
+`,
+    parties: `
 Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
 المقاول,535,402,227,334,388,186,323,339,301,166,204,416
 المخازن,71,54,39,59,69,54,58,58,45,41,27,41
@@ -37,25 +38,22 @@ Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
 قسم المساحة,47,24,8,18,23,8,36,32,44,21,20,44
 قسم تنفيذ الكهرباء,196,148,118,146,152,106,126,123,98,138,94,132
 قسم المدني,4,2,2,0,0,1,5,5,2,0,1,31
-`;
-
-const delays_csv = `
+`,
+    delays: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
 Delays,588,431,245,381,443,315,476,466,348,282,254,535
 On Time,300,221,167,198,219,63,99,107,172,109,123,185
-`;
-
-const shifts_csv = `
+`,
+    shifts: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
 DAY,862,622,398,549,643,371,557,560,513,387,371,686
 NIGHT,26,30,14,30,19,7,18,13,7,4,5,34
-`;
-
-const compliance_csv = `
+`,
+    compliance: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
 Compliance,0.34,0.34,0.41,0.34,0.33,0.17,0.17,0.19,0.33,0.28,0.33,0.26
-`;
-const performance_csv = `
+`,
+    performance: `
 Month,HSE_Observation
 Jan,107
 Feb,58
@@ -69,10 +67,8 @@ Sep,67
 Oct,67
 Nov,89
 Dec,115
-`;
-
-// === (تعديل 1: إضافة عمودي Campaigns و Drills) ===
-const manpower_csv = `
+`,
+    manpower: `
 Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage,Campaigns,Drills
 Jan,51331,80716,0,0,0,0,0
 Feb,75596,62600,0,0,1,0,0
@@ -86,9 +82,8 @@ Sep,71945,67666,0,0,0,1,1
 Oct,65510,51302,0,0,1,0,1
 Nov,78353,72241,0,0,1,0,0
 Dec,78461,102663,0,0,1,0,0
-`;
-
-const training_csv = `
+`,
+    training: `
 Month,Emp Manpower,Total Training
 Jan,467,716
 Feb,467,471
@@ -102,9 +97,8 @@ Sep,406,534
 Oct,388,576
 Nov,375,634
 Dec,359,895
-`;
-
-const inductions_csv = `
+`,
+    inductions: `
 Month,Total
 Jan,192
 Feb,110
@@ -118,10 +112,214 @@ Sep,132
 Oct,125
 Nov,187
 Dec,337
-`;
+`
+};
+
+// --- بيانات 2026 (الجديدة - أصفار) ---
+const DATA_2026 = {
+    permits: `
+المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+التحكم الاقليمي,0,0,0,0,0,0,0,0,0,0,0,0
+الحي الحكومي,0,0,0,0,0,0,0,0,0,0,0,0
+الحي الدبلوماسي,0,0,0,0,0,0,0,0,0,0,0,0
+العلمين,0,0,0,0,0,0,0,0,0,0,0,0
+الفردوس,0,0,0,0,0,0,0,0,0,0,0,0
+الكيان العسكري,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة الفيوم,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة المنيا,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة أرمنت,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة أسنا,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة أسوان,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة صدفا,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة مطوبس,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة منفلوط,0,0,0,0,0,0,0,0,0,0,0,0
+دهشور,0,0,0,0,0,0,0,0,0,0,0,0
+سانت كاترين,0,0,0,0,0,0,0,0,0,0,0,0
+ميناء الدخيلة,0,0,0,0,0,0,0,0,0,0,0,0
+سوهاج,0,0,0,0,0,0,0,0,0,0,0,0
+مصنع البلاط,0,0,0,0,0,0,0,0,0,0,0,0
+أبو قير,0,0,0,0,0,0,0,0,0,0,0,0
+العبور,0,0,0,0,0,0,0,0,0,0,0,0
+العاشر من رمضان,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة زفتى,0,0,0,0,0,0,0,0,0,0,0,0
+`,
+    parties: `
+Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+المقاول,0,0,0,0,0,0,0,0,0,0,0,0
+المخازن,0,0,0,0,0,0,0,0,0,0,0,0
+قسم الجودة,0,0,0,0,0,0,0,0,0,0,0,0
+قسم المساحة,0,0,0,0,0,0,0,0,0,0,0,0
+قسم تنفيذ الكهرباء,0,0,0,0,0,0,0,0,0,0,0,0
+قسم المدني,0,0,0,0,0,0,0,0,0,0,0,0
+`,
+    delays: `
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+Delays,0,0,0,0,0,0,0,0,0,0,0,0
+On Time,0,0,0,0,0,0,0,0,0,0,0,0
+`,
+    shifts: `
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+DAY,0,0,0,0,0,0,0,0,0,0,0,0
+NIGHT,0,0,0,0,0,0,0,0,0,0,0,0
+`,
+    compliance: `
+Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+Compliance,0,0,0,0,0,0,0,0,0,0,0,0
+`,
+    performance: `
+Month,HSE_Observation
+Jan,0
+Feb,0
+Mar,0
+Apr,0
+May,0
+Jun,0
+Jul,0
+Aug,0
+Sep,0
+Oct,0
+Nov,0
+Dec,0
+`,
+    manpower: `
+Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage,Campaigns,Drills
+Jan,0,0,0,0,0,0,0
+Feb,0,0,0,0,0,0,0
+Mar,0,0,0,0,0,0,0
+Apr,0,0,0,0,0,0,0
+May,0,0,0,0,0,0,0
+Jun,0,0,0,0,0,0,0
+Jul,0,0,0,0,0,0,0
+Aug,0,0,0,0,0,0,0
+Sep,0,0,0,0,0,0,0
+Oct,0,0,0,0,0,0,0
+Nov,0,0,0,0,0,0,0
+Dec,0,0,0,0,0,0,0
+`,
+    training: `
+Month,Emp Manpower,Total Training
+Jan,0,0
+Feb,0,0
+Mar,0,0
+Apr,0,0
+May,0,0
+Jun,0,0
+Jul,0,0
+Aug,0,0
+Sep,0,0
+Oct,0,0
+Nov,0,0
+Dec,0,0
+`,
+    inductions: `
+Month,Total
+Jan,0
+Feb,0
+Mar,0
+Apr,0
+May,0
+Jun,0
+Jul,0
+Aug,0
+Sep,0
+Oct,0
+Nov,0
+Dec,0
+`
+};
 
 // =================================================================
-// SECTION 2: CONFIGURATION AND DATA PARSING
+// SECTION 2: MONTHLY REPORT DATA (NEW) - هيكل بيانات التقرير
+// =================================================================
+
+// دالة لإنشاء نموذج فارغ للبيانات
+const createEmptyReportData = () => ({
+    projects: 0,
+    ptw: 0,
+    safeHours: "0",
+    manpower: [
+        { entity: "Sewedy", mp: 0, mh: 0 },
+        { entity: "SC", mp: 0, mh: 0 },
+        { entity: "Total", mp: 0, mh: 0 }
+    ],
+    training: {
+        sewedy: { train: 0, ind: 0 },
+        sc: { train: 0, ind: 0 },
+        total: { train: 0, ind: 0 }
+    },
+    // تقسيم Drills و Campaigns إلى كائنات
+    drills: { sewedy: 0, sc: 0, total: 0 },
+    campaigns: { sewedy: 0, sc: 0, total: 0 },
+    incidents: [
+        { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+        { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+        { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 }
+    ],
+    observations: [
+        { entity: "Sewedy", act: 0, cond: 0, env: 0, pos: 0 },
+        { entity: "SC", act: 0, cond: 0, env: 0, pos: 0 },
+        { entity: "Total", act: 0, cond: 0, env: 0, pos: 0 }
+    ],
+    inspections: [
+        { entity: "Sewedy", haz: 0, obs: 0, tour: 0, accom: 0, walk: 0, equip: 0, int: 0, ext: 0 }
+    ],
+    missed: []
+});
+
+// بيانات التقرير لعام 2026
+const REPORT_DATA_2026 = {
+    "Jan": createEmptyReportData(),
+    "Feb": createEmptyReportData(),
+    "Mar": createEmptyReportData(),
+    "Apr": createEmptyReportData(),
+    "May": createEmptyReportData(),
+    "Jun": createEmptyReportData(),
+    "Jul": createEmptyReportData(),
+    "Aug": createEmptyReportData(),
+    "Sep": createEmptyReportData(),
+    "Oct": createEmptyReportData(),
+    "Nov": createEmptyReportData(),
+
+    // بيانات شهر يناير
+    "Jan": {
+        projects: 0,
+        ptw: 0,
+        safeHours: "0",
+        manpower: [
+            { entity: "Sewedy", mp: 0, mh: 0 },
+            { entity: "SC", mp: 0, mh: 0 },
+            { entity: "Total", mp: 0, mh: 0 }
+        ],
+        training: {
+            sewedy: { train: 0, ind: 0 },
+            sc: { train: 0, ind: 0 },
+            total: { train: 0, ind: 0 }
+        },
+        drills: { sewedy: 0, sc: 0, total: 0 },
+        campaigns: { sewedy: 0, sc: 0, total: 0 },
+        incidents: [
+            { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 }
+        ],
+        observations: [
+            { entity: "Sewedy", act: 0, cond: 0, env: 0, pos: 0 },
+            { entity: "SC", act: 0, cond: 0, env: 0, pos: 0 },
+            { entity: "Total", act: 0, cond: 0, env: 0, pos: 0 }
+        ],
+        inspections: [
+            { entity: "Sewedy", haz: 0, obs: 0, tour: 0, accom: 0, walk: 0, equip: 0, int: 0, ext: 0 }
+        ],
+        missed: [
+            "Hazard Reporting targets not met",
+            "Monthly Site Tours frequency low",
+            "Weekly Walkdowns missed in some areas"
+        ]
+    }
+};
+
+// =================================================================
+// SECTION 3: CONFIGURATION AND PARSING
 // =================================================================
 
 const monthMapping = {
@@ -129,6 +327,9 @@ const monthMapping = {
     "Jul": "July", "Aug": "August", "Sep": "September", "Oct": "October", "Nov": "November", "Dec": "December"
 };
 const ALL_MONTHS = Object.keys(monthMapping);
+
+// متغير لتخزين بيانات الداشبورد الحالية
+let CURRENT_DATA = {};
 
 function parseGeneric(csvText) {
     const dataByMonth = {};
@@ -145,6 +346,7 @@ function parseGeneric(csvText) {
     });
     return dataByMonth;
 }
+
 function parseByMonth(csvText) {
     const dataByMonth = {};
     if (!csvText) return dataByMonth;
@@ -158,65 +360,255 @@ function parseByMonth(csvText) {
     return dataByMonth;
 }
 
-const ALL_DATA = {
-    permits: parseGeneric(permits_csv),
-    parties: parseGeneric(parties_csv),
-    shifts: parseGeneric(shifts_csv),
-    delays: parseGeneric(delays_csv),
-    compliance: parseGeneric(compliance_csv),
-    performance: parseByMonth(performance_csv),
-    manpower: parseByMonth(manpower_csv),
-    training: parseByMonth(training_csv),
-    inductions: parseByMonth(inductions_csv),
-};
-const availableMonths = Object.keys(ALL_DATA.performance);
+function loadYearData(year) {
+    let sourceData;
+    if (year === '2026') {
+        sourceData = DATA_2026;
+    } else {
+        sourceData = DATA_2025; // Default 2025
+    }
 
-// =================================================================
-// SECTION 3: MAIN APPLICATION LOGIC
-// =================================================================
-
-function setupDashboard() {
-    const dropdown = d3.select("#month-filter");
-
-    dropdown.append("option").attr("value", "Cumulative").text("Cumulative (YTD)");
-
-    dropdown.selectAll("option.month-opt")
-        .data(ALL_MONTHS).enter().append("option")
-        .attr("value", d => d).text(d => monthMapping[d]);
-
-    const defaultMonth = "Dec";
-    dropdown.property("value", defaultMonth);
-    updateDashboard(defaultMonth);
-
-    dropdown.on("change", (event) => updateDashboard(event.target.value));
-    setupModal();
+    CURRENT_DATA = {
+        permits: parseGeneric(sourceData.permits),
+        parties: parseGeneric(sourceData.parties),
+        shifts: parseGeneric(sourceData.shifts),
+        delays: parseGeneric(sourceData.delays),
+        compliance: parseGeneric(sourceData.compliance),
+        performance: parseByMonth(sourceData.performance),
+        manpower: parseByMonth(sourceData.manpower),
+        training: parseByMonth(sourceData.training),
+        inductions: parseByMonth(sourceData.inductions),
+    };
 }
 
+// =================================================================
+// SECTION 4: RENDER FUNCTIONS (Dashboard & Report)
+// =================================================================
+
+// 1. دالة التبديل بين الشاشات
+function switchView(viewName) {
+    const dashboardView = document.getElementById('dashboard-view');
+    const reportView = document.getElementById('report-view');
+    const navDashboard = document.getElementById('nav-dashboard');
+    const navReport = document.getElementById('nav-report');
+    const pageTitle = document.getElementById('page-title');
+
+    document.querySelector('.sidebar').classList.remove('visible');
+
+    if (viewName === 'dashboard') {
+        dashboardView.style.display = 'block';
+        reportView.style.display = 'none';
+        navDashboard.classList.add('active');
+        navReport.classList.remove('active');
+        pageTitle.innerText = "HSE SYSTEM DASHBOARD";
+
+        const currentMonth = d3.select("#month-filter").property("value");
+        updateDashboard(currentMonth);
+
+    } else if (viewName === 'report') {
+        dashboardView.style.display = 'none';
+        reportView.style.display = 'block';
+        navDashboard.classList.remove('active');
+        navReport.classList.add('active');
+        pageTitle.innerText = "HSE MONTHLY REPORT";
+
+        const currentMonth = d3.select("#month-filter").property("value");
+        renderMonthlyReport(currentMonth);
+    }
+}
+
+// 2. دالة عرض التقرير الشهري
+function renderMonthlyReport(month) {
+    const year = d3.select("#year-filter").property("value");
+
+    if (year !== '2026') {
+        document.getElementById('report-view').innerHTML = `
+            <div class="card" style="text-align:center; padding:50px;">
+                <h3>No Report Available for ${year}</h3>
+                <p>Monthly Reports start from 2026.</p>
+            </div>`;
+        return;
+    }
+
+    let data = null;
+
+    if (month === 'Cumulative') {
+        data = calculateCumulativeReport(REPORT_DATA_2026);
+        setTimeout(() => {
+            const header = document.querySelector('.report-header');
+            if (header) header.innerText = "1. General Statistics (Year To Date)";
+        }, 50);
+    } else {
+        if (REPORT_DATA_2026[month]) {
+            data = REPORT_DATA_2026[month];
+        }
+    }
+
+    if (!data) {
+        document.getElementById('report-view').innerHTML = `
+            <div class="card" style="text-align:center; padding:50px;">
+                <h3>No Data for ${month === 'Cumulative' ? 'Cumulative YTD' : month} ${year}</h3>
+                <p>Data has not been entered yet.</p>
+            </div>`;
+        return;
+    }
+
+    // بناء HTML التقرير
+    document.getElementById('report-view').innerHTML = `
+        <div class="report-section card">
+            <h2 class="report-header">1. General Statistics</h2>
+            <div class="report-stats-grid">
+                <div class="stat-box">
+                    <span class="stat-label">Active Projects</span>
+                    <span class="stat-value" id="rep-projects">${data.projects}</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">PTW Count</span>
+                    <span class="stat-value" id="rep-ptw">${data.ptw}</span>
+                </div>
+                <div class="stat-box highlight">
+                    <span class="stat-label">Safe Man Hours (Without LTI)</span>
+                    <span class="stat-value" id="rep-safe-hours">${data.safeHours}</span>
+                </div>
+            </div>
+            <h3 class="sub-header">Man Power & Hours Breakdown</h3>
+            <div class="table-responsive">
+                <table class="report-table">
+                    <thead><tr><th>Entity</th><th>Man Power (Current)</th><th>Man Hours ${month === 'Cumulative' ? '(Total)' : '(Monthly)'}</th></tr></thead>
+                    <tbody id="rep-manpower-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section card">
+            <h2 class="report-header">2. Training & Awareness</h2>
+            <div class="row-2-container">
+                <table class="report-table">
+                    <thead>
+                        <tr><th>Category</th><th>Sewedy</th><th>SC</th><th>Total</th></tr>
+                    </thead>
+                    <tbody id="rep-training-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section card">
+            <h2 class="report-header">3. Incident Classification</h2>
+            <div class="table-responsive">
+                <table class="report-table">
+                    <thead><tr><th>Entity</th><th>Fatality</th><th>LTI</th><th>MTC</th><th>First Aid</th><th>Env. Incident</th><th>Prop. Damage</th><th>Near Miss</th></tr></thead>
+                    <tbody id="rep-incidents-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section card">
+            <h2 class="report-header">4. HSE Observations</h2>
+            <div class="table-responsive">
+                <table class="report-table">
+                    <thead><tr><th>Entity</th><th>Unsafe Act</th><th>Unsafe Condition</th><th>Env. Impact</th><th>Positive Obs.</th></tr></thead>
+                    <tbody id="rep-observations-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section card">
+            <h2 class="report-header">5. Inspection Reports</h2>
+            <div class="table-responsive">
+                <table class="report-table">
+                    <thead><tr><th>Entity</th><th>Hazard Report</th><th>Obs Cards</th><th>Site Tour</th><th>Accom. Insp</th><th>Walk Down</th><th>Equip Insp</th><th>Int. Audit</th><th>Ext. Audit</th></tr></thead>
+                    <tbody id="rep-inspections-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section card" style="border-left: 4px solid #f39c12;">
+            <h2 class="report-header">⚠️ Areas for Improvement (Missed Targets)</h2>
+            <ul id="rep-missed-targets" class="missed-list"></ul>
+        </div>
+    `;
+
+    // تعبئة البيانات
+    const mpBody = document.getElementById('rep-manpower-body');
+    if (mpBody && data.manpower) {
+        mpBody.innerHTML = data.manpower.map(row => `
+            <tr style="${row.entity === 'Total' ? 'font-weight:bold; background:#eee;' : ''}">
+                <td>${row.entity}</td><td>${row.mp}</td><td>${row.mh.toLocaleString()}</td>
+            </tr>
+        `).join('');
+    }
+
+    const trBody = document.getElementById('rep-training-body');
+    if (trBody && data.training) {
+        trBody.innerHTML = `
+            <tr>
+                <td>Training</td><td>${data.training.sewedy.train}</td><td>${data.training.sc.train}</td><td>${data.training.total.train}</td>
+            </tr>
+            <tr>
+                <td>Induction</td><td>${data.training.sewedy.ind}</td><td>${data.training.sc.ind}</td><td>${data.training.total.ind}</td>
+            </tr>
+            <tr>
+                <td>HSE Drills</td><td>${data.drills.sewedy}</td><td>${data.drills.sc}</td><td>${data.drills.total}</td>
+            </tr>
+            <tr>
+                <td>HSE Campaigns</td><td>${data.campaigns.sewedy}</td><td>${data.campaigns.sc}</td><td>${data.campaigns.total}</td>
+            </tr>
+        `;
+    }
+
+    const incBody = document.getElementById('rep-incidents-body');
+    if (incBody && data.incidents) {
+        incBody.innerHTML = data.incidents.map(row => `
+            <tr style="${row.entity === 'Total' ? 'font-weight:bold; background:#eee;' : ''}">
+                <td>${row.entity}</td><td>${row.fat}</td><td>${row.lti}</td><td>${row.mtc}</td><td>${row.first}</td><td>${row.env}</td><td>${row.prop}</td><td>${row.near}</td>
+            </tr>
+        `).join('');
+    }
+
+    const obsBody = document.getElementById('rep-observations-body');
+    if (obsBody && data.observations) {
+        obsBody.innerHTML = data.observations.map(row => `
+            <tr style="${row.entity === 'Total' ? 'font-weight:bold; background:#eee;' : ''}">
+                <td>${row.entity}</td><td>${row.act}</td><td>${row.cond}</td><td>${row.env}</td><td>${row.pos}</td>
+            </tr>
+        `).join('');
+    }
+
+    const inspBody = document.getElementById('rep-inspections-body');
+    if (inspBody && data.inspections) {
+        inspBody.innerHTML = data.inspections.map(row => `
+            <tr>
+                <td>${row.entity}</td><td>${row.haz}</td><td>${row.obs}</td><td>${row.tour}</td><td>${row.accom}</td><td>${row.walk}</td><td>${row.equip}</td><td>${row.int}</td><td>${row.ext}</td>
+            </tr>
+        `).join('');
+    }
+
+    const missedList = document.getElementById('rep-missed-targets');
+    if (missedList && data.missed) {
+        missedList.innerHTML = data.missed.map(item => `<li>${item}</li>`).join('');
+    }
+}
+
+// 3. دالة تحديث الداشبورد
 function updateDashboard(selectedMonth) {
     const totalHoursCard = d3.select("#total-hours-card");
     const kpiGrid = d3.select("#monthly-kpis");
 
     let permitsData = [], partiesData = [], shiftsData = [], delaysData = [];
-
-    // === (تعديل 2: إضافة المتغيرات الجديدة) ===
-    let kpiValues = {
-        hours: 0, employees: 0, ptw: 0, observations: 0,
-        lti: 0, mtc: 0, propDamage: 0, trainings: 0, inductions: 0,
-        campaigns: 0, drills: 0 // << تم الإضافة
-    };
+    let kpiValues = { hours: 0, employees: 0, ptw: 0, observations: 0, lti: 0, mtc: 0, propDamage: 0, trainings: 0, inductions: 0, campaigns: 0, drills: 0 };
 
     if (selectedMonth === 'Cumulative') {
-        permitsData = aggregateGenericData(ALL_DATA.permits);
-        partiesData = aggregateGenericData(ALL_DATA.parties);
-        shiftsData = aggregateGenericData(ALL_DATA.shifts);
-        delaysData = aggregateGenericData(ALL_DATA.delays);
+        permitsData = aggregateGenericData(CURRENT_DATA.permits);
+        partiesData = aggregateGenericData(CURRENT_DATA.parties);
+        shiftsData = aggregateGenericData(CURRENT_DATA.shifts);
+        delaysData = aggregateGenericData(CURRENT_DATA.delays);
 
         ALL_MONTHS.forEach(m => {
-            const manp = ALL_DATA.manpower[m] || {};
-            const train = ALL_DATA.training[m] || {};
-            const perf = ALL_DATA.performance[m] || {};
-            const induc = ALL_DATA.inductions[m] || {};
-            const ptwCount = d3.sum(ALL_DATA.permits[m] || [], d => d.value);
+            const manp = CURRENT_DATA.manpower[m] || {};
+            const train = CURRENT_DATA.training[m] || {};
+            const perf = CURRENT_DATA.performance[m] || {};
+            const induc = CURRENT_DATA.inductions[m] || {};
+            const ptwCount = d3.sum(CURRENT_DATA.permits[m] || [], d => d.value);
 
             kpiValues.hours += (+manp["Worked Hours Sewedy"] || 0) + (+manp["Worked Hours Sub"] || 0);
             kpiValues.ptw += ptwCount;
@@ -226,8 +618,6 @@ function updateDashboard(selectedMonth) {
             kpiValues.propDamage += (+manp["Property Damage"] || 0);
             kpiValues.trainings += (+train["Total Training"] || 0);
             kpiValues.inductions += (+induc.Total || 0);
-
-            // === (تعديل 3: جمع القيم التراكمية) ===
             kpiValues.campaigns += (+manp.Campaigns || 0);
             kpiValues.drills += (+manp.Drills || 0);
 
@@ -239,15 +629,15 @@ function updateDashboard(selectedMonth) {
         animateValue("kpi-total-hours", kpiValues.hours);
 
     } else {
-        permitsData = ALL_DATA.permits[selectedMonth] || [];
-        partiesData = ALL_DATA.parties[selectedMonth] || [];
-        shiftsData = ALL_DATA.shifts[selectedMonth] || [];
-        delaysData = ALL_DATA.delays[selectedMonth] || [];
+        permitsData = CURRENT_DATA.permits[selectedMonth] || [];
+        partiesData = CURRENT_DATA.parties[selectedMonth] || [];
+        shiftsData = CURRENT_DATA.shifts[selectedMonth] || [];
+        delaysData = CURRENT_DATA.delays[selectedMonth] || [];
 
-        const perf = ALL_DATA.performance[selectedMonth] || {};
-        const manp = ALL_DATA.manpower[selectedMonth] || {};
-        const train = ALL_DATA.training[selectedMonth] || {};
-        const induc = ALL_DATA.inductions[selectedMonth] || {};
+        const perf = CURRENT_DATA.performance[selectedMonth] || {};
+        const manp = CURRENT_DATA.manpower[selectedMonth] || {};
+        const train = CURRENT_DATA.training[selectedMonth] || {};
+        const induc = CURRENT_DATA.inductions[selectedMonth] || {};
 
         kpiValues.hours = (+manp["Worked Hours Sewedy"] || 0) + (+manp["Worked Hours Sub"] || 0);
         kpiValues.employees = train["Emp Manpower"];
@@ -258,12 +648,11 @@ function updateDashboard(selectedMonth) {
         kpiValues.propDamage = manp["Property Damage"];
         kpiValues.trainings = train["Total Training"];
         kpiValues.inductions = (induc.Total || 0);
-
-        // === (تعديل 4: قراءة القيمة الشهرية) ===
         kpiValues.campaigns = manp.Campaigns;
         kpiValues.drills = manp.Drills;
 
-        if (selectedMonth === 'Dec') {
+        const currentYear = d3.select("#year-filter").property("value");
+        if (selectedMonth === 'Dec' && currentYear === '2025') {
             totalHoursCard.style("display", "block");
             animateValue("kpi-total-hours", 4001762);
             d3.select(".total-kpi .kpi-label").text("SAFE WORK-HOURS WITHOUT LTI");
@@ -272,38 +661,36 @@ function updateDashboard(selectedMonth) {
         }
     }
 
-    // === Filter Zeros ===
     permitsData = permitsData.filter(d => d.value > 0);
     partiesData = partiesData.filter(d => d.value > 0);
 
     renderKPIGrid(kpiValues);
-
     drawPermitsChart(permitsData, selectedMonth === 'Cumulative' ? "Cumulative Permits per Project" : "Permits per Project");
     drawHorizontalBarChart(partiesData, selectedMonth === 'Cumulative' ? "Cumulative Permits by Party" : "Permits by Requesting Party");
     drawExplodedPieChart(delaysData, "Delays Analysis");
     drawInteractivePieChart(shiftsData, "Shifts Analysis");
 
     const observationsCard = d3.select("#observations-card");
-
     let trendData = [];
     let radialValue = 0;
-    const totalYearPermits = ALL_MONTHS.reduce((sum, m) => sum + d3.sum(ALL_DATA.permits[m] || [], d => d.value), 0);
+    const totalYearPermits = ALL_MONTHS.reduce((sum, m) => sum + d3.sum(CURRENT_DATA.permits[m] || [], d => d.value), 0);
 
     if (selectedMonth === 'Cumulative') {
         observationsCard.style("display", "block");
-        trendData = Object.values(ALL_DATA.performance);
+        trendData = Object.values(CURRENT_DATA.performance);
         radialValue = kpiValues.ptw;
     } else {
-        if (selectedMonth === 'Jan' || !availableMonths.includes(selectedMonth)) {
-            trendData = Object.values(ALL_DATA.performance).slice(0, ALL_MONTHS.indexOf(selectedMonth) + 1);
+        const availableData = Object.keys(CURRENT_DATA.performance);
+        if (selectedMonth === 'Jan' || !availableData.includes(selectedMonth)) {
+            trendData = Object.values(CURRENT_DATA.performance).slice(0, ALL_MONTHS.indexOf(selectedMonth) + 1);
         } else {
             observationsCard.style("display", "block");
-            trendData = Object.values(ALL_DATA.performance).slice(0, ALL_MONTHS.indexOf(selectedMonth) + 1);
+            trendData = Object.values(CURRENT_DATA.performance).slice(0, ALL_MONTHS.indexOf(selectedMonth) + 1);
         }
 
         let cumSum = 0;
         for (let i = 0; i <= ALL_MONTHS.indexOf(selectedMonth); i++) {
-            cumSum += d3.sum(ALL_DATA.permits[ALL_MONTHS[i]] || [], d => d.value);
+            cumSum += d3.sum(CURRENT_DATA.permits[ALL_MONTHS[i]] || [], d => d.value);
         }
         radialValue = cumSum;
     }
@@ -312,39 +699,118 @@ function updateDashboard(selectedMonth) {
     drawCumulativeRadialChart(radialValue, totalYearPermits);
 }
 
+// =================================================================
+// SECTION 5: HELPER FUNCTIONS & SETUP
+// =================================================================
+
+// 👇👇 الدالة المفقودة التي كانت تسبب المشكلة 👇👇
+function calculateCumulativeReport(yearData) {
+    let accumulated = createEmptyReportData();
+    const monthKeys = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    monthKeys.forEach(month => {
+        const mData = yearData[month];
+        if (!mData || (mData.ptw === 0 && mData.manpower[0].mh === 0)) return;
+
+        accumulated.projects = mData.projects;
+        accumulated.ptw += mData.ptw;
+
+        let currentSafe = parseInt(String(mData.safeHours).replace(/,/g, '') || 0);
+        let totalSafe = parseInt(String(accumulated.safeHours).replace(/,/g, '') || 0);
+        accumulated.safeHours = (totalSafe + currentSafe).toLocaleString();
+
+        // جمع العمالة
+        accumulated.manpower.forEach((row, index) => {
+            if (mData.manpower[index]) {
+                row.mp = mData.manpower[index].mp;
+                row.mh += mData.manpower[index].mh;
+            }
+        });
+
+        // جمع التدريب
+        accumulated.training.sewedy.train += mData.training.sewedy.train;
+        accumulated.training.sewedy.ind += mData.training.sewedy.ind;
+        accumulated.training.sc.train += mData.training.sc.train;
+        accumulated.training.sc.ind += mData.training.sc.ind;
+        accumulated.training.total.train += mData.training.total.train;
+        accumulated.training.total.ind += mData.training.total.ind;
+
+        // جمع Drills & Campaigns المفصلة
+        accumulated.drills.sewedy += mData.drills.sewedy;
+        accumulated.drills.sc += mData.drills.sc;
+        accumulated.drills.total += mData.drills.total;
+
+        accumulated.campaigns.sewedy += mData.campaigns.sewedy;
+        accumulated.campaigns.sc += mData.campaigns.sc;
+        accumulated.campaigns.total += mData.campaigns.total;
+
+        // جمع الحوادث
+        accumulated.incidents.forEach((row, index) => {
+            const mRow = mData.incidents[index];
+            if (mRow) {
+                row.fat += mRow.fat; row.lti += mRow.lti; row.mtc += mRow.mtc;
+                row.first += mRow.first; row.env += mRow.env; row.prop += mRow.prop;
+                row.near += mRow.near;
+            }
+        });
+
+        // جمع الملاحظات
+        accumulated.observations.forEach((row, index) => {
+            const mRow = mData.observations[index];
+            if (mRow) {
+                row.act += mRow.act; row.cond += mRow.cond;
+                row.env += mRow.env; row.pos += mRow.pos;
+            }
+        });
+
+        // جمع التفتيش
+        accumulated.inspections.forEach((row, index) => {
+            const mRow = mData.inspections[index];
+            if (mRow) {
+                row.haz += mRow.haz; row.obs += mRow.obs; row.tour += mRow.tour;
+                row.accom += mRow.accom; row.walk += mRow.walk; row.equip += mRow.equip;
+                row.int += mRow.int; row.ext += mRow.ext;
+            }
+        });
+
+        // تجميع الأهداف المفقودة
+        if (mData.missed && mData.missed.length > 0) {
+            mData.missed.forEach(item => {
+                if (!accumulated.missed.includes(item)) {
+                    accumulated.missed.push(item);
+                }
+            });
+        }
+    });
+
+    return accumulated;
+}
+// 👆👆 ------------------------------------- 👆👆
+
 function aggregateGenericData(dataset) {
     const aggregated = {};
-
     ALL_MONTHS.forEach(month => {
         const monthData = dataset[month] || [];
         monthData.forEach(item => {
-            if (!aggregated[item.group]) {
-                aggregated[item.group] = 0;
-            }
+            if (!aggregated[item.group]) aggregated[item.group] = 0;
             aggregated[item.group] += item.value;
         });
     });
-
-    return Object.keys(aggregated).map(key => ({
-        group: key,
-        value: aggregated[key]
-    }));
+    return Object.keys(aggregated).map(key => ({ group: key, value: aggregated[key] }));
 }
 
 function renderKPIGrid(values) {
     const container = d3.select("#monthly-kpis").html("");
     const kpiList = [
-        { label: "Monthly Hours", value: values.hours },
-        { label: "Employees", value: values.employees },
+        { label: "ManPower Hours", value: values.hours },
+        { label: "ManPower", value: values.employees },
         { label: "PTW", value: values.ptw },
         { label: "Observations", value: values.observations },
         { label: "LTI", value: values.lti },
         { label: "MTC", value: values.mtc },
         { label: "Property Damage", value: values.propDamage },
-        // === (تعديل 5: إضافة الكروت الجديدة للقائمة) ===
         { label: "Campaigns", value: values.campaigns },
         { label: "Drills", value: values.drills },
-        // ===========================================
         { label: "Trainings", value: values.trainings },
         { label: "Inductions", value: values.inductions },
     ];
@@ -352,17 +818,10 @@ function renderKPIGrid(values) {
     kpiList.forEach(kpi => {
         const card = container.append("div").attr("class", "kpi-card");
         card.append("div").attr("class", "kpi-label").text(kpi.label);
-        const valueDiv = card.append("div").attr("class", "kpi-value").attr("id", `kpi-${kpi.label.replace(/\s/g, '')}`).text(0);
+        card.append("div").attr("class", "kpi-value").attr("id", `kpi-${kpi.label.replace(/\s/g, '')}`).text(0);
         animateValue(`kpi-${kpi.label.replace(/\s/g, '')}`, kpi.value);
     });
 }
-
-
-// =================================================================
-// SECTION 4: KPI & MODAL & CHART FUNCTIONS (Standard)
-// =================================================================
-
-const drawNoData = (selector) => d3.select(selector).html(`<p class="no-data-msg">No data for this selection.</p>`);
 
 function animateValue(id, endValue) {
     const element = d3.select(`#${id}`);
@@ -373,6 +832,8 @@ function animateValue(id, endValue) {
             return function(t) { this.textContent = d3.format(",.0f")(i(t)); };
         });
 }
+
+const drawNoData = (selector) => d3.select(selector).html(`<p class="no-data-msg">No data for this selection.</p>`);
 
 function showModal(title, data) {
     d3.select("#modal-title").text(title);
@@ -396,95 +857,25 @@ function createTable(selector, dataArray) {
     rows.selectAll("td").data(d => headers.map(header => d[header])).join("td").text(d => d);
 }
 
-function setupModal() {
-    d3.select(".close-button").on("click", hideModal);
-    d3.select("#modal-overlay").on("click", function(event) {
-        if (event.target === this) {
-            hideModal();
-        }
-    });
-}
-
+// --- Chart Drawing Functions ---
 function drawPermitsChart(data, title) {
     const selector = "#permits-chart-container";
     const container = d3.select(selector).html("");
-
-    // فلترة الأصفار
     const filteredData = data.filter(d => d.value > 0);
-
     if (filteredData.length === 0) { drawNoData(selector); return; }
     container.on("click", () => showModal(title, filteredData));
-
     const isMobile = window.innerWidth < 768;
-
-    const margin = {
-        top: 40,
-        right: 20,
-        bottom: isMobile ? 160 : 100,
-        left: 50
-    };
-
+    const margin = { top: 40, right: 20, bottom: isMobile ? 160 : 100, left: 50 };
     const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
     const height = 300 - margin.top - margin.bottom;
-
-    const svg = container.append("svg")
-        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const x = d3.scaleBand()
-        .range([0, width])
-        .domain(filteredData.map(d => d.group))
-        .padding(0.3);
-
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(filteredData, d => d.value) * 1.3 || 10])
-        .range([height, 0]);
-
-    const xAxis = svg.append("g")
-        .attr("class", "axis-x")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x));
-
-    xAxis.selectAll("text")
-        .attr("transform", isMobile ? "translate(-8, 10)rotate(-90)" : "translate(-10,5)rotate(-45)")
-        .style("text-anchor", "end")
-        .style("font-size", isMobile ? "10px" : "11px")
-        .style("font-weight", "500");
-
+    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const x = d3.scaleBand().range([0, width]).domain(filteredData.map(d => d.group)).padding(0.3);
+    const y = d3.scaleLinear().domain([0, d3.max(filteredData, d => d.value) * 1.3 || 10]).range([height, 0]);
+    const xAxis = svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
+    xAxis.selectAll("text").attr("transform", isMobile ? "translate(-8, 10)rotate(-90)" : "translate(-10,5)rotate(-45)").style("text-anchor", "end").style("font-size", isMobile ? "10px" : "11px").style("font-weight", "500");
     svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
-
-    svg.selectAll(".bar")
-        .data(filteredData)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", d => x(d.group))
-        .attr("width", x.bandwidth())
-        .attr("y", d => y(d.value))
-        .attr("height", d => height - y(d.value));
-
-    // رسم الأرقام (مع ضبط السنتر بدقة)
-    svg.selectAll(".bar-label")
-        .data(filteredData)
-        .enter().append("text")
-        .attr("class", "bar-label")
-        .text(d => d.value)
-        .attr("transform", function(d) {
-            const xPos = x(d.group) + x.bandwidth() / 2;
-            const yPos = y(d.value) - 5;
-
-            if (isMobile) {
-                return `translate(${xPos}, ${yPos}) rotate(-90)`;
-            } else {
-                return `translate(${xPos}, ${yPos})`;
-            }
-        })
-        .attr("dy", isMobile ? "0.35em" : "0")
-        .style("text-anchor", isMobile ? "start" : "middle")
-        .style("fill", "#333")
-        .style("font-weight", "600")
-        .style("font-size", isMobile ? "10px" : "11px")
-        .style("opacity", 1);
+    svg.selectAll(".bar").data(filteredData).enter().append("rect").attr("class", "bar").attr("x", d => x(d.group)).attr("width", x.bandwidth()).attr("y", d => y(d.value)).attr("height", d => height - y(d.value));
+    svg.selectAll(".bar-label").data(filteredData).enter().append("text").attr("class", "bar-label").text(d => d.value).attr("transform", function(d) { const xPos = x(d.group) + x.bandwidth() / 2; const yPos = y(d.value) - 5; return isMobile ? `translate(${xPos}, ${yPos}) rotate(-90)` : `translate(${xPos}, ${yPos})`; }).attr("dy", isMobile ? "0.35em" : "0").style("text-anchor", isMobile ? "start" : "middle").style("fill", "#333").style("font-weight", "600").style("font-size", isMobile ? "10px" : "11px").style("opacity", 1);
 }
 
 function drawHorizontalBarChart(data, title) {
@@ -492,79 +883,21 @@ function drawHorizontalBarChart(data, title) {
     const container = d3.select(selector).html("");
     if (data.length === 0) { drawNoData(selector); return; }
     container.on("click", () => showModal(title, data));
-
     const isMobile = window.innerWidth < 768;
-
-    const margin = {
-        top: 20,
-        right: isMobile ? 40 : 50,
-        bottom: 40,
-        left: isMobile ? 110 : 120
-    };
-
+    const margin = { top: 20, right: isMobile ? 40 : 50, bottom: 40, left: isMobile ? 110 : 120 };
     const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
     const height = 300 - margin.top - margin.bottom;
-
-    const svg = container.append("svg")
-        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const y = d3.scaleBand()
-        .range([0, height])
-        .domain(data.map(d => d.group))
-        .padding(0.4);
-
-    const x = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.value) * 1.4 || 10])
-        .range([0, width]);
-
-    const yAxis = svg.append("g")
-        .attr("class", "axis-y")
-        .call(d3.axisLeft(y));
-
-    if (isMobile) {
-        yAxis.selectAll("text")
-            .style("font-size", "10px")
-            .style("font-weight", "500");
-    }
-
+    const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const y = d3.scaleBand().range([0, height]).domain(data.map(d => d.group)).padding(0.4);
+    const x = d3.scaleLinear().domain([0, d3.max(data, d => d.value) * 1.4 || 10]).range([0, width]);
+    const yAxis = svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
+    if (isMobile) { yAxis.selectAll("text").style("font-size", "10px").style("font-weight", "500"); }
     const xAxisCall = d3.axisBottom(x);
-    if (isMobile) {
-        xAxisCall.ticks(4);
-    }
-
-    const xAxis = svg.append("g")
-        .attr("class", "axis-x")
-        .attr("transform", `translate(0,${height})`)
-        .call(xAxisCall);
-
-    if (isMobile) {
-        xAxis.selectAll("text").style("font-size", "10px");
-    }
-
-    svg.selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("y", d => y(d.group))
-        .attr("height", y.bandwidth())
-        .attr("x", 0)
-        .attr("width", d => x(d.value));
-
-    svg.selectAll(".bar-label")
-        .data(data)
-        .enter().append("text")
-        .attr("class", "bar-label")
-        .attr("y", d => y(d.group) + y.bandwidth() / 2)
-        .attr("dy", "0.35em")
-        .attr("x", d => x(d.value) + 10)
-        .text(d => d.value)
-        .style("fill", "var(--dark-text)")
-        .attr("text-anchor", "start")
-        .style("font-weight", "600")
-        .style("opacity", d => d.value > 0 ? 1 : 0)
-        .style("font-size", isMobile ? "10px" : "11px");
+    if (isMobile) { xAxisCall.ticks(4); }
+    const xAxis = svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(xAxisCall);
+    if (isMobile) { xAxis.selectAll("text").style("font-size", "10px"); }
+    svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("y", d => y(d.group)).attr("height", y.bandwidth()).attr("x", 0).attr("width", d => x(d.value));
+    svg.selectAll(".bar-label").data(data).enter().append("text").attr("class", "bar-label").attr("y", d => y(d.group) + y.bandwidth() / 2).attr("dy", "0.35em").attr("x", d => x(d.value) + 10).text(d => d.value).style("fill", "var(--dark-text)").attr("text-anchor", "start").style("font-weight", "600").style("opacity", d => d.value > 0 ? 1 : 0).style("font-size", isMobile ? "10px" : "11px");
 }
 
 function drawExplodedPieChart(data, title) {
@@ -618,15 +951,9 @@ function drawCumulativeRadialChart(value, total) {
     const arc = d3.arc().innerRadius(radius - thickness).outerRadius(radius).startAngle(0).cornerRadius(10);
     svg.append("path").datum({ endAngle: 2 * Math.PI }).style("fill", "#eef0f3").attr("d", arc);
     const foreground = svg.append("path").datum({ endAngle: 0 }).style("fill", "#C8102E").attr("d", arc);
-    foreground.transition().duration(1000).attrTween("d", function(d) {
-        const interpolate = d3.interpolate(d.endAngle, 2 * Math.PI * percentage);
-        return function(t) { d.endAngle = interpolate(t); return arc(d); };
-    });
+    foreground.transition().duration(1000).attrTween("d", function(d) { const interpolate = d3.interpolate(d.endAngle, 2 * Math.PI * percentage); return function(t) { d.endAngle = interpolate(t); return arc(d); }; });
     const valueText = svg.append("text").attr("text-anchor", "middle").attr("dy", "0.05em").style("font-size", "44px").style("font-weight", "700").style("fill", "var(--dark-text)");
-    valueText.transition().duration(1000).tween("text", function() {
-        const interpolate = d3.interpolate(0, value);
-        return function(t) { this.textContent = d3.format(",.0f")(interpolate(t)); };
-    });
+    valueText.transition().duration(1000).tween("text", function() { const interpolate = d3.interpolate(0, value); return function(t) { this.textContent = d3.format(",.0f")(interpolate(t)); }; });
     svg.append("text").attr("text-anchor", "middle").attr("dy", "2.2em").style("font-size", "14px").style("fill", "#666").text("Permits YTD");
 }
 
@@ -634,7 +961,6 @@ function drawObservationsTrendChart(data) {
     const selector = "#observations-chart-container";
     const container = d3.select(selector).html("");
     const kpiKey = "HSE_Observation";
-    // const fullPerformanceData = Object.values(ALL_DATA.performance); // Not needed
     if (data.length === 0) { drawNoData(selector); return; }
     container.on("click", () => showModal("Trend of Safety Observations", data.map(d => ({ Month: monthMapping[d.Month], Observations: d[kpiKey] }))));
     const margin = { top: 20, right: 30, bottom: 40, left: 50 }, width = container.node().getBoundingClientRect().width - margin.left - margin.right, height = 300 - margin.top - margin.bottom;
@@ -652,15 +978,72 @@ function drawObservationsTrendChart(data) {
     svg.append("path").datum(data).attr("class", "line").attr("d", line);
 }
 
+// =================================================================
+// SECTION 6: INITIALIZATION & EVENTS
+// =================================================================
+
+function setupDashboard() {
+    const monthDropdown = d3.select("#month-filter");
+    const yearDropdown = d3.select("#year-filter");
+
+    monthDropdown.append("option").attr("value", "Cumulative").text("Cumulative (YTD)");
+    monthDropdown.selectAll("option.month-opt")
+        .data(ALL_MONTHS).enter().append("option")
+        .attr("value", d => d).text(d => monthMapping[d]);
+
+    const defaultYear = "2025";
+    const defaultMonth = "Dec";
+
+    // تحميل البيانات لأول مرة
+    loadYearData(defaultYear);
+
+    if (!yearDropdown.empty()) yearDropdown.property("value", defaultYear);
+    monthDropdown.property("value", defaultMonth);
+
+    // تشغيل العرض الافتراضي
+    updateDashboard(defaultMonth);
+
+    // دالة المعالجة الموحدة للتغيير
+    function handleUpdate() {
+        const selectedYear = yearDropdown.property("value");
+        const selectedMonth = monthDropdown.property("value");
+        const currentView = document.getElementById('report-view').style.display === 'block' ? 'report' : 'dashboard';
+
+        // تحديث بيانات الداشبورد (للسنة المختارة)
+        loadYearData(selectedYear);
+
+        // التحديث حسب الشاشة المفتوحة حالياً
+        if (currentView === 'dashboard') {
+            updateDashboard(selectedMonth);
+        } else {
+            renderMonthlyReport(selectedMonth);
+        }
+    }
+
+    monthDropdown.on("change", handleUpdate);
+    yearDropdown.on("change", handleUpdate);
+
+    setupModal();
+    setupSidebarDropdowns();
+    setupSidebarToggle();
+    setupSubDropdowns();
+}
+
+function setupModal() {
+    d3.select(".close-button").on("click", hideModal);
+    d3.select("#modal-overlay").on("click", function(event) {
+        if (event.target === this) {
+            hideModal();
+        }
+    });
+}
+
 function setupSidebarDropdowns() {
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-
     dropdownToggles.forEach(toggle => {
         toggle.addEventListener('click', function(event) {
             event.preventDefault();
-
             const dropdownContent = this.nextElementSibling;
-
             if (dropdownContent.classList.contains('open')) {
                 dropdownContent.classList.remove('open');
                 this.classList.remove('active');
@@ -672,19 +1055,15 @@ function setupSidebarDropdowns() {
     });
 }
 
-
 function setupSidebarToggle() {
     const toggleButton = document.querySelector('.sidebar-toggle');
     const sidebar = document.querySelector('.sidebar');
     const mainContent = document.querySelector('.main-content');
-
     if (toggleButton && sidebar && mainContent) {
-
         toggleButton.addEventListener('click', (event) => {
             event.stopPropagation();
             sidebar.classList.toggle('visible');
         });
-
         mainContent.addEventListener('click', () => {
             if (sidebar.classList.contains('visible')) {
                 sidebar.classList.remove('visible');
@@ -693,96 +1072,17 @@ function setupSidebarToggle() {
     }
 }
 
-// ==========================================
-// 1. PWA INSTALL LOGIC (كود التثبيت)
-// ==========================================
-let deferredPrompt;
-const installBtn = document.getElementById('sidebar-install-btn');
-
-// دالة للتحقق هل التطبيق مثبت أم لا
-const isAppInstalled = () => {
-    // للآيفون والأندرويد الحديث
-    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-        return true;
-    }
-    // لبعض أجهزة الأندرويد
-    if (document.referrer.includes('android-app://')) {
-        return true;
-    }
-    return false;
-};
-
-// التحقق من الآيفون
-const isIos = () => {
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    return /iphone|ipad|ipod/.test(userAgent);
-};
-
-// أ) للأندرويد والكمبيوتر (Chrome/Edge)
-// هذا الحدث ينطلق تلقائياً إذا كان التطبيق "قابل للتثبيت" وغير مثبت
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); // منع الشريط الافتراضي
-    deferredPrompt = e; // حفظ الحدث
-
-    // إظهار الزر في السايد بار
-    if (installBtn) {
-        installBtn.style.display = 'flex';
-    }
-});
-
-// ب) للآيفون (Safari)
-// الآيفون لا يرسل حدث beforeinstallprompt، لذا نفحص يدوياً
-if (isIos() && !isAppInstalled() && installBtn) {
-    installBtn.style.display = 'flex';
-}
-
-// ج) عند الضغط على زر التثبيت
-if (installBtn) {
-    installBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-
-        if (deferredPrompt) {
-            // للأندرويد/الكمبيوتر: أظهر نافذة التثبيت الأصلية
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                installBtn.style.display = 'none';
-            }
-            deferredPrompt = null;
-        } else if (isIos()) {
-            // للآيفون: أظهر تعليمات
-            alert("لتثبيت التطبيق على الآيفون:\n1. اضغط على زر المشاركة (Share) أسفل الشاشة.\n2. اختر 'Add to Home Screen'.");
-        }
-    });
-}
-
-// د) تسجيل السيرفس وركر (النسخة البسيطة للأونلاين)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js')
-            .then(reg => console.log('SW Registered'))
-            .catch(err => console.log('SW Error:', err));
-    });
-}
 function setupSubDropdowns() {
     const subToggles = document.querySelectorAll('.sub-toggle');
-
     subToggles.forEach(toggle => {
         toggle.addEventListener('click', function(e) {
             e.preventDefault();
-            e.stopPropagation(); // (مهم جداً) يمنع غلق القائمة الرئيسية عند الضغط هنا
-
+            e.stopPropagation();
             const content = this.nextElementSibling;
-
-            // فتح/غلق القائمة
             if (content.classList.contains('open')) {
                 content.classList.remove('open');
                 this.classList.remove('active');
             } else {
-                // (اختياري) لو عايز تقفل السنين التانية لما تفتح دي، فعل السطرين دول:
-                // document.querySelectorAll('.sub-content').forEach(el => el.classList.remove('open'));
-                // document.querySelectorAll('.sub-toggle').forEach(el => el.classList.remove('active'));
-
                 content.classList.add('open');
                 this.classList.add('active');
             }
@@ -790,9 +1090,47 @@ function setupSubDropdowns() {
     });
 }
 
-// لا تنسَ استدعاء الدالة في النهاية مع باقي الدوال
-setupSubDropdowns(); // <--- ضيف السطر ده في الآخر خالص
+// PWA Logic (Unchanged)
+let deferredPrompt;
+const installBtn = document.getElementById('sidebar-install-btn');
+const isAppInstalled = () => {
+    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (document.referrer.includes('android-app://')) return true;
+    return false;
+};
+const isIos = () => /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
 
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (installBtn) installBtn.style.display = 'flex';
+});
+
+if (isIos() && !isAppInstalled() && installBtn) {
+    installBtn.style.display = 'flex';
+}
+
+if (installBtn) {
+    installBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') installBtn.style.display = 'none';
+            deferredPrompt = null;
+        } else if (isIos()) {
+            alert("لتثبيت التطبيق على الآيفون:\n1. اضغط على زر المشاركة (Share) أسفل الشاشة.\n2. اختر 'Add to Home Screen'.");
+        }
+    });
+}
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(reg => console.log('SW Registered'))
+            .catch(err => console.log('SW Error:', err));
+    });
+}
+
+// Start App
 setupDashboard();
-setupSidebarDropdowns();
-setupSidebarToggle();
