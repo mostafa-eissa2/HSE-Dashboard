@@ -2,6 +2,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* 2. المتغيرات */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* منع الحركة العرضية لكامل الصفحة */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 :root {
     --brand-red: #C8102E;
     --brand-red-light: #fdf0f2;
@@ -904,7 +917,8 @@ body {
 
 /* تنسيق قسم التدريب */
 .row-2-container {
-    display: block; /* إلغاء الـ Grid */
+    display: block;
+    /* إلغاء الـ Grid */
     width: 100%;
 }
 
@@ -949,7 +963,8 @@ body {
 
 /* إضافة مسافة أسفل كل قسم في التقرير */
 .report-section {
-    margin-bottom: 30px; /* مسافة واضحة (يمكنك زيادتها لـ 40px لو تحب) */
+    margin-bottom: 30px;
+    /* مسافة واضحة (يمكنك زيادتها لـ 40px لو تحب) */
 }
 
 /* إزالة المسافة من آخر قسم عشان الشكل يبقى مضبوط مع الفوتر */
@@ -962,12 +977,13 @@ body {
 /* ============================================================ */
 
 /* إضافة مسافة أسفل كل كارت أو حاوية داخل الداشبورد */
-#dashboard-view > .card, 
-#dashboard-view > .row-3-container {
-    margin-bottom: 30px; /* نفس المسافة المستخدمة في التقرير */
+#dashboard-view>.card,
+#dashboard-view>.row-3-container {
+    margin-bottom: 30px;
+    /* نفس المسافة المستخدمة في التقرير */
 }
 
 /* إزالة المسافة من آخر عنصر للحفاظ على شكل الفوتر */
-#dashboard-view > :last-child {
+#dashboard-view> :last-child {
     margin-bottom: 0;
 }
