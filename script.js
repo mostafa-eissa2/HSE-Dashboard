@@ -962,19 +962,39 @@ function drawObservationsTrendChart(data) {
     const selector = "#observations-chart-container";
     const container = d3.select(selector).html("");
     const kpiKey = "HSE_Observation";
-    if (data.length === 0) { drawNoData(selector); return; }
+
+    // 1. شرط: عدم إظهار الشارت إذا كان "شهر واحد" (يناير) أو لا توجد بيانات
+    // (data.length === 1 && data[0].Month === 'Jan') تعني أننا في شهر يناير فقط
+    if (data.length === 0 || (data.length === 1 && data[0].Month === 'Jan')) { 
+        drawNoData(selector); 
+        return; 
+    }
+
     container.on("click", () => showModal("Trend of Safety Observations", data.map(d => ({ Month: monthMapping[d.Month], Observations: d[kpiKey] }))));
-    const margin = { top: 20, right: 30, bottom: 40, left: 50 }, width = container.node().getBoundingClientRect().width - margin.left - margin.right, height = 300 - margin.top - margin.bottom;
+    
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 }, 
+          width = container.node().getBoundingClientRect().width - margin.left - margin.right, 
+          height = 300 - margin.top - margin.bottom;
+    
     const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    
     const gradient = svg.append("defs").append("linearGradient").attr("id", "area-gradient").attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%");
     gradient.append("stop").attr("offset", "0%").attr("stop-color", "#C8102E").attr("stop-opacity", 0.4);
     gradient.append("stop").attr("offset", "100%").attr("stop-color", "#C8102E").attr("stop-opacity", 0);
+    
     const x = d3.scalePoint().range([0, width]).domain(data.map(d => d.Month)).padding(0.5);
-    const y = d3.scaleLinear().domain([0, 110]).range([height, 0]);
+    
+    // 2. تعديل المحور الرأسي ليبدأ من 0 وينتهي عند 200
+    const y = d3.scaleLinear()
+        .domain([0, 200]) // <--- تم التغيير هنا إلى 200
+        .range([height, 0]);
+        
     svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
     svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
+    
     const area = d3.area().x(d => x(d.Month)).y0(height).y1(d => y(d[kpiKey])).curve(d3.curveCatmullRom.alpha(0.5));
     svg.append("path").datum(data).attr("class", "area").attr("d", area);
+    
     const line = d3.line().x(d => x(d.Month)).y(d => y(d[kpiKey])).curve(d3.curveCatmullRom.alpha(0.5));
     svg.append("path").datum(data).attr("class", "line").attr("d", line);
 }
