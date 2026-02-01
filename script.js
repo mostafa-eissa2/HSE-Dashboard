@@ -198,7 +198,7 @@ Dec,0,0,0,0,0,0,0
 `,
     training: `
 Month,Emp Manpower,Total Training
-Jan,361,837
+Jan,643,837
 Feb,0,0
 Mar,0,0
 Apr,0,0
@@ -284,7 +284,7 @@ const REPORT_DATA_2026 = {
     "Jan": {
         projects: 18,
     ptw: 655,
-    safeHours: "130790",
+    safeHours: "130,790",
     manpower: [
         { entity: "Sewedy", mp: 361, mh: 57430 },
         { entity: "SC", mp: 282, mh: 73360 },
