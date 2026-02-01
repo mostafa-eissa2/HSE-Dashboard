@@ -119,56 +119,56 @@ Dec,337
 const DATA_2026 = {
     permits: `
 المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-التحكم الاقليمي,0,0,0,0,0,0,0,0,0,0,0,0
-الحي الحكومي,0,0,0,0,0,0,0,0,0,0,0,0
-الحي الدبلوماسي,0,0,0,0,0,0,0,0,0,0,0,0
-العلمين,0,0,0,0,0,0,0,0,0,0,0,0
-الفردوس,0,0,0,0,0,0,0,0,0,0,0,0
-الكيان العسكري,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة الفيوم,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة المنيا,0,0,0,0,0,0,0,0,0,0,0,0
+التحكم الاقليمي,55,0,0,0,0,0,0,0,0,0,0,0
+الحي الحكومي,2,0,0,0,0,0,0,0,0,0,0,0
+الحي الدبلوماسي,110,0,0,0,0,0,0,0,0,0,0,0
+العلمين,73,0,0,0,0,0,0,0,0,0,0,0
+الفردوس,11,0,0,0,0,0,0,0,0,0,0,0
+الكيان العسكري,24,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة الفيوم,25,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة المنيا,23,0,0,0,0,0,0,0,0,0,0,0
 حياة كريمة أرمنت,0,0,0,0,0,0,0,0,0,0,0,0
 حياة كريمة أسنا,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة أسوان,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة أسوان,12,0,0,0,0,0,0,0,0,0,0,0
 حياة كريمة صدفا,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة مطوبس,0,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة مطوبس,9,0,0,0,0,0,0,0,0,0,0,0
 حياة كريمة منفلوط,0,0,0,0,0,0,0,0,0,0,0,0
-دهشور,0,0,0,0,0,0,0,0,0,0,0,0
-سانت كاترين,0,0,0,0,0,0,0,0,0,0,0,0
-ميناء الدخيلة,0,0,0,0,0,0,0,0,0,0,0,0
-سوهاج,0,0,0,0,0,0,0,0,0,0,0,0
-مصنع البلاط,0,0,0,0,0,0,0,0,0,0,0,0
-أبو قير,0,0,0,0,0,0,0,0,0,0,0,0
-العبور,0,0,0,0,0,0,0,0,0,0,0,0
-العاشر من رمضان,0,0,0,0,0,0,0,0,0,0,0,0
+دهشور,104,0,0,0,0,0,0,0,0,0,0,0
+سانت كاترين,3,0,0,0,0,0,0,0,0,0,0,0
+ميناء الدخيلة,17,0,0,0,0,0,0,0,0,0,0,0
+سوهاج,38,0,0,0,0,0,0,0,0,0,0,0
+مصنع البلاط,66,0,0,0,0,0,0,0,0,0,0,0
+أبو قير,18,0,0,0,0,0,0,0,0,0,0,0
+العبور,27,0,0,0,0,0,0,0,0,0,0,0
+العاشر من رمضان,38,0,0,0,0,0,0,0,0,0,0,0
 حياة كريمة زفتى,0,0,0,0,0,0,0,0,0,0,0,0
 `,
     parties: `
 Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-المقاول,0,0,0,0,0,0,0,0,0,0,0,0
-المخازن,0,0,0,0,0,0,0,0,0,0,0,0
-قسم الجودة,0,0,0,0,0,0,0,0,0,0,0,0
-قسم المساحة,0,0,0,0,0,0,0,0,0,0,0,0
-قسم تنفيذ الكهرباء,0,0,0,0,0,0,0,0,0,0,0,0
-قسم المدني,0,0,0,0,0,0,0,0,0,0,0,0
+المقاول,415,0,0,0,0,0,0,0,0,0,0,0
+المخازن,45,0,0,0,0,0,0,0,0,0,0,0
+قسم الجودة,24,0,0,0,0,0,0,0,0,0,0,0
+قسم المساحة,24,0,0,0,0,0,0,0,0,0,0,0
+قسم تنفيذ الكهرباء,120,0,0,0,0,0,0,0,0,0,0,0
+قسم المدني,27,0,0,0,0,0,0,0,0,0,0,0
 `,
     delays: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-Delays,0,0,0,0,0,0,0,0,0,0,0,0
-On Time,0,0,0,0,0,0,0,0,0,0,0,0
+Delays,528,0,0,0,0,0,0,0,0,0,0,0
+On Time,127,0,0,0,0,0,0,0,0,0,0,0
 `,
     shifts: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-DAY,0,0,0,0,0,0,0,0,0,0,0,0
-NIGHT,0,0,0,0,0,0,0,0,0,0,0,0
+DAY,598,0,0,0,0,0,0,0,0,0,0,0
+NIGHT,57,0,0,0,0,0,0,0,0,0,0,0
 `,
     compliance: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-Compliance,0,0,0,0,0,0,0,0,0,0,0,0
+Compliance,0.19,0,0,0,0,0,0,0,0,0,0,0
 `,
     performance: `
 Month,HSE_Observation
-Jan,0
+Jan,136
 Feb,0
 Mar,0
 Apr,0
@@ -183,7 +183,7 @@ Dec,0
 `,
     manpower: `
 Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage,Campaigns,Drills
-Jan,0,0,0,0,0,0,0
+Jan,57430,73360,0,0,0,0,0
 Feb,0,0,0,0,0,0,0
 Mar,0,0,0,0,0,0,0
 Apr,0,0,0,0,0,0,0
@@ -198,7 +198,7 @@ Dec,0,0,0,0,0,0,0
 `,
     training: `
 Month,Emp Manpower,Total Training
-Jan,0,0
+Jan,361,837
 Feb,0,0
 Mar,0,0
 Apr,0,0
@@ -213,7 +213,7 @@ Dec,0,0
 `,
     inductions: `
 Month,Total
-Jan,0
+Jan,303
 Feb,0
 Mar,0
 Apr,0
@@ -282,34 +282,35 @@ const REPORT_DATA_2026 = {
 
     // بيانات شهر يناير
     "Jan": {
-        projects: 0,
-        ptw: 0,
-        safeHours: "0",
-        manpower: [
-            { entity: "Sewedy", mp: 0, mh: 0 },
-            { entity: "SC", mp: 0, mh: 0 },
-            { entity: "Total", mp: 0, mh: 0 }
-        ],
-        training: {
-            sewedy: { train: 0, ind: 0 },
-            sc: { train: 0, ind: 0 },
-            total: { train: 0, ind: 0 }
-        },
-        drills: { sewedy: 0, sc: 0, total: 0 },
-        campaigns: { sewedy: 0, sc: 0, total: 0 },
-        incidents: [
-            { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
-            { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
-            { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 }
-        ],
-        observations: [
-            { entity: "Sewedy", act: 0, cond: 0, env: 0, pos: 0 },
-            { entity: "SC", act: 0, cond: 0, env: 0, pos: 0 },
-            { entity: "Total", act: 0, cond: 0, env: 0, pos: 0 }
-        ],
-        inspections: [
-            { entity: "Sewedy", haz: 0, obs: 0, tour: 0, accom: 0, walk: 0, equip: 0, int: 0, ext: 0 }
-        ],
+        projects: 18,
+    ptw: 655,
+    safeHours: "130790",
+    manpower: [
+        { entity: "Sewedy", mp: 361, mh: 57430 },
+        { entity: "SC", mp: 282, mh: 73360 },
+        { entity: "Total", mp: 643, mh: 130790 }
+    ],
+    training: {
+        sewedy: { train: 306, ind: 22 },
+        sc: { train: 212, ind: 281 },
+        total: { train: 518, ind: 303 }
+    },
+    // تقسيم Drills و Campaigns إلى كائنات
+    drills: { sewedy: 0, sc: 0, total: 0 },
+    campaigns: { sewedy: 0, sc: 0, total: 0 },
+    incidents: [
+        { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+        { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+        { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 }
+    ],
+    observations: [
+        { entity: "Sewedy", act: 11, cond: 50, env: 5, pos: 0 },
+        { entity: "SC", act: 20, cond: 44, env: 6, pos: 0 },
+        { entity: "Total", act: 31, cond: 94, env: 11, pos: 0 }
+    ],
+    inspections: [
+        { entity: "Sewedy", haz: 15, obs: 136, tour: 0, accom: 4, walk: 26, equip: 107, int: 0, ext: 0 }
+    ],
         missed: [
             "Hazard Reporting targets not met",
             "Monthly Site Tours frequency low",
@@ -652,9 +653,9 @@ function updateDashboard(selectedMonth) {
         kpiValues.drills = manp.Drills;
 
         const currentYear = d3.select("#year-filter").property("value");
-        if (selectedMonth === 'Dec' && currentYear === '2025') {
+        if (selectedMonth === 'Jan' && currentYear === '2026') {
             totalHoursCard.style("display", "block");
-            animateValue("kpi-total-hours", 4001762);
+            animateValue("kpi-total-hours", 4132552);
             d3.select(".total-kpi .kpi-label").text("SAFE WORK-HOURS WITHOUT LTI");
         } else {
             totalHoursCard.style("display", "none");
@@ -991,8 +992,8 @@ function setupDashboard() {
         .data(ALL_MONTHS).enter().append("option")
         .attr("value", d => d).text(d => monthMapping[d]);
 
-    const defaultYear = "2025";
-    const defaultMonth = "Dec";
+    const defaultYear = "2026";
+    const defaultMonth = "Jan";
 
     // تحميل البيانات لأول مرة
     loadYearData(defaultYear);
