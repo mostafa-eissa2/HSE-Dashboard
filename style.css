@@ -987,3 +987,101 @@ body {
 #dashboard-view> :last-child {
     margin-bottom: 0;
 }
+
+/* ============================================================ */
+/* === LIVE VISITOR COUNTER (التصميم المدمج) === */
+/* ============================================================ */
+
+.live-visits-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ffffff;
+    /* خلفية بيضاء نظيفة */
+    border: 1px solid #e0e0e0;
+    /* إطار رمادي خفيف جداً */
+    padding: 8px 15px;
+    border-radius: 8px;
+    /* نفس انحناء الفلاتر ليكون متناسقاً */
+    font-size: 0.8rem;
+    /* خط صغير وأنيق */
+    font-weight: 600;
+    color: var(--dark-text);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    /* ظل خفيف جداً */
+    height: 40px;
+    /* نفس ارتفاع الفلاتر لضبط المحاذاة */
+    white-space: nowrap;
+    /* يمنع النص من النزول لسطرين */
+}
+
+/* النقطة النابضة */
+/* النقطة الخضراء (ثابتة بدون نبض) */
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #27ae60;
+    /* أخضر */
+    border-radius: 50%;
+    display: inline-block;
+    /* تم حذف الأنيميشن والظل الكبير */
+}
+
+/* يمكنك حذف @keyframes pulse-green بالكامل لأنه لم يعد مستخدماً */
+
+/* === تعديلات الهيدر لضبط المحاذاة === */
+
+.main-header {
+    /* جعل العناصر تتوزع: العنوان يسار، والتحكم يمين */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    /* يسمح بالنزول سطر في الموبايل */
+}
+
+.controls-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* مسافة بين العداد والفلاتر */
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    /* تجميع العناصر لليمين */
+}
+
+/* === تنسيق الموبايل (محدث لتوسط العنوان) === */
+@media screen and (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        align-items: center;
+        /* هذا السطر يجبر كل العناصر (بما فيها العنوان) على التوسط */
+        text-align: center;
+        /* ضمان توسط النصوص */
+    }
+
+    .main-header h1 {
+        width: 100%;
+        text-align: center;
+        /* إجبار العنوان تحديداً على التوسط */
+        margin-bottom: 15px;
+        /* مسافة أسفله */
+    }
+
+    .controls-container {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .live-visits-badge {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+        /* مسافة بين العداد والفلاتر */
+    }
+
+    #year-filter,
+    #month-filter {
+        flex: 1;
+    }
+}
