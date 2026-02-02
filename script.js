@@ -1152,6 +1152,32 @@ if ('serviceWorker' in navigator) {
             .catch(err => console.log('SW Error:', err));
     });
 }
+// ==========================================
+// VISITOR COUNTER LOGIC (UPDATED)
+// ==========================================
+function updateVisitorCount() {
+    // اسم فريد لمشروعك (غيره لو حابب بس لازم يكون انجليزي وبدون مسافات)
+    const namespace = 'turnkey-hse-dashboard-2026';
+    const key = 'visits';
 
+    // استخدام خدمة counterapi.dev لأنها أكثر استقراراً
+    fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+        .then(res => res.json())
+        .then(data => {
+            const countElement = document.getElementById('visits-count');
+            if (countElement) {
+                // الخدمة دي بترجع الرقم في متغير اسمه count
+                countElement.innerText = data.count;
+            }
+        })
+        .catch(err => {
+            console.log("Counter Error:", err);
+            const countElement = document.getElementById('visits-count');
+            if (countElement) countElement.innerText = "Error";
+        });
+}
+
+// تشغيل العداد عند فتح الموقع
+updateVisitorCount();
 // Start App
 setupDashboard();
