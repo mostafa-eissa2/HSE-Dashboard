@@ -402,7 +402,7 @@
             <span class="close-tip" onclick="closeTipPopup()">&times;</span>
 
             <div class="tip-header">
-                <span class="ramadan-day">🌙 <span id="popupDayNum"></span> رمضان</span>
+                <span class="ramadan-day" id="popupDayTitle">🌙 1 رمضان</span>
                 <span class="tip-full-date" id="popupFullDate"></span>
             </div>
 
@@ -559,17 +559,21 @@
         ];
 
         function showTip(dayIndex) {
-            const dayNum = dayIndex + 1;
             const tipText = tips[dayIndex % tips.length];
             const p = ramadanData[dayIndex] || ramadanData[0];
 
-            // 19 فبراير 2026 بداية رمضان فلكياً
-            const baseDate = new Date(2026, 1, 19);
+            const baseDate = new Date(2026, 1, 19); // 19 فبراير 2026 بداية رمضان فلكياً
             const targetDate = new Date(baseDate);
             targetDate.setDate(baseDate.getDate() + dayIndex);
             const dateStr = targetDate.toLocaleDateString('ar-EG', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
 
-            document.getElementById('popupDayNum').innerText = dayNum;
+            // منطق تحديد عنوان البوب أب: إذا كان اليوم 30 (index 29) اعرض عيد الفطر
+            if (dayIndex === 29) {
+                document.getElementById('popupDayTitle').innerText = "🎉 1 شوال (العيد)";
+            } else {
+                document.getElementById('popupDayTitle').innerText = `🌙 ${dayIndex + 1} رمضان`;
+            }
+
             document.getElementById('popupFullDate').innerText = dateStr;
             document.getElementById('popupTipText').innerText = tipText;
 
@@ -590,15 +594,11 @@
             document.getElementById('gregorian').innerText = gregFormatter.format(now);
 
             try {
-                // تعديل: عمل إزاحة يوم واحد للخلف ليتوافق مع الرؤية (اليوم 30 شعبان)
                 const hijriDate = new Date();
                 hijriDate.setDate(hijriDate.getDate() - 1);
-
                 const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-nu-arab', {day: 'numeric', month: 'long', year: 'numeric'});
                 let formattedHijri = hijriFormatter.format(hijriDate);
-
-                // التأكد من عرض "شعبان" إذا كان التاريخ يقع في فترة الرؤية
-                document.getElementById('hijri').innerText = formattedHijri;
+                document.getElementById('hijri').innerText = formattedHijri.includes('فبراير') ? "30 شعبان 1447 هـ" : formattedHijri;
             } catch (e) {
                 document.getElementById('hijri').innerText = "30 شعبان 1447 هـ";
             }
@@ -607,7 +607,14 @@
             for (let i = 0; i < 30; i++) {
                 const day = document.createElement('div');
                 day.className = 'day-box';
-                day.innerHTML = `<span class="n">${i + 1}</span><span class="l">رمضان</span>`;
+
+                // منطق تحديد محتوى المربع في التقويم
+                if (i === 29) {
+                    day.innerHTML = `<span class="n">1</span><span class="l" style="color:var(--sewedy-red); font-size: 0.8rem;">شوال (العيد)</span>`;
+                } else {
+                    day.innerHTML = `<span class="n">${i + 1}</span><span class="l">رمضان</span>`;
+                }
+
                 day.onclick = () => showTip(i);
                 grid.appendChild(day);
             }
