@@ -459,6 +459,7 @@ function switchView(viewName) {
 }
 
 // 2. دالة عرض التقرير الشهري
+// 2. دالة عرض التقرير الشهري
 function renderMonthlyReport(month) {
     const year = d3.select("#year-filter").property("value");
 
@@ -494,7 +495,7 @@ function renderMonthlyReport(month) {
         return;
     }
 
-    // بناء HTML التقرير الأساسي
+    // 1. بناء HTML التقرير الأساسي (الأقسام من 1 إلى 5 فقط)
     let reportHTML = `
         <div class="report-section card">
             <h2 class="report-header">1. General Statistics</h2>
@@ -562,14 +563,9 @@ function renderMonthlyReport(month) {
                 </table>
             </div>
         </div>
-
-        <div class="report-section card" style="border-left: 4px solid #f39c12;">
-            <h2 class="report-header">⚠️ Areas for Improvement (Missed Targets)</h2>
-            <ul id="rep-missed-targets" class="missed-list"></ul>
-        </div>
     `;
 
-    // إضافة بوكس الإيجابيات ديناميكياً (يظهر فقط إذا كان هناك بيانات)
+    // 2. إضافة بوكس الإيجابيات أولاً (بحيث يظهر فوق السلبيات إذا كان موجوداً)
     if (data.positive_highlights && data.positive_highlights.length > 0) {
         let positiveItems = data.positive_highlights.map(item => `<li>${item}</li>`).join('');
         reportHTML += `
@@ -582,10 +578,18 @@ function renderMonthlyReport(month) {
         `;
     }
 
-    // إرسال الكود للواجهة
+    // 3. إضافة بوكس السلبيات في النهاية
+    reportHTML += `
+        <div class="report-section card" style="border-left: 4px solid #f39c12; margin-top: 20px;">
+            <h2 class="report-header">⚠️ Areas for Improvement (Missed Targets)</h2>
+            <ul id="rep-missed-targets" class="missed-list"></ul>
+        </div>
+    `;
+
+    // 4. إرسال الكود للواجهة
     document.getElementById('report-view').innerHTML = reportHTML;
 
-    // تعبئة البيانات
+    // تعبئة البيانات في الجداول
     const mpBody = document.getElementById('rep-manpower-body');
     if (mpBody && data.manpower) {
         mpBody.innerHTML = data.manpower.map(row => `
@@ -645,6 +649,8 @@ function renderMonthlyReport(month) {
         missedList.innerHTML = data.missed.map(item => `<li>${item}</li>`).join('');
     }
 }
+
+
 
 // 3. دالة تحديث الداشبورد
 function updateDashboard(selectedMonth) {
