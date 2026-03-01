@@ -119,57 +119,57 @@ Dec,337
 const DATA_2026 = {
     permits: `
 المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-التحكم الاقليمي,55,0,0,0,0,0,0,0,0,0,0,0
-الحي الحكومي,2,0,0,0,0,0,0,0,0,0,0,0
-الحي الدبلوماسي,110,0,0,0,0,0,0,0,0,0,0,0
-العلمين,73,0,0,0,0,0,0,0,0,0,0,0
-الفردوس,11,0,0,0,0,0,0,0,0,0,0,0
-الكيان العسكري,24,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة الفيوم,25,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة المنيا,23,0,0,0,0,0,0,0,0,0,0,0
+التحكم الاقليمي,55,16,0,0,0,0,0,0,0,0,0,0
+الحي الحكومي,2,1,0,0,0,0,0,0,0,0,0,0
+الحي الدبلوماسي,110,93,0,0,0,0,0,0,0,0,0,0
+العلمين,73,50,0,0,0,0,0,0,0,0,0,0
+الفردوس,11,11,0,0,0,0,0,0,0,0,0,0
+الكيان العسكري,24,22,0,0,0,0,0,0,0,0,0,0
+حياة كريمة الفيوم,25,47,0,0,0,0,0,0,0,0,0,0
+حياة كريمة المنيا,23,16,0,0,0,0,0,0,0,0,0,0
 حياة كريمة أرمنت,0,0,0,0,0,0,0,0,0,0,0,0
 حياة كريمة أسنا,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة أسوان,12,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة أسوان,12,3,0,0,0,0,0,0,0,0,0,0
 حياة كريمة صدفا,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة مطوبس,9,0,0,0,0,0,0,0,0,0,0,0
+حياة كريمة مطوبس,9,8,0,0,0,0,0,0,0,0,0,0
 حياة كريمة منفلوط,0,0,0,0,0,0,0,0,0,0,0,0
-دهشور,104,0,0,0,0,0,0,0,0,0,0,0
-سانت كاترين,3,0,0,0,0,0,0,0,0,0,0,0
+دهشور,104,85,0,0,0,0,0,0,0,0,0,0
+سانت كاترين,3,1,0,0,0,0,0,0,0,0,0,0
 ميناء الدخيلة,17,0,0,0,0,0,0,0,0,0,0,0
-سوهاج,38,0,0,0,0,0,0,0,0,0,0,0
-مصنع البلاط,66,0,0,0,0,0,0,0,0,0,0,0
-أبو قير,18,0,0,0,0,0,0,0,0,0,0,0
-العبور,27,0,0,0,0,0,0,0,0,0,0,0
-العاشر من رمضان,38,0,0,0,0,0,0,0,0,0,0,0
+سوهاج,38,37,0,0,0,0,0,0,0,0,0,0
+مصنع البلاط,66,51,0,0,0,0,0,0,0,0,0,0
+أبو قير,18,32,0,0,0,0,0,0,0,0,0,0
+العبور,27,29,0,0,0,0,0,0,0,0,0,0
+العاشر من رمضان,38,25,0,0,0,0,0,0,0,0,0,0
 حياة كريمة زفتى,0,0,0,0,0,0,0,0,0,0,0,0
 `,
     parties: `
 Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-المقاول,415,0,0,0,0,0,0,0,0,0,0,0
-المخازن,45,0,0,0,0,0,0,0,0,0,0,0
-قسم الجودة,24,0,0,0,0,0,0,0,0,0,0,0
-قسم المساحة,24,0,0,0,0,0,0,0,0,0,0,0
-قسم تنفيذ الكهرباء,120,0,0,0,0,0,0,0,0,0,0,0
-قسم المدني,27,0,0,0,0,0,0,0,0,0,0,0
+المقاول,415,333,0,0,0,0,0,0,0,0,0,0
+المخازن,45,25,0,0,0,0,0,0,0,0,0,0
+قسم الجودة,24,21,0,0,0,0,0,0,0,0,0,0
+قسم المساحة,24,27,0,0,0,0,0,0,0,0,0,0
+قسم تنفيذ الكهرباء,120,95,0,0,0,0,0,0,0,0,0,0
+قسم المدني,27,26,0,0,0,0,0,0,0,0,0,0
 `,
     delays: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-Delays,528,0,0,0,0,0,0,0,0,0,0,0
-On Time,127,0,0,0,0,0,0,0,0,0,0,0
+Delays,528,460,0,0,0,0,0,0,0,0,0,0
+On Time,127,67,0,0,0,0,0,0,0,0,0,0
 `,
     shifts: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-DAY,598,0,0,0,0,0,0,0,0,0,0,0
-NIGHT,57,0,0,0,0,0,0,0,0,0,0,0
+DAY,598,502,0,0,0,0,0,0,0,0,0,0
+NIGHT,57,25,0,0,0,0,0,0,0,0,0,0
 `,
     compliance: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-Compliance,0.19,0,0,0,0,0,0,0,0,0,0,0
+Compliance,0.19,0.13,0,0,0,0,0,0,0,0,0,0
 `,
     performance: `
 Month,HSE_Observation
 Jan,136
-Feb,0
+Feb,130
 Mar,0
 Apr,0
 May,0
@@ -184,7 +184,7 @@ Dec,0
     manpower: `
 Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage,Campaigns,Drills
 Jan,57430,73360,0,0,0,0,0
-Feb,0,0,0,0,0,0,0
+Feb,54449,58512,0,0,0,0,0
 Mar,0,0,0,0,0,0,0
 Apr,0,0,0,0,0,0,0
 May,0,0,0,0,0,0,0
@@ -199,7 +199,7 @@ Dec,0,0,0,0,0,0,0
     training: `
 Month,Emp Manpower,Total Training
 Jan,643,837
-Feb,0,0
+Feb,615,703
 Mar,0,0
 Apr,0,0
 May,0,0
@@ -214,7 +214,7 @@ Dec,0,0
     inductions: `
 Month,Total
 Jan,303
-Feb,0
+Feb,206
 Mar,0
 Apr,0
 May,0
@@ -263,7 +263,8 @@ const createEmptyReportData = () => ({
     inspections: [
         { entity: "Sewedy", haz: 0, obs: 0, tour: 0, accom: 0, walk: 0, equip: 0, int: 0, ext: 0 }
     ],
-    missed: []
+    missed: [],
+    positive_highlights: []
 });
 
 // بيانات التقرير لعام 2026
@@ -283,38 +284,77 @@ const REPORT_DATA_2026 = {
     // بيانات شهر يناير
     "Jan": {
         projects: 18,
-    ptw: 655,
-    safeHours: "130,790",
-    manpower: [
-        { entity: "Sewedy", mp: 361, mh: 57430 },
-        { entity: "SC", mp: 282, mh: 73360 },
-        { entity: "Total", mp: 643, mh: 130790 }
-    ],
-    training: {
-        sewedy: { train: 306, ind: 22 },
-        sc: { train: 212, ind: 281 },
-        total: { train: 518, ind: 303 }
-    },
-    // تقسيم Drills و Campaigns إلى كائنات
-    drills: { sewedy: 0, sc: 0, total: 0 },
-    campaigns: { sewedy: 0, sc: 0, total: 0 },
-    incidents: [
-        { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
-        { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
-        { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 }
-    ],
-    observations: [
-        { entity: "Sewedy", act: 11, cond: 50, env: 5, pos: 0 },
-        { entity: "SC", act: 20, cond: 44, env: 6, pos: 0 },
-        { entity: "Total", act: 31, cond: 94, env: 11, pos: 0 }
-    ],
-    inspections: [
-        { entity: "Sewedy", haz: 15, obs: 136, tour: 0, accom: 4, walk: 26, equip: 107, int: 0, ext: 0 }
-    ],
+        ptw: 655,
+        safeHours: "130,790",
+        manpower: [
+            { entity: "Sewedy", mp: 361, mh: 57430 },
+            { entity: "SC", mp: 282, mh: 73360 },
+            { entity: "Total", mp: 643, mh: 130790 }
+        ],
+        training: {
+            sewedy: { train: 306, ind: 22 },
+            sc: { train: 212, ind: 281 },
+            total: { train: 518, ind: 303 }
+        },
+        // تقسيم Drills و Campaigns إلى كائنات
+        drills: { sewedy: 0, sc: 0, total: 0 },
+        campaigns: { sewedy: 0, sc: 0, total: 0 },
+        incidents: [
+            { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 }
+        ],
+        observations: [
+            { entity: "Sewedy", act: 11, cond: 50, env: 5, pos: 0 },
+            { entity: "SC", act: 20, cond: 44, env: 6, pos: 0 },
+            { entity: "Total", act: 31, cond: 94, env: 11, pos: 0 }
+        ],
+        inspections: [
+            { entity: "Sewedy", haz: 15, obs: 136, tour: 0, accom: 4, walk: 26, equip: 107, int: 0, ext: 0 }
+        ],
         missed: [
             "Hazard Reporting targets not met",
             "Monthly Site Tours frequency low",
             "Weekly Walkdowns missed in some areas"
+        ]
+    },
+    "Feb": {
+        projects: 17,
+        ptw: 527,
+        safeHours: "112,961",
+        manpower: [
+            { entity: "Sewedy", mp: 358, mh: 54449 },
+            { entity: "SC", mp: 256, mh: 58512 },
+            { entity: "Total", mp: 614, mh: 112961 }
+        ],
+        training: {
+            sewedy: { train: 242, ind: 14 },
+            sc: { train: 255, ind: 192 },
+            total: { train: 497, ind: 206 }
+        },
+        // تقسيم Drills و Campaigns إلى كائنات
+        drills: { sewedy: 0, sc: 0, total: 0 },
+        campaigns: { sewedy: 1, sc: 0, total: 1 },
+        incidents: [
+            { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 }
+        ],
+        observations: [
+            { entity: "Sewedy", act: 13, cond: 49, env: 2, pos: 1 },
+            { entity: "SC", act: 21, cond: 43, env: 1, pos: 0 },
+            { entity: "Total", act: 34, cond: 92, env: 3, pos: 1 }
+        ],
+        inspections: [
+            { entity: "Sewedy", haz: 22, obs: 130, tour: 2, accom: 4, walk: 16, equip: 94, int: 0, ext: 0 }
+        ],
+        missed: [
+            "Hazard Reporting targets not met",
+            "Monthly Site Tours frequency low",
+            "Weekly Walkdowns missed in some areas"
+        ],
+        positive_highlights: [
+            "Site Manager conducted Safety Induction for HSE Manager and HSE Coordinator at 10th of Ramadan project."
         ]
     }
 };
@@ -454,8 +494,8 @@ function renderMonthlyReport(month) {
         return;
     }
 
-    // بناء HTML التقرير
-    document.getElementById('report-view').innerHTML = `
+    // بناء HTML التقرير الأساسي
+    let reportHTML = `
         <div class="report-section card">
             <h2 class="report-header">1. General Statistics</h2>
             <div class="report-stats-grid">
@@ -528,6 +568,22 @@ function renderMonthlyReport(month) {
             <ul id="rep-missed-targets" class="missed-list"></ul>
         </div>
     `;
+
+    // إضافة بوكس الإيجابيات ديناميكياً (يظهر فقط إذا كان هناك بيانات)
+    if (data.positive_highlights && data.positive_highlights.length > 0) {
+        let positiveItems = data.positive_highlights.map(item => `<li>${item}</li>`).join('');
+        reportHTML += `
+            <div class="report-section card" style="border-left: 4px solid #2ecc71; margin-top: 20px;">
+                <h2 class="report-header" style="color: #27ae60;">🌟 Positive Observations</h2>
+                <ul class="missed-list">
+                    ${positiveItems}
+                </ul>
+            </div>
+        `;
+    }
+
+    // إرسال الكود للواجهة
+    document.getElementById('report-view').innerHTML = reportHTML;
 
     // تعبئة البيانات
     const mpBody = document.getElementById('rep-manpower-body');
@@ -653,9 +709,9 @@ function updateDashboard(selectedMonth) {
         kpiValues.drills = manp.Drills;
 
         const currentYear = d3.select("#year-filter").property("value");
-        if (selectedMonth === 'Jan' && currentYear === '2026') {
+        if (selectedMonth === 'Feb' && currentYear === '2026') {
             totalHoursCard.style("display", "block");
-            animateValue("kpi-total-hours", 4132552);
+            animateValue("kpi-total-hours", 4245513);
             d3.select(".total-kpi .kpi-label").text("SAFE WORK-HOURS WITHOUT LTI");
         } else {
             totalHoursCard.style("display", "none");
@@ -779,6 +835,13 @@ function calculateCumulativeReport(yearData) {
             mData.missed.forEach(item => {
                 if (!accumulated.missed.includes(item)) {
                     accumulated.missed.push(item);
+                }
+            });
+        }
+        if (mData.positive_highlights && mData.positive_highlights.length > 0) {
+            mData.positive_highlights.forEach(item => {
+                if (!accumulated.positive_highlights.includes(item)) {
+                    accumulated.positive_highlights.push(item);
                 }
             });
         }
@@ -965,36 +1028,36 @@ function drawObservationsTrendChart(data) {
 
     // 1. شرط: عدم إظهار الشارت إذا كان "شهر واحد" (يناير) أو لا توجد بيانات
     // (data.length === 1 && data[0].Month === 'Jan') تعني أننا في شهر يناير فقط
-    if (data.length === 0 || (data.length === 1 && data[0].Month === 'Jan')) { 
-        drawNoData(selector); 
-        return; 
+    if (data.length === 0 || (data.length === 1 && data[0].Month === 'Jan')) {
+        drawNoData(selector);
+        return;
     }
 
     container.on("click", () => showModal("Trend of Safety Observations", data.map(d => ({ Month: monthMapping[d.Month], Observations: d[kpiKey] }))));
-    
-    const margin = { top: 20, right: 30, bottom: 40, left: 50 }, 
-          width = container.node().getBoundingClientRect().width - margin.left - margin.right, 
-          height = 300 - margin.top - margin.bottom;
-    
+
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 },
+        width = container.node().getBoundingClientRect().width - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
+
     const svg = container.append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-    
+
     const gradient = svg.append("defs").append("linearGradient").attr("id", "area-gradient").attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%");
     gradient.append("stop").attr("offset", "0%").attr("stop-color", "#C8102E").attr("stop-opacity", 0.4);
     gradient.append("stop").attr("offset", "100%").attr("stop-color", "#C8102E").attr("stop-opacity", 0);
-    
+
     const x = d3.scalePoint().range([0, width]).domain(data.map(d => d.Month)).padding(0.5);
-    
+
     // 2. تعديل المحور الرأسي ليبدأ من 0 وينتهي عند 200
     const y = d3.scaleLinear()
         .domain([0, 200]) // <--- تم التغيير هنا إلى 200
         .range([height, 0]);
-        
+
     svg.append("g").attr("class", "axis-x").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
     svg.append("g").attr("class", "axis-y").call(d3.axisLeft(y));
-    
+
     const area = d3.area().x(d => x(d.Month)).y0(height).y1(d => y(d[kpiKey])).curve(d3.curveCatmullRom.alpha(0.5));
     svg.append("path").datum(data).attr("class", "area").attr("d", area);
-    
+
     const line = d3.line().x(d => x(d.Month)).y(d => y(d[kpiKey])).curve(d3.curveCatmullRom.alpha(0.5));
     svg.append("path").datum(data).attr("class", "line").attr("d", line);
 }
@@ -1013,7 +1076,7 @@ function setupDashboard() {
         .attr("value", d => d).text(d => monthMapping[d]);
 
     const defaultYear = "2026";
-    const defaultMonth = "Jan";
+    const defaultMonth = "Feb";
 
     // تحميل البيانات لأول مرة
     loadYearData(defaultYear);
