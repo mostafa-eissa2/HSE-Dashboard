@@ -264,7 +264,8 @@ const createEmptyReportData = () => ({
         { entity: "Sewedy", haz: 0, obs: 0, tour: 0, accom: 0, walk: 0, equip: 0, int: 0, ext: 0 }
     ],
     missed: [],
-    positive_highlights: []
+    positive_highlights: [],
+    savedPapers: 0
 });
 
 // بيانات التقرير لعام 2026
@@ -316,7 +317,8 @@ const REPORT_DATA_2026 = {
             "Hazard Reporting targets not met",
             "Monthly Site Tours frequency low",
             "Weekly Walkdowns missed in some areas"
-        ]
+        ],
+        savedPapers: 540
     },
     "Feb": {
         projects: 17,
@@ -355,7 +357,8 @@ const REPORT_DATA_2026 = {
         ],
         positive_highlights: [
             "Site Manager conducted Safety Induction for HSE Manager and HSE Coordinator at 10th of Ramadan project."
-        ]
+        ],
+        savedPapers: 540
     }
 };
 
@@ -650,12 +653,11 @@ function renderMonthlyReport(month) {
     }
 }
 
-
-
 // 3. دالة تحديث الداشبورد
 function updateDashboard(selectedMonth) {
-    const totalHoursCard = d3.select("#total-hours-card");
-    const kpiGrid = d3.select("#monthly-kpis");
+    let totalSavedPapers = 0; // متغير الورق
+    const hoursLabel = d3.select("#hours-label"); // لتغيير النص تحت ساعات الأمان
+    const currentYear = d3.select("#year-filter").property("value");
 
     let permitsData = [], partiesData = [], shiftsData = [], delaysData = [];
     let kpiValues = { hours: 0, employees: 0, ptw: 0, observations: 0, lti: 0, mtc: 0, propDamage: 0, trainings: 0, inductions: 0, campaigns: 0, drills: 0 };
@@ -685,10 +687,19 @@ function updateDashboard(selectedMonth) {
             kpiValues.drills += (+manp.Drills || 0);
 
             if (+train["Emp Manpower"] > 0) kpiValues.employees = +train["Emp Manpower"];
+
+            // قراءة الورق التراكمي حسب السنة المحددة
+            if (currentYear === '2026') {
+                const repData = REPORT_DATA_2026[m] || {};
+                totalSavedPapers += (repData.savedPapers || 0);
+            } else if (currentYear === '2025') {
+                const repData = (typeof REPORT_DATA_2025 !== 'undefined' ? REPORT_DATA_2025[m] : {}) || {};
+                totalSavedPapers += (repData.savedPapers || 0);
+            }
         });
 
-        totalHoursCard.style("display", "block");
-        d3.select(".total-kpi .kpi-label").text("TOTAL SAFE WORK-HOURS (YTD)");
+        // تحديث قسم ساعات الأمان التراكمية
+        hoursLabel.text("TOTAL YTD (WITHOUT LTI)");
         animateValue("kpi-total-hours", kpiValues.hours);
 
     } else {
@@ -714,13 +725,30 @@ function updateDashboard(selectedMonth) {
         kpiValues.campaigns = manp.Campaigns;
         kpiValues.drills = manp.Drills;
 
-        const currentYear = d3.select("#year-filter").property("value");
+        // قراءة الورق للشهر المحدد حسب السنة
+        if (currentYear === '2026') {
+            const repData = REPORT_DATA_2026[selectedMonth] || {};
+            totalSavedPapers = repData.savedPapers || 0;
+        } else if (currentYear === '2025') {
+            const repData = (typeof REPORT_DATA_2025 !== 'undefined' ? REPORT_DATA_2025[selectedMonth] : {}) || {};
+            totalSavedPapers = repData.savedPapers || 0;
+        }
+
+        // معالجة الشهر الافتراضي (رقم الساعات الكلي الثابت)
         if (selectedMonth === 'Feb' && currentYear === '2026') {
-            totalHoursCard.style("display", "block");
-            animateValue("kpi-total-hours", 4245513);
-            d3.select(".total-kpi .kpi-label").text("SAFE WORK-HOURS WITHOUT LTI");
+            hoursLabel.text("OVERALL SAFE HOURS");
+            animateValue("kpi-total-hours", 4245513); // الرقم الثابت للواجهة الافتراضية
+
+            // حساب الورق التراكمي للشهر الافتراضي
+            totalSavedPapers = 0;
+            ALL_MONTHS.forEach(m => {
+                const rData = REPORT_DATA_2026[m] || {};
+                totalSavedPapers += (rData.savedPapers || 0);
+            });
         } else {
-            totalHoursCard.style("display", "none");
+            // معالجة الشهور الفردية العادية
+            hoursLabel.text("MONTHLY SAFE HOURS");
+            animateValue("kpi-total-hours", kpiValues.hours); // عرض ساعات الشهر فقط
         }
     }
 
@@ -760,6 +788,15 @@ function updateDashboard(selectedMonth) {
 
     drawObservationsTrendChart(trendData);
     drawCumulativeRadialChart(radialValue, totalYearPermits);
+
+    // ======================================
+    // حساب الأشجار وتشغيل عداد البيئة المدمج
+    // ======================================
+    const papersPerTree = 8333; 
+    const totalSavedTrees = totalSavedPapers > 0 ? (totalSavedPapers / papersPerTree).toFixed(1) : 0;
+
+    animateValue("kpi-saved-papers", totalSavedPapers);
+    animateValueDecimal("kpi-saved-trees", parseFloat(totalSavedTrees));
 }
 
 // =================================================================
@@ -851,6 +888,7 @@ function calculateCumulativeReport(yearData) {
                 }
             });
         }
+        accumulated.savedPapers += (mData.savedPapers || 0);
     });
 
     return accumulated;
@@ -902,6 +940,17 @@ function animateValue(id, endValue) {
             return function(t) { this.textContent = d3.format(",.0f")(i(t)); };
         });
 }
+// دالة لتشغيل العداد للأرقام العشرية (للأشجار)
+function animateValueDecimal(id, endValue) {
+    const element = d3.select(`#${id}`);
+    if (element.empty()) return;
+    element.transition().duration(1500)
+        .tween("text", function() {
+            const i = d3.interpolate(parseFloat(this.textContent) || 0, endValue);
+            return function(t) { this.textContent = i(t).toFixed(1); };
+        });
+}
+
 
 const drawNoData = (selector) => d3.select(selector).html(`<p class="no-data-msg">No data for this selection.</p>`);
 
