@@ -1085,3 +1085,209 @@ body {
         flex: 1;
     }
 }
+
+/* ============================================================ */
+/* === RAMADAN THEME & CALENDAR === */
+/* ============================================================ */
+
+#ramadan-view {
+    color: #2c3e50;
+}
+
+.ramadan-header {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    /* ألوان الغروب الرمضاني */
+    color: white !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px !important;
+    text-align: center;
+}
+
+.ramadan-header h2 {
+    border-left: none !important;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.fanoos,
+.hilal {
+    font-size: 3rem;
+    animation: swing 3s infinite ease-in-out;
+}
+
+@keyframes swing {
+
+    0%,
+    100% {
+        transform: rotate(-10deg);
+    }
+
+    50% {
+        transform: rotate(10deg);
+    }
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.day-box {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.day-box:hover {
+    background: #fdf2e9;
+    border-color: #f39c12;
+    transform: translateY(-5px);
+}
+
+.day-number {
+    display: block;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #d35400;
+}
+
+.day-tip-icon {
+    font-size: 1.5rem;
+    margin-top: 5px;
+}
+
+/* تنسيق الفعاليات */
+.event-item {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.event-date {
+    background: #1a2a6c;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    height: fit-content;
+    min-width: 80px;
+    text-align: center;
+}
+
+.highlight-event {
+    background-color: #fff9eb;
+    border-radius: 12px;
+    border: 1px solid #f1c40f;
+}
+
+@media screen and (max-width: 768px) {
+    .calendar-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.hero-metrics-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaebec;
+    gap: 15px;
+}
+
+.metric-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+}
+
+.eco-section-highlight {
+    flex: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.04) 0%, rgba(46, 204, 113, 0.1) 100%);
+    border: 1px solid rgba(46, 204, 113, 0.2);
+    border-radius: 12px;
+    padding: 15px 25px;
+}
+
+.metric-icon {
+    min-width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+}
+
+.hours-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.eco-stats-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.eco-divider {
+    width: 1px;
+    height: 40px;
+    background-color: rgba(46, 204, 113, 0.25);
+}
+
+/* --- إعدادات الموبايل الشاشات الصغيرة --- */
+@media (max-width: 768px) {
+    .hero-metrics-card {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .metric-section,
+    .eco-section-highlight {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+        width: 100%;
+        padding: 20px 15px;
+    }
+
+    .hours-content {
+        align-items: center;
+    }
+
+    .metric-icon {
+        min-width: 55px;
+        height: 55px;
+        font-size: 1.8rem;
+    }
+
+    .eco-stats-wrapper {
+        justify-content: center;
+        gap: 25px;
+    }
+}
