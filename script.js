@@ -792,7 +792,7 @@ function updateDashboard(selectedMonth) {
     // ======================================
     // حساب الأشجار وتشغيل عداد البيئة المدمج
     // ======================================
-    const papersPerTree = 8333; 
+    const papersPerTree = 8333;
     const totalSavedTrees = totalSavedPapers > 0 ? (totalSavedPapers / papersPerTree).toFixed(1) : 0;
 
     animateValue("kpi-saved-papers", totalSavedPapers);
@@ -909,25 +909,168 @@ function aggregateGenericData(dataset) {
 
 function renderKPIGrid(values) {
     const container = d3.select("#monthly-kpis").html("");
+    container.attr("class", "");
+    const style = `
+        <style>
+            .kpis-grid-colorful {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 15px; 
+                margin-bottom: 25px;
+                align-items: stretch; 
+                width: 100% !important; /* إجبار الحاوية على العرض الكامل */
+            }
+            .kpi-card-colorful {
+                background: #ffffff;
+                border: 1px solid #f1f2f6;
+                border-radius: 14px;
+                padding: 15px 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+                transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                width: 100% !important; /* إجبار الكارت يملى المساحة المتاحة ليه */
+                height: 100%;
+                box-sizing: border-box !important;
+            }
+            .kpi-card-colorful::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; width: 100%; height: 3px;
+                background: linear-gradient(90deg, var(--c1), var(--c2));
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .kpi-card-colorful:hover {
+                transform: translateY(-5px) scale(1.02);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.06); 
+                border-color: var(--c2); 
+            }
+            .kpi-card-colorful:hover::before {
+                opacity: 1;
+            }
+            .kpi-icon-colorful {
+                width: 44px;
+                height: 44px;
+                background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff; 
+                margin-bottom: 10px;
+                transition: transform 0.3s ease;
+            }
+            .kpi-card-colorful:hover .kpi-icon-colorful {
+                transform: rotate(8deg) scale(1.1);
+            }
+            .kpi-icon-colorful svg {
+                width: 22px;
+                height: 22px;
+            }
+            .kpi-title-colorful {
+                font-size: 0.7rem; 
+                font-weight: 800;
+                color: #747d8c;
+                text-transform: uppercase;
+                margin-bottom: 6px;
+                min-height: 28px; 
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                line-height: 1.2;
+                width: 100%;
+            }
+            .kpi-value-colorful {
+                font-size: 1.6rem; 
+                font-weight: 900;
+                color: #2f3542; 
+                line-height: 1;
+                margin-top: auto; 
+            }
+
+            @media (max-width: 1024px) { .kpis-grid-colorful { grid-template-columns: repeat(4, 1fr) !important; } }
+            @media (max-width: 768px) { .kpis-grid-colorful { grid-template-columns: repeat(3, 1fr) !important; } }
+
+            /* --- قوة إجبارية للموبايل --- */
+            @media (max-width: 480px) { 
+                .kpis-grid-colorful { 
+                    display: grid !important;
+                    grid-template-columns: 1fr 1fr !important; /* إجبار التقسيم لنصفين متساويين بالظبط */
+                    gap: 12px !important;
+                    width: 100% !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+                .kpi-card-colorful {
+                    max-width: 100% !important; /* منع أي كود من تحجيم الكارت */
+                    min-width: 0 !important;
+                    padding: 12px 5px !important;
+                }
+                .kpi-icon-colorful {
+                    width: 38px !important; 
+                    height: 38px !important;
+                }
+                .kpi-icon-colorful svg {
+                    width: 18px !important; 
+                    height: 18px !important;
+                }
+                .kpi-title-colorful {
+                    font-size: 0.65rem !important; 
+                    min-height: 24px !important;
+                }
+                .kpi-value-colorful {
+                    font-size: 1.4rem !important; 
+                }
+            }
+        </style>
+    `;
+
+    container.html(style);
+    const grid = container.append("div").attr("class", "kpis-grid-colorful");
+
+    const getIcon = (path) => `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+
     const kpiList = [
-        { label: "ManPower Hours", value: values.hours },
-        { label: "ManPower", value: values.employees },
-        { label: "PTW", value: values.ptw },
-        { label: "Observations", value: values.observations },
-        { label: "LTI", value: values.lti },
-        { label: "MTC", value: values.mtc },
-        { label: "Property Damage", value: values.propDamage },
-        { label: "Campaigns", value: values.campaigns },
-        { label: "Drills", value: values.drills },
-        { label: "Trainings", value: values.trainings },
-        { label: "Inductions", value: values.inductions },
+        { label: "ManPower", value: values.employees, c1: "#ff6b81", c2: "#C8102E", icon: getIcon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>') },
+        { label: "PTW", value: values.ptw, c1: "#a29bfe", c2: "#6c5ce7", icon: getIcon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path>') },
+        { label: "Observations", value: values.observations, c1: "#fdcb6e", c2: "#e17055", icon: getIcon('<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>') },
+        { label: "LTI", value: values.lti, c1: "#ff7675", c2: "#d63031", icon: getIcon('<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>') },
+        { label: "MTC", value: values.mtc, c1: "#ffeaa7", c2: "#fdcb6e", icon: getIcon('<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line>') },
+        { label: "Prop. Damage", value: values.propDamage, c1: "#74b9ff", c2: "#0984e3", icon: getIcon('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>') },
+        { label: "Campaigns", value: values.campaigns, c1: "#55efc4", c2: "#00b894", icon: getIcon('<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>') },
+        { label: "Drills", value: values.drills, c1: "#81ecec", c2: "#00cec9", icon: getIcon('<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>') },
+        { label: "Trainings", value: values.trainings, c1: "#fab1a0", c2: "#e66767", icon: getIcon('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>') },
+        { label: "Inductions", value: values.inductions, c1: "#b8e994", c2: "#27ae60", icon: getIcon('<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline>') }
     ];
 
     kpiList.forEach(kpi => {
-        const card = container.append("div").attr("class", "kpi-card");
-        card.append("div").attr("class", "kpi-label").text(kpi.label);
-        card.append("div").attr("class", "kpi-value").attr("id", `kpi-${kpi.label.replace(/\s/g, '')}`).text(0);
-        animateValue(`kpi-${kpi.label.replace(/\s/g, '')}`, kpi.value);
+        const card = grid.append("div")
+            .attr("class", "kpi-card-colorful")
+            .style("--c1", kpi.c1)
+            .style("--c2", kpi.c2);
+
+        card.append("div")
+            .attr("class", "kpi-icon-colorful")
+            .html(kpi.icon);
+
+        card.append("div")
+            .attr("class", "kpi-title-colorful")
+            .text(kpi.label);
+
+        const idName = `kpi-col-${kpi.label.replace(/\s/g, '').replace('.', '')}`;
+        card.append("div")
+            .attr("class", "kpi-value-colorful")
+            .attr("id", idName)
+            .text("0");
+
+        animateValue(idName, kpi.value);
     });
 }
 
