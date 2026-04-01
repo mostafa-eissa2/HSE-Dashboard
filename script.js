@@ -119,58 +119,58 @@ Dec,337
 const DATA_2026 = {
     permits: `
 المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-التحكم الاقليمي,55,16,0,0,0,0,0,0,0,0,0,0
+التحكم الاقليمي,55,16,16,0,0,0,0,0,0,0,0,0
 الحي الحكومي,2,1,0,0,0,0,0,0,0,0,0,0
-الحي الدبلوماسي,110,93,0,0,0,0,0,0,0,0,0,0
-العلمين,73,50,0,0,0,0,0,0,0,0,0,0
-الفردوس,11,11,0,0,0,0,0,0,0,0,0,0
-الكيان العسكري,24,22,0,0,0,0,0,0,0,0,0,0
-حياة كريمة الفيوم,25,47,0,0,0,0,0,0,0,0,0,0
-حياة كريمة المنيا,23,16,0,0,0,0,0,0,0,0,0,0
+الحي الدبلوماسي,110,93,22,0,0,0,0,0,0,0,0,0
+العلمين,73,50,11,0,0,0,0,0,0,0,0,0
+الفردوس,11,11,4,0,0,0,0,0,0,0,0,0
+الكيان العسكري,24,22,6,0,0,0,0,0,0,0,0,0
+حياة كريمة الفيوم,25,47,34,0,0,0,0,0,0,0,0,0
+حياة كريمة المنيا,23,16,9,0,0,0,0,0,0,0,0,0
 حياة كريمة أرمنت,0,0,0,0,0,0,0,0,0,0,0,0
 حياة كريمة أسنا,0,0,0,0,0,0,0,0,0,0,0,0
 حياة كريمة أسوان,12,3,0,0,0,0,0,0,0,0,0,0
 حياة كريمة صدفا,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة مطوبس,9,8,0,0,0,0,0,0,0,0,0,0
+حياة كريمة مطوبس,9,8,7,0,0,0,0,0,0,0,0,0
 حياة كريمة منفلوط,0,0,0,0,0,0,0,0,0,0,0,0
-دهشور,104,85,0,0,0,0,0,0,0,0,0,0
-سانت كاترين,3,1,0,0,0,0,0,0,0,0,0,0
+دهشور,104,85,73,0,0,0,0,0,0,0,0,0
+سانت كاترين,3,1,4,0,0,0,0,0,0,0,0,0
 ميناء الدخيلة,17,0,0,0,0,0,0,0,0,0,0,0
-سوهاج,38,37,0,0,0,0,0,0,0,0,0,0
-مصنع البلاط,66,51,0,0,0,0,0,0,0,0,0,0
-أبو قير,18,32,0,0,0,0,0,0,0,0,0,0
-العبور,27,29,0,0,0,0,0,0,0,0,0,0
-العاشر من رمضان,38,25,0,0,0,0,0,0,0,0,0,0
+سوهاج,38,37,45,0,0,0,0,0,0,0,0,0
+مصنع البلاط,66,51,36,0,0,0,0,0,0,0,0,0
+أبو قير,18,32,9,0,0,0,0,0,0,0,0,0
+العبور,27,29,15,0,0,0,0,0,0,0,0,0
+العاشر من رمضان,38,25,49,0,0,0,0,0,0,0,0,0
 حياة كريمة زفتى,0,0,0,0,0,0,0,0,0,0,0,0
 `,
     parties: `
 Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-المقاول,415,333,0,0,0,0,0,0,0,0,0,0
-المخازن,45,25,0,0,0,0,0,0,0,0,0,0
-قسم الجودة,24,21,0,0,0,0,0,0,0,0,0,0
-قسم المساحة,24,27,0,0,0,0,0,0,0,0,0,0
-قسم تنفيذ الكهرباء,120,95,0,0,0,0,0,0,0,0,0,0
-قسم المدني,27,26,0,0,0,0,0,0,0,0,0,0
+المقاول,415,333,232,0,0,0,0,0,0,0,0,0
+المخازن,45,25,19,0,0,0,0,0,0,0,0,0
+قسم الجودة,24,21,15,0,0,0,0,0,0,0,0,0
+قسم المساحة,24,27,15,0,0,0,0,0,0,0,0,0
+قسم تنفيذ الكهرباء,120,95,44,0,0,0,0,0,0,0,0,0
+قسم المدني,27,26,15,0,0,0,0,0,0,0,0,0
 `,
     delays: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-Delays,528,460,0,0,0,0,0,0,0,0,0,0
-On Time,127,67,0,0,0,0,0,0,0,0,0,0
+Delays,528,460,300,0,0,0,0,0,0,0,0,0
+On Time,127,67,40,0,0,0,0,0,0,0,0,0
 `,
     shifts: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-DAY,598,502,0,0,0,0,0,0,0,0,0,0
-NIGHT,57,25,0,0,0,0,0,0,0,0,0,0
+DAY,598,502,294,0,0,0,0,0,0,0,0,0
+NIGHT,57,25,46,0,0,0,0,0,0,0,0,0
 `,
     compliance: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-Compliance,0.19,0.13,0,0,0,0,0,0,0,0,0,0
+Compliance,0.19,0.13,0.12,0,0,0,0,0,0,0,0,0
 `,
     performance: `
 Month,HSE_Observation
 Jan,136
 Feb,130
-Mar,0
+Mar,122
 Apr,0
 May,0
 Jun,0
@@ -185,7 +185,7 @@ Dec,0
 Month,Worked Hours Sewedy,Worked Hours Sub,LTI,MTC,Property Damage,Campaigns,Drills
 Jan,57430,73360,0,0,0,0,0
 Feb,54449,58512,0,0,0,0,0
-Mar,0,0,0,0,0,0,0
+Mar,48264,33072,0,0,2,0,2
 Apr,0,0,0,0,0,0,0
 May,0,0,0,0,0,0,0
 Jun,0,0,0,0,0,0,0
@@ -200,7 +200,7 @@ Dec,0,0,0,0,0,0,0
 Month,Emp Manpower,Total Training
 Jan,643,837
 Feb,615,703
-Mar,0,0
+Mar,525,558
 Apr,0,0
 May,0,0
 Jun,0,0
@@ -215,7 +215,7 @@ Dec,0,0
 Month,Total
 Jan,303
 Feb,206
-Mar,0
+Mar,257
 Apr,0
 May,0
 Jun,0
@@ -359,7 +359,44 @@ const REPORT_DATA_2026 = {
             "Site Manager conducted Safety Induction for HSE Manager and HSE Coordinator at 10th of Ramadan project."
         ],
         savedPapers: 540
-    }
+    },
+    "Mar": {
+        projects: 15,
+        ptw: 340,
+        safeHours: "81,336",
+        manpower: [
+            { entity: "Sewedy", mp: 350, mh: 48264 },
+            { entity: "SC", mp: 175, mh: 33072 },
+            { entity: "Total", mp: 525, mh: 81336 }
+        ],
+        training: {
+            sewedy: { train: 257, ind: 16 },
+            sc: { train: 179, ind: 103 },
+            total: { train: 346, ind: 119 }
+        },
+        // تقسيم Drills و Campaigns إلى كائنات
+        drills: { sewedy: 2, sc: 0, total: 2 },
+        campaigns: { sewedy: 0, sc: 0, total: 0 },
+        incidents: [
+            { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 2, near: 1 },
+            { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 2, near: 1 }
+        ],
+        observations: [
+            { entity: "Sewedy", act: 15, cond: 45, env: 3, pos: 0 },
+            { entity: "SC", act: 14, cond: 46, env: 0, pos: 0 },
+            { entity: "Total", act: 29, cond: 92, env: 3, pos: 0 }
+        ],
+        inspections: [
+            { entity: "Sewedy", haz: 22, obs: 122, tour: 4, accom: 6, walk: 21, equip: 88, int: 0, ext: 0 }
+        ],
+        missed: [
+            "Hazard Reporting targets not met",
+            "Monthly Site Tours frequency low",
+            "Weekly Walkdowns missed in some areas"
+        ],
+        savedPapers: 540
+    },
 };
 
 // =================================================================
@@ -735,9 +772,9 @@ function updateDashboard(selectedMonth) {
         }
 
         // معالجة الشهر الافتراضي (رقم الساعات الكلي الثابت)
-        if (selectedMonth === 'Feb' && currentYear === '2026') {
+        if (selectedMonth === 'Mar' && currentYear === '2026') {
             hoursLabel.text("OVERALL SAFE HOURS");
-            animateValue("kpi-total-hours", 4245513); // الرقم الثابت للواجهة الافتراضية
+            animateValue("kpi-total-hours", 4326849); // الرقم الثابت للواجهة الافتراضية
 
             // حساب الورق التراكمي للشهر الافتراضي
             totalSavedPapers = 0;
@@ -1274,7 +1311,7 @@ function setupDashboard() {
         .attr("value", d => d).text(d => monthMapping[d]);
 
     const defaultYear = "2026";
-    const defaultMonth = "Feb";
+    const defaultMonth = "Mar";
 
     // تحميل البيانات لأول مرة
     loadYearData(defaultYear);
