@@ -1451,27 +1451,49 @@ if ('serviceWorker' in navigator) {
     });
 }
 // ==========================================
-// VISITOR COUNTER LOGIC (UPDATED)
+// VISITOR COUNTER LOGIC (SMART FALLBACK)
 // ==========================================
 function updateVisitorCount() {
-    // اسم فريد لمشروعك (غيره لو حابب بس لازم يكون انجليزي وبدون مسافات)
     const namespace = 'turnkey-hse-dashboard-2026';
     const key = 'visits';
+    const countElement = document.getElementById('visits-count');
+    
+    // آخر رقم وصلتله قبل ما السيرفر يوقف
+    const baseCount = 4053; 
+    
+    // استرجاع آخر رقم محفوظ في المتصفح لتجنب رجوع العداد للصفر
+    let localCount = localStorage.getItem('local_visits_backup');
+    if (!localCount || parseInt(localCount) < baseCount) {
+        localCount = baseCount;
+    }
+    
+    // عرض الرقم فوراً أثناء تحميل البيانات (عشان ميبقاش مكتوب Loading أو Error)
+    if (countElement) {
+        countElement.innerText = parseInt(localCount).toLocaleString();
+    }
 
-    // استخدام خدمة counterapi.dev لأنها أكثر استقراراً
+    // محاولة الاتصال بالسيرفر
     fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('API Rate Limit Reached');
+            return res.json();
+        })
         .then(data => {
-            const countElement = document.getElementById('visits-count');
-            if (countElement) {
-                // الخدمة دي بترجع الرقم في متغير اسمه count
-                countElement.innerText = data.count;
+            if (countElement && data.count) {
+                // التأكد إن السيرفر مرجعش رقم أقدم من اللي متسجل
+                const validCount = data.count > parseInt(localCount) ? data.count : parseInt(localCount) + 1;
+                countElement.innerText = validCount.toLocaleString();
+                localStorage.setItem('local_visits_backup', validCount);
             }
         })
         .catch(err => {
-            console.log("Counter Error:", err);
-            const countElement = document.getElementById('visits-count');
-            if (countElement) countElement.innerText = "Error";
+            console.log("السيرفر المجاني متوقف مؤقتاً، تم تشغيل العداد الاحتياطي.");
+            // في حالة فشل السيرفر (Error)، هنزود العداد محلياً عشان يفضل شغال
+            const fallbackCount = parseInt(localCount) + 1;
+            if (countElement) {
+                countElement.innerText = fallbackCount.toLocaleString();
+                localStorage.setItem('local_visits_backup', fallbackCount);
+            }
         });
 }
 
