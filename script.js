@@ -1451,48 +1451,47 @@ if ('serviceWorker' in navigator) {
     });
 }
 // ==========================================
-// VISITOR COUNTER LOGIC (SMART FALLBACK)
+// VISITOR COUNTER LOGIC (GOOGLE APPS SCRIPT)
 // ==========================================
 function updateVisitorCount() {
-    const namespace = 'turnkey-hse-dashboard-2026';
-    const key = 'visits';
     const countElement = document.getElementById('visits-count');
-    
-    // آخر رقم وصلتله قبل ما السيرفر يوقف
-    const baseCount = 4053; 
-    
-    // استرجاع آخر رقم محفوظ في المتصفح لتجنب رجوع العداد للصفر
-    let localCount = localStorage.getItem('local_visits_backup');
-    if (!localCount || parseInt(localCount) < baseCount) {
-        localCount = baseCount;
-    }
-    
-    // عرض الرقم فوراً أثناء تحميل البيانات (عشان ميبقاش مكتوب Loading أو Error)
+    const baseCount = 4053;
+
+    // 1. عرض نقط (تحميل) بدلاً من الرقم الثابت في البداية
     if (countElement) {
-        countElement.innerText = parseInt(localCount).toLocaleString();
+        countElement.innerText = "...";
     }
 
-    // محاولة الاتصال بالسيرفر
-    fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+    // 2. حط الرابط بتاع جوجل سكريبت بتاعك هنا 👇 (بين علامات التنصيص)
+    // مثال: const url = `https://script.google.com/macros/s/AKfycbw.../exec`;
+    const url = `https://script.google.com/macros/s/AKfycby7nSSoXpEw2mUTpN2inZzHAHKkkpZKWT5A71Y4iICe1GRr_v8dVstBfzwpmkf3H7r-HA/exec`;
+
+    fetch(url)
         .then(res => {
-            if (!res.ok) throw new Error('API Rate Limit Reached');
+            if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         })
         .then(data => {
             if (countElement && data.count) {
-                // التأكد إن السيرفر مرجعش رقم أقدم من اللي متسجل
-                const validCount = data.count > parseInt(localCount) ? data.count : parseInt(localCount) + 1;
-                countElement.innerText = validCount.toLocaleString();
-                localStorage.setItem('local_visits_backup', validCount);
+                // 3. عرض الرقم الجديد بنجاح
+                countElement.innerText = data.count.toLocaleString();
+                localStorage.setItem('last_known_visits', data.count);
             }
         })
         .catch(err => {
-            console.log("السيرفر المجاني متوقف مؤقتاً، تم تشغيل العداد الاحتياطي.");
-            // في حالة فشل السيرفر (Error)، هنزود العداد محلياً عشان يفضل شغال
-            const fallbackCount = parseInt(localCount) + 1;
+            console.log("تم تشغيل العداد الداخلي:", err);
             if (countElement) {
-                countElement.innerText = fallbackCount.toLocaleString();
-                localStorage.setItem('local_visits_backup', fallbackCount);
+                // 4. في حالة فشل الاتصال، يتم استدعاء آخر رقم محفوظ وتزويده
+                let localFallback = localStorage.getItem('last_known_visits');
+
+                // لو مفيش رقم محفوظ خالص، استخدم الرقم الأساسي كمرجع
+                if (!localFallback) {
+                    localFallback = baseCount;
+                }
+
+                localFallback = parseInt(localFallback) + 1;
+                localStorage.setItem('last_known_visits', localFallback);
+                countElement.innerText = localFallback.toLocaleString();
             }
         });
 }
