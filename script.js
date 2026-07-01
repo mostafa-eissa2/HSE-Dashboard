@@ -119,52 +119,52 @@ Dec,337
 const DATA_2026 = {
     permits: `
 المشروع,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-التحكم الاقليمي,55,16,16,18,8,0,0,0,0,0,0,0
-الحي الحكومي,2,1,0,2,0,0,0,0,0,0,0,0
-الحي الدبلوماسي,110,93,22,18,22,0,0,0,0,0,0,0
-العلمين,73,50,11,15,7,0,0,0,0,0,0,0
-الفردوس,11,11,4,25,5,0,0,0,0,0,0,0
-الكيان العسكري,24,22,6,10,9,0,0,0,0,0,0,0
-حياة كريمة الفيوم,25,47,34,57,49,0,0,0,0,0,0,0
-حياة كريمة المنيا,23,16,9,11,9,0,0,0,0,0,0,0
+التحكم الاقليمي,55,16,16,18,8,1,0,0,0,0,0,0
+الحي الحكومي,2,1,0,2,0,2,0,0,0,0,0,0
+الحي الدبلوماسي,110,93,22,18,22,66,0,0,0,0,0,0
+العلمين,73,50,11,15,7,11,0,0,0,0,0,0
+الفردوس,11,11,4,25,5,30,0,0,0,0,0,0
+الكيان العسكري,24,22,6,10,9,7,0,0,0,0,0,0
+حياة كريمة الفيوم,25,47,34,57,49,16,0,0,0,0,0,0
+حياة كريمة المنيا,23,16,9,11,9,7,0,0,0,0,0,0
 حياة كريمة أرمنت,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة أسنا,0,0,0,0,0,0,0,0,0,0,0,0
-حياة كريمة أسوان,12,3,0,1,8,0,0,0,0,0,0,0
-حياة كريمة صدفا,0,0,0,0,0,0,0,0,0,0,0,0
+السويس,0,0,0,0,0,1,0,0,0,0,0,0
+حياة كريمة أسوان,12,3,0,1,8,10,0,0,0,0,0,0
+ابوكبير,0,0,0,0,0,18,0,0,0,0,0,0
 حياة كريمة مطوبس,9,8,7,0,0,0,0,0,0,0,0,0
-حياة كريمة منفلوط,0,0,0,0,0,0,0,0,0,0,0,0
-دهشور,104,85,73,116,98,0,0,0,0,0,0,0
-سانت كاترين,3,1,4,4,10,0,0,0,0,0,0,0
+التوسعات الشرقية,0,0,0,0,0,8,0,0,0,0,0,0
+دهشور,104,85,73,116,98,32,0,0,0,0,0,0
+سانت كاترين,3,1,4,4,10,17,0,0,0,0,0,0
 ميناء الدخيلة,17,0,0,0,5,0,0,0,0,0,0,0
-سوهاج,38,37,45,54,32,0,0,0,0,0,0,0
-مصنع البلاط,66,51,36,26,1,0,0,0,0,0,0,0
-أبو قير,18,32,9,69,59,0,0,0,0,0,0,0
-العبور,27,29,15,3,0,0,0,0,0,0,0,0
-العاشر من رمضان,38,25,49,59,15,0,0,0,0,0,0,0
-العاشر من رمضان الجديد,0,0,0,0,4,0,0,0,0,0,0,0
+سوهاج,38,37,45,54,32,32,0,0,0,0,0,0
+مصنع البلاط,66,51,36,26,1,81,0,0,0,0,0,0
+أبو قير,18,32,9,69,59,33,0,0,0,0,0,0
+العبور,27,29,15,3,0,2,0,0,0,0,0,0
+العاشر من رمضان,38,25,49,59,15,6,0,0,0,0,0,0
+العاشر من رمضان الجديد,0,0,0,0,4,30,0,0,0,0,0,0
 `,
     parties: `
 Column1,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-المقاول,415,333,232,319,214,0,0,0,0,0,0,0
-المخازن,45,25,19,29,22,0,0,0,0,0,0,0
-قسم الجودة,24,21,15,48,36,0,0,0,0,0,0,0
-قسم المساحة,24,27,15,21,11,0,0,0,0,0,0,0
-قسم تنفيذ الكهرباء,120,95,44,52,44,0,0,0,0,0,0,0
-قسم المدني,27,26,15,19,14,0,0,0,0,0,0,0
+المقاول,415,333,232,319,214,281,0,0,0,0,0,0
+المخازن,45,25,19,29,22,32,0,0,0,0,0,0
+قسم الجودة,24,21,15,48,36,20,0,0,0,0,0,0
+قسم المساحة,24,27,15,21,11,19,0,0,0,0,0,0
+قسم تنفيذ الكهرباء,120,95,44,52,44,55,0,0,0,0,0,0
+قسم المدني,27,26,15,19,14,3,0,0,0,0,0,0
 `,
     delays: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-Delays,528,460,300,355,329,0,0,0,0,0,0,0
-On Time,127,67,40,33,12,0,0,0,0,0,0,0
+Delays,528,460,300,355,329,404,0,0,0,0,0,0
+On Time,127,67,40,33,12,6,0,0,0,0,0,0
 `,
     shifts: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-DAY,598,502,294,463,325,0,0,0,0,0,0,0
-NIGHT,57,25,46,25,16,0,0,0,0,0,0,0
+DAY,598,502,294,463,325,317,0,0,0,0,0,0
+NIGHT,57,25,46,25,16,93,0,0,0,0,0,0
 `,
     compliance: `
 Category,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
-Compliance,0.19,0.13,0.12,0.07,0.04,0,0,0,0,0,0,0
+Compliance,0.19,0.13,0.12,0.07,0.04,0,01,0,0,0,0,0
 `,
     performance: `
 Month,HSE_Observation
@@ -173,7 +173,7 @@ Feb,130
 Mar,122
 Apr,192
 May,141
-Jun,0
+Jun,165
 Jul,0
 Aug,0
 Sep,0
@@ -188,7 +188,7 @@ Feb,54449,58512,0,0,0,0,0
 Mar,48264,33072,0,0,2,0,2
 Apr,58204,65112,0,0,2,11,6
 May,42736,48380,0,0,0,18,3
-Jun,0,0,0,0,0,0,0
+Jun,51408,47936,0,0,0,20,9
 Jul,0,0,0,0,0,0,0
 Aug,0,0,0,0,0,0,0
 Sep,0,0,0,0,0,0,0
@@ -203,7 +203,7 @@ Feb,615,703
 Mar,525,558
 Apr,575,1223
 May,514,951
-Jun,0,0
+Jun,558,934
 Jul,0,0
 Aug,0,0
 Sep,0,0
@@ -218,7 +218,7 @@ Feb,206
 Mar,119
 Apr,320
 May,175
-Jun,0
+Jun,236
 Jul,0
 Aug,0
 Sep,0
@@ -474,6 +474,43 @@ const REPORT_DATA_2026 = {
             "HSE QR codes containing all site safety information were successfully deployed across all caravans at the Abu Qir project.",
             "The Emergency Assembly Point was segmented into groups to facilitate faster headcounts during drills or evacuations at the Abu Qir project.",
             "A wind speed and direction indicator was installed to enhance site weather monitoring at the Abu Qir project."
+        ],
+        savedPapers: 570
+    },
+    "Jun": {
+        projects: 21,
+        ptw: 410,
+        safeHours: " 99,344",
+        manpower: [
+            { entity: "Sewedy", mp: 354, mh: 51408 },
+            { entity: "SC", mp: 204, mh: 47936 },
+            { entity: "Total", mp: 558, mh: 99344 }
+        ],
+        training: {
+            sewedy: { train: 446, ind: 14 },
+            sc: { train: 257, ind: 222 },
+            total: { train: 703, ind: 236 }
+        },
+        // تقسيم Drills و Campaigns إلى كائنات
+        drills: { sewedy: 9, sc: 0, total: 9 },
+        campaigns: { sewedy: 20, sc: 0, total: 20 },
+        incidents: [
+            { entity: "Sewedy", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
+            { entity: "Total", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 }
+        ],
+        observations: [
+            { entity: "Sewedy", act: 10, cond: 78, env: 3, pos: 0 },
+            { entity: "SC", act: 22, cond: 51, env: 1, pos: 0 },
+            { entity: "Total", act: 32, cond: 129, env: 4, pos: 0 }
+        ],
+        inspections: [
+            { entity: "Sewedy", haz: 47, obs: 165, tour: 7, accom: 2, walk: 26, equip: 111, int: 0, ext: 0 }
+        ],
+        missed: [
+            "Hazard Reporting targets not met",
+            "Monthly Site Tours frequency low",
+            "Weekly Walkdowns missed in some areas"
         ],
         savedPapers: 570
     },
@@ -852,9 +889,9 @@ function updateDashboard(selectedMonth) {
         }
 
         // معالجة الشهر الافتراضي (رقم الساعات الكلي الثابت)
-        if (selectedMonth === 'May' && currentYear === '2026') {
+        if (selectedMonth === 'Jun' && currentYear === '2026') {
             hoursLabel.text("OVERALL SAFE HOURS");
-            animateValue("kpi-total-hours", 4541281); // الرقم الثابت للواجهة الافتراضية
+            animateValue("kpi-total-hours", 4640625); // الرقم الثابت للواجهة الافتراضية
 
             // حساب الورق التراكمي للشهر الافتراضي
             totalSavedPapers = 0;
@@ -1391,7 +1428,7 @@ function setupDashboard() {
         .attr("value", d => d).text(d => monthMapping[d]);
 
     const defaultYear = "2026";
-    const defaultMonth = "May";
+    const defaultMonth = "Jun";
 
     // تحميل البيانات لأول مرة
     loadYearData(defaultYear);
