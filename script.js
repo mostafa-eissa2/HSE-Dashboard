@@ -192,7 +192,7 @@ May,42736,48380,0,0,0,18,3
 Jun,51408,47936,0,0,0,20,9
 Jul,49492,54688,0,0,0,2,1
 Aug,61692,43440,0,0,0,1,0
-Sep,47976,65636,0,0,0,11,14
+Sep,47976,65636,0,0,0,10,13
 Oct,0,0,0,0,0,0,0
 Nov,0,0,0,0,0,0,0
 Dec,0,0,0,0,0,0,0
@@ -604,8 +604,8 @@ const REPORT_DATA_2026 = {
             total: { train: 789, ind: 248 }
         },
         // تقسيم Drills و Campaigns إلى كائنات
-        drills: { sewedy: 14, sc: 0, total: 14 },
-        campaigns: { sewedy: 11, sc: 0, total: 11 },
+        drills: { sewedy: 13, sc: 0, total: 13 },
+        campaigns: { sewedy: 10, sc: 0, total: 10 },
         incidents: [
             { entity: "Sewedy", fat: 0, lti: 0, mtc: 1, first: 1, env: 0, prop: 0, near: 0 },
             { entity: "SC", fat: 0, lti: 0, mtc: 0, first: 0, env: 0, prop: 0, near: 0 },
